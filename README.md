@@ -1,2 +1,2 @@
 # ProjectManagementTool
-PROJECT MANAGEMENT TOOL​  WITH​  PREDICTIVE ANALYTICS MODEL​  FOR FORECASTING​  SOFTWARE PROJECT TIMELINE​S
+Project Management Tool​ with​ Predictive Analytics Model​ for Forecasting​ Software Project Timelines
