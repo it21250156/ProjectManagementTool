@@ -7,13 +7,20 @@ const taskSchema = new Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+    },
     days: {
         type: Number,
-        required: true,
     },
     assignedTo: {
         type: String,
     },
-}, {timestamps: true})
+    project: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Project',
+        required: true,
+    },
+}, { timestamps: true })
 
 module.exports = mongoose.model('Task', taskSchema)

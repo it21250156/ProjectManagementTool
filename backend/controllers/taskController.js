@@ -32,10 +32,10 @@ const getTask = async (req, res) => {
 
 // Create a Task
 const createTask = async (req, res) => {
-    const { taskName, days, assignedTo } = req.body;
+    const { taskName, days, assignedTo, project } = req.body;
 
     try {
-        const task = await Task.create({ taskName, days, assignedTo });
+        const task = await Task.create({ taskName, days, assignedTo, project });
         res.status(201).json(task);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -50,7 +50,7 @@ const updateTask = async (req, res) => {
         return res.status(400).json({ error: 'Invalid task ID' });
     }
 
-    const task = await Task.findByIdAndUpdate({_id : id}, {
+    const task = await Task.findByIdAndUpdate({ _id: id }, {
         ...req.body
     });
 

@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 import AddTasksForm from '../components/AddTasksForm';
 import { useTasksContext } from '../hooks/useTasksContext';
 import TaskCard from '../components/TaskCard';
+import Header from '../components/Header';
 
 const Home = () => {
 
-    const {tasks, dispatch} = useTasksContext()
+    const { tasks, dispatch } = useTasksContext()
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -13,26 +14,23 @@ const Home = () => {
             const json = await response.json();
 
             if (response.ok) {
-                dispatch({type: 'SET_TASKS', payload: json})
+                dispatch({ type: 'SET_TASKS', payload: json })
             }
         }
         fetchTasks();
     }, [dispatch]);
-  return (
-    <div>
-        <div className='grid grid-cols-2'>
-            
-            <div className=''>
-                {tasks && tasks.map((task) => (
-                    <TaskCard key={task._id} task={task} />
-                ))}
+    return (
+        <div>
+            <Header />
+            {/* <div>
+            <AddTasksForm />
+        </div> */}
+            <div >
+                <h1>Home Page</h1>
             </div>
-            <div className=''>
-                <AddTasksForm />
-            </div>
+
         </div>
-    </div>
-  )
+    )
 }
 
 export default Home

@@ -1,0 +1,70 @@
+/* Customize resource labels */
+.fc-resource-cell {
+    background-color: #333;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+/* Customize resource rows */
+.fc-resource {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Customize header toolbar */
+.fc-header-toolbar {
+    background-color: #50e3c2;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* Customize toolbar buttons */
+.fc-button {
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    margin: 0 4px;
+}
+
+.fc-button:hover {
+    background-color: #3C71B1;
+}
+
+/* Increase row height */
+.fc-timeline-slots td {
+    height: 50px;
+}
+
+/* Add padding to timeline cells */
+.fc-timeline-slot {
+    padding: 8px;
+}
+
+/* Customize timeline event rows */
+.fc-timeline-event {
+    margin: 4px 0;
+}
+
+/* Customize event font size */
+.fc-event-title {
+    font-size: 14px;
+    padding: 4px;
+}
+
+/* Customize resource font size */
+.fc-resource-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Customize timeline axis font size */
+.fc-timeline-axis {
+    font-size: 14px;
+    padding: 8px;
+}
