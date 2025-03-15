@@ -7,11 +7,39 @@ const TaskModal = ({ closeModal }) => {
   const [taskName, setTaskName] = useState('')
   const [taskDescription, setTaskDescription] = useState('')
   const [project, setProject] = useState('')
-  const [days, setDays] = useState('')
+  const [dueDate, setDueDate] = useState('')
   const [assignedTo, setAssignedTo] = useState('')
+  const [members, setMembers] = useState([]); // State to store the list of members
+  const [loading, setLoading] = useState(true); // State to track loading status
   const [error, setError] = useState(null)
 
   const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const response = await fetch('/api/users', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch members');
+        }
+
+        const data = await response.json();
+        setMembers(data); // Set the fetched members to state
+      } catch (error) {
+        console.error('Error fetching members:', error);
+        setError('Failed to load members. Please try again later.');
+      } finally {
+        setLoading(false); // Set loading to false after fetching
+      }
+    };
+
+    fetchMembers();
+  }, []);
 
   // Fetch all projects when the component mounts
   useEffect(() => {
@@ -30,13 +58,14 @@ const TaskModal = ({ closeModal }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const task = { taskName, taskDescription, days, assignedTo, project };
+    const task = { taskName, taskDescription, dueDate, assignedTo, project };
 
     const response = await fetch('/api/tasks/add', {
       method: 'POST',
       body: JSON.stringify(task),
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
     });
     const json = await response.json();
@@ -47,7 +76,7 @@ const TaskModal = ({ closeModal }) => {
     if (response.ok) {
       setTaskName('');
       setTaskDescription('');
-      setDays('');
+      setDueDate('');
       setAssignedTo('');
       setProject('');
       setError(null);
@@ -123,14 +152,14 @@ const TaskModal = ({ closeModal }) => {
             </div>
 
             <div className="mb-3 font-bold">
-              <label>Days</label>
+              <label>Due Date</label>
               <br />
               <input
-                type="number"
-                id="days"
-                name="days"
-                onChange={(e) => setDays(e.target.value)}
-                value={days}
+                type="date"
+                id="dueDate"
+                name="dueDate"
+                onChange={(e) => setDueDate(e.target.value)}
+                value={dueDate}
                 className="border-none bg-[#50E3C2] w-full rounded-lg font-normal" />
             </div>
 
@@ -142,11 +171,20 @@ const TaskModal = ({ closeModal }) => {
                 name="assignedTo"
                 onChange={(e) => setAssignedTo(e.target.value)}
                 value={assignedTo}
-                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal">
-                <option value="" className="">Select a member</option>
-                <option value="1" className="">Member 1</option>
-                <option value="2" className="">Member 2</option>
-                <option value="3" className="">Member 3</option>
+                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal"
+              >
+                <option value="">Select a member</option>
+                {loading ? (
+                  <option value="" disabled>Loading members...</option>
+                ) : error ? (
+                  <option value="" disabled>{error}</option>
+                ) : (
+                  members.map((member) => (
+                    <option key={member._id} value={member._id}>
+                      {member.name} ({member.email})
+                    </option>
+                  ))
+                )}
               </select>
             </div>
 

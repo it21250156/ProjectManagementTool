@@ -7,8 +7,7 @@ const MyProfile = () => {
         <div>
             <Header />
             <div className='m-4'>
-                <h1>My Profile</h1>
-                <p>Welcome, John Doe!</p>
+
                 <UserInfo />
             </div>
 

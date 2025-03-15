@@ -10,8 +10,8 @@ const taskSchema = new Schema({
     description: {
         type: String,
     },
-    days: {
-        type: Number,
+    dueDate: {
+        type: Date,
     },
     assignedTo: {
         type: String,
