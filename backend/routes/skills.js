@@ -6,7 +6,6 @@ const { verifyToken } = require('../middleware/auth');
 const router = express.Router();
 
 /**
- * 
  * Get all available skills
  */
 router.get('/', async (req, res) => {
