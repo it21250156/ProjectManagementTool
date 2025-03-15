@@ -1,80 +1,67 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
-const Schema = mongoose.Schema;
+const UserSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    points: { type: Number, default: 0 }, // Total points for skill unlocking
+    completedTasks: { type: Number, default: 0 }, // Total completed tasks
+    earnedXP: { type: Number, default: 0 }, // XP for leveling up
+    level: { type: Number, default: 1 }, // ✅ User level
+    unlockedSkills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }], // Unlocked skills
+    badges: [{ type: String }], // Earned badges
+});
 
-const userSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
+// 🔹 Hash password before saving
+UserSchema.pre('save', async function (next) {
+    if (this.isModified('password')) {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
     }
-})
+    next();
+});
 
-// static signup method
-userSchema.statics.signup = async function(name, email, password) {
+// 🔹 Compare input password with hashed password
+UserSchema.methods.matchPassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+};
 
-    // validation
-    if (!email || !password) {
-        throw Error('All fields are required')
+// 🔹 Unlock a skill (deducts points)
+UserSchema.methods.unlockSkill = function (skillId, skillPointsRequired) {
+    if (!this.unlockedSkills.includes(skillId)) {
+        this.unlockedSkills.push(skillId);
+        this.points -= skillPointsRequired; // Deduct points
     }
+};
 
-    if (!validator.isEmail(email)) {
-        throw Error('Invalid email')
-    }
+// 🔹 Function to update user level based on XP
+UserSchema.methods.updateLevel = function () {
+    let xpThreshold = 50; // XP required for Level 2
+    let newLevel = 1;
 
-    if (!validator.isStrongPassword(password)) {
-        throw Error('Password not strong enough')
-    }
-
-    const exists = await this.findOne({email})
-
-    if (exists) {
-        throw Error('Email already exists')
-    }
-
-    const salt = await bcrypt.genSalt(10)
-    const hash = await bcrypt.hash(password, salt)
-
-    const user = await this.create({name, email, password: hash})
-
-    return user
-
-}
-
-//static login method
-
-userSchema.statics.login = async function(email, password) {
-
-    // validation
-    if (!email || !password) {
-        throw Error('All fields are required')
+    while (this.earnedXP >= xpThreshold) {
+        newLevel++;
+        xpThreshold *= 2; // Each level requires double XP
     }
 
+    this.level = newLevel;
+};
 
-    const user = await this.findOne({email})
+// 🔹 Function to update badges (Uses XP instead of Points to prevent losing badges)
+UserSchema.methods.updateBadges = function () {
+    const badgeCriteria = [
+        { name: "Task Beginner", threshold: 30 },
+        { name: "Task Master", threshold: 100 },
+        { name: "Collaboration Guru", threshold: 10 },
+        { name: "Skill Unlocker", threshold: 5 },
+    ];
 
-    if (!user) {
-        throw Error('Invalid email')
-    }
+    badgeCriteria.forEach(badge => {
+        if (!this.badges.includes(badge.name) && this.earnedXP >= badge.threshold) {
+            this.badges.push(badge.name);
+        }
+    });
+};
 
-    const isMatch = await bcrypt.compare(password, user.password)
-
-    if (!isMatch) {
-        throw Error('Invalid password')
-    }
-
-    return user
-
-}
-
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User', UserSchema);
