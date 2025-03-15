@@ -81,21 +81,24 @@ const getBonusXP = (user, task, baseXP, userTasks) => {
 
 // ✅ Create a new project
 router.post('/', async (req, res) => {
-  const { projectName, projectId, members } = req.body;
+  const { projectName, projectDescription, members } = req.body; // ✅ No projectId needed
 
   try {
-    if (!projectName || !projectId || !members || members.length === 0) {
-      return res.status(400).json({ message: 'Invalid project data' });
-    }
+      if (!projectName || !members || members.length === 0) {
+          return res.status(400).json({ message: 'Invalid project data' });
+      }
 
-    const newProject = new Project({ projectName, projectId, members });
-    await newProject.save();
-    res.status(201).json({ message: 'Project created successfully!' });
+      const newProject = new Project({ projectName, projectDescription, members });
+      await newProject.save();
+      
+      res.status(201).json({ message: 'Project created successfully!', project: newProject });
   } catch (error) {
-    console.error('Error saving project:', error);
-    res.status(500).json({ message: 'Server error while creating project' });
+      console.error('Error saving project:', error);
+      res.status(500).json({ message: 'Server error while creating project' });
   }
 });
+
+
 
 // ✅ Get earned XP, completed tasks, badges, and level for the logged-in user
 router.get('/user-total-xp', verifyToken, async (req, res) => {

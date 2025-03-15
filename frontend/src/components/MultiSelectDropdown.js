@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const MultiSelectDropdown = ({ options, placeholder = "Select options" }) => {
+const MultiSelectDropdown = ({ options, placeholder = "Select options", onChange }) => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -9,18 +9,24 @@ const MultiSelectDropdown = ({ options, placeholder = "Select options" }) => {
 
     // Handle option selection
     const handleSelect = (option) => {
-        if (selectedOptions.includes(option)) {
-            // Remove option if already selected
-            setSelectedOptions(selectedOptions.filter((item) => item !== option));
+        if (selectedOptions.some(selected => selected.value === option.value)) {
+            // Remove if already selected
+            const updatedOptions = selectedOptions.filter((item) => item.value !== option.value);
+            setSelectedOptions(updatedOptions);
+            onChange(updatedOptions.map(opt => opt.value)); // Send only values
         } else {
-            // Add option if not selected
-            setSelectedOptions([...selectedOptions, option]);
+            // Add if not selected
+            const updatedOptions = [...selectedOptions, option];
+            setSelectedOptions(updatedOptions);
+            onChange(updatedOptions.map(opt => opt.value)); // Send only values
         }
     };
 
     // Remove a selected option (chip)
     const removeChip = (option) => {
-        setSelectedOptions(selectedOptions.filter((item) => item !== option));
+        const updatedOptions = selectedOptions.filter((item) => item.value !== option.value);
+        setSelectedOptions(updatedOptions);
+        onChange(updatedOptions.map(opt => opt.value)); // Send only values
     };
 
     return (
@@ -32,10 +38,10 @@ const MultiSelectDropdown = ({ options, placeholder = "Select options" }) => {
                 ) : (
                     selectedOptions.map((option) => (
                         <div
-                            key={option}
+                            key={option.value}
                             className="flex items-center bg-blue-500 text-white rounded-full px-3 py-1 text-sm"
                         >
-                            {option}
+                            {option.label}
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -52,15 +58,14 @@ const MultiSelectDropdown = ({ options, placeholder = "Select options" }) => {
 
             {/* Dropdown options */}
             {isOpen && (
-                <div className="absolute z-10 w-full mt-2 bg-[#50E3C2] border border-gray-300 rounded-lg shadow-lg ">
+                <div className="absolute z-10 w-full mt-2 bg-[#50E3C2] border border-gray-300 rounded-lg shadow-lg">
                     {options.map((option) => (
                         <div
-                            key={option}
-                            className={`p-2 cursor-pointer hover:bg-gray-100 ${selectedOptions.includes(option) ? 'bg-blue-50' : ''
-                                }`}
+                            key={option.value}
+                            className={`p-2 cursor-pointer hover:bg-gray-100 ${selectedOptions.some(selected => selected.value === option.value) ? 'bg-blue-50' : ''}`}
                             onClick={() => handleSelect(option)}
                         >
-                            {option}
+                            {option.label}
                         </div>
                     ))}
                 </div>
