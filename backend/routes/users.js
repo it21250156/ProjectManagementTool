@@ -40,39 +40,39 @@ router.get('/profile', verifyToken, async (req, res) => {
   }
 });
 
-router.post('/signup', async (req, res) => {
-  const { name, email, password } = req.body;
+// router.post('/signup', async (req, res) => {
+//   const { name, email, password } = req.body;
 
-  try {
-    const user = new User({ name, email, password });
-    await user.save();
-    res.status(201).json({ message: 'User created successfully' });
-  } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).json({ message: 'Error creating user' });
-  }
-});
+//   try {
+//     const user = new User({ name, email, password });
+//     await user.save();
+//     res.status(201).json({ message: 'User created successfully' });
+//   } catch (error) {
+//     console.error('Error creating user:', error);
+//     res.status(500).json({ message: 'Error creating user' });
+//   }
+// });
 
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+// router.post('/login', async (req, res) => {
+//   const { email, password } = req.body;
 
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+//   try {
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
 
-    const isMatch = await user.matchPassword(password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
+//     const isMatch = await user.matchPassword(password);
+//     if (!isMatch) {
+//       return res.status(400).json({ message: 'Invalid credentials' });
+//     }
 
-    // Here you can generate a token or set up a session
-    res.status(200).json({ message: 'Login successful', user });
-  } catch (error) {
-    console.error('Error logging in:', error);
-    res.status(500).json({ message: 'Error logging in' });
-  }
-});
+//     // Here you can generate a token or set up a session
+//     res.status(200).json({ message: 'Login successful', user });
+//   } catch (error) {
+//     console.error('Error logging in:', error);
+//     res.status(500).json({ message: 'Error logging in' });
+//   }
+// });
 
 module.exports = router;
