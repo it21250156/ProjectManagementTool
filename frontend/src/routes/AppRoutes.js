@@ -10,6 +10,7 @@ import Signup from "../pages/Signup";
 import MyProjects from "../pages/MyProjects";
 import ProjectDetails from "../pages/ProjectDetails";
 import MyTasks from '../pages/MyTasks';
+import MyProfile from "../pages/MyProfile";
 
 // import Register from '../pages/Register';
 
@@ -29,7 +30,7 @@ const AppRoutes = () => (
         <Route path="/my-projects" element={<MyProjects />} />
         <Route path="/project/:projectId" element={<ProjectDetails />} />
         <Route path="/my-tasks" element={<MyTasks />} />
-
+        <Route path="/my-profile" element={<MyProfile />} />
       </Route>
 
       {/* Fallback route for 404 */}
