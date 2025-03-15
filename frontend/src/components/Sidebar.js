@@ -70,7 +70,7 @@ const Sidebar = () => {
                     </div>
                 </div>
 
-                <div className='mt-auto pb-2'>
+                <div className='mt-auto'>
                     <button type="button" class="text-white bg-[#f5a623] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold py-4 text-lg w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                         Logout
                     </button>

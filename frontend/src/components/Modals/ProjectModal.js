@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useProjectsContext } from '../../hooks/useProjectsContext'
+import MultiSelectDropdown from '../MultiSelectDropdown';
 
 const ProjectModal = ({ closeModal }) => {
 
@@ -7,6 +8,8 @@ const ProjectModal = ({ closeModal }) => {
     const [projectName, setProjectName] = useState('')
     const [projectDescription, setProjectDescription] = useState('')
     const [error, setError] = useState(null)
+
+    const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5'];
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -51,7 +54,7 @@ const ProjectModal = ({ closeModal }) => {
                         ✕
                     </button>
                 </div>
-                <div className="p-4 bg-white rounded-xl">
+                <div className="p-4 bg-white rounded-xl text-black">
                     <form action="#" method="POST" onSubmit={handleSubmit}>
                         <div className="mb-3 font-bold">
                             <label htmlFor="projectName">Project Name*</label>
@@ -77,6 +80,11 @@ const ProjectModal = ({ closeModal }) => {
                                 className="border-none bg-[#50E3C2] w-full rounded-lg font-normal"
                             >
                             </textarea>
+                        </div>
+
+                        <div className='mb-3 font-bold'>
+                            <label>Members</label>
+                            <MultiSelectDropdown options={options} placeholder="Select options" />
                         </div>
 
                         <div className="my-5">

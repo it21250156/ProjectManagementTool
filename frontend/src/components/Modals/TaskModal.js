@@ -76,7 +76,7 @@ const TaskModal = ({ closeModal }) => {
             ✕
           </button>
         </div>
-        <div className="p-4 bg-white rounded-xl">
+        <div className="p-4 bg-white rounded-xl text-black">
           <form action="#" method="POST" onSubmit={handleSubmit}>
             <div className="mb-3 font-bold">
               <label htmlFor="taskName">Task Name*</label>
