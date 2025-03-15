@@ -21,19 +21,18 @@ const UserInfo = () => {
         const fetchUserData = async () => {
             try {
                 const token = localStorage.getItem('token');
+                console.log('Token from localStorage:', token); // Debugging
 
-                // Check if token exists
                 if (!token) {
                     setMessage('You are not logged in. Please log in to continue.');
                     setLoading(false);
-                    console.log("You are not logged in. Please log in to continue")
-                    navigate('/'); // Redirect to login page
+                    navigate('/');
                     return;
                 }
 
                 // Fetch XP, Tasks, Badges, Level
                 const xpResponse = await axios.get('http://localhost:4080/api/projects/user-total-xp', {
-                    headers: { Authorization: `Bearer ${token}` }, // Add "Bearer" prefix
+                    headers: { Authorization: `Bearer ${token}` },
                 });
 
                 setEarnedXP(xpResponse.data.earnedXP);
@@ -43,19 +42,25 @@ const UserInfo = () => {
 
                 // Fetch User Projects
                 const projectsResponse = await axios.get('http://localhost:4080/api/projects/user-projects', {
-                    headers: { Authorization: `Bearer ${token}` }, // Add "Bearer" prefix
+                    headers: { Authorization: `Bearer ${token}` },
                 });
                 setProjects(projectsResponse.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                setMessage('Failed to load data. Please try again later.');
-                if (error.response?.status === 401) {
-                    // Redirect to login if token is invalid
-                    console.error("Token is invalid. Please try again later")
-                    navigate('/');
+                if (error.response) {
+                    setMessage(error.response.data.message || 'Failed to load data. Please try again later.');
+                    if (error.response.status === 401) {
+                        console.error("Token is invalid. Please try again later");
+                        navigate('/');
+                    }
+                } else if (error.request) {
+                    setMessage('No response from the server. Please check your connection.');
+                } else {
+                    setMessage('An unexpected error occurred. Please try again later.');
                 }
             } finally {
-                setLoading(false);
+                // Add a small delay before hiding the spinner
+                setTimeout(() => setLoading(false), 500);
             }
         };
 

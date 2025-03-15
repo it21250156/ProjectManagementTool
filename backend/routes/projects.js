@@ -200,18 +200,18 @@ router.put('/:projectId/complete-task', verifyToken, async (req, res) => {
     await user.save();
     await project.save();
 
-    res.status(200).json({ 
+    res.status(200).json({
       message: `Task completed! Total XP Earned: ${totalXP} (${baseXP} + Bonus: ${bonusXP})`,
-      userStats: { 
+      userStats: {
         earnedXP: user.earnedXP,
         completedTasks: user.completedTasks,
         badges: user.badges,
         level: user.level,
         bonusXP,
         unlockedSkills: user.unlockedSkills.map(skill => skill.name),
-      } 
+      }
     });
-    
+
   } catch (error) {
     console.error('Error marking task as completed:', error);
     res.status(500).json({ message: 'Error marking task as completed' });
