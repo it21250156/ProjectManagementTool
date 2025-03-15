@@ -5,29 +5,37 @@ const TaskSchema = new mongoose.Schema({
   priority: { type: String, enum: ['high', 'medium', 'low'], required: true },
   points: { type: Number, required: true },
   completed: { type: Boolean, default: false },
-  deadline: { type: Date, required: true }, // ✅ Added task deadline
+  deadline: { type: Date, required: true },
 });
 
 const MemberSchema = new mongoose.Schema({
-  memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   tasks: [TaskSchema],
 });
 
 const ProjectSchema = new mongoose.Schema({
+  projectId: { 
+    type: String, 
+    unique: true, 
+    default: () => new mongoose.Types.ObjectId().toString() // ✅ Auto-generate projectId
+  },
   projectName: { type: String, required: true },
-  projectId: { type: String, required: true, unique: true },
+  projectDescription: { type: String, default: "" }, // ✅ Allow empty description
   members: [MemberSchema],
 });
 
-// ✅ Middleware to check overdue tasks
+// ✅ Middleware: Check overdue tasks only on updates
 ProjectSchema.pre('save', function (next) {
-  this.members.forEach((member) => {
-    member.tasks.forEach((task) => {
+  if (this.isNew) return next(); // Only check for updates
+
+  this.members.forEach(member => {
+    member.tasks.forEach(task => {
       if (new Date(task.deadline) < new Date() && !task.completed) {
-        console.log(`Task "${task.task}" is overdue!`);
+        console.warn(`⚠️ Task "${task.task}" (ID: ${task._id}) is overdue!`);
       }
     });
   });
+
   next();
 });
 
