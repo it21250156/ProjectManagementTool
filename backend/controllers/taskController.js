@@ -32,10 +32,10 @@ const getTask = async (req, res) => {
 
 // Create a Task
 const createTask = async (req, res) => {
-    const { taskName, days, assignedTo, project } = req.body;
+    const { taskName, dueDate, assignedTo, project } = req.body;
 
     try {
-        const task = await Task.create({ taskName, days, assignedTo, project });
+        const task = await Task.create({ taskName, dueDate, assignedTo, project });
         res.status(201).json(task);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -82,10 +82,27 @@ const deleteTask = async (req, res) => {
     }
 };
 
+const getTasksByProject = async (req, res) => {
+    const { projectId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(projectId)) {
+        return res.status(400).json({ error: 'Invalid Project ID' });
+    }
+
+    try {
+        const tasks = await Task.find({ project: projectId });
+        res.status(200).json(tasks);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 module.exports = {
     getAllTasks,
     getTask,
     createTask,
     updateTask,
     deleteTask,
+    getTasksByProject,
 };

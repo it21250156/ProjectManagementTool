@@ -1,62 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import FullCalendar from '@fullcalendar/react'; // FullCalendar component
-import timelinePlugin from '@fullcalendar/timeline'; // Timeline plugin
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'; // Resource timeline plugin
-import interactionPlugin from '@fullcalendar/interaction'; // For drag-and-drop
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
-import moment from 'moment';
 import '../assets/css/FullCalender.css';
+import { useTasksContext } from '../hooks/useTasksContext';
 
 const ProjectDetails = () => {
     const { projectId } = useParams();
-    const [resources, setResources] = useState([]); // Resources (e.g., team members)
-    const [events, setEvents] = useState([]); // Tasks or events
+    const { tasks, dispatch } = useTasksContext();
 
-    // Fetch tasks and resources for the specific project
+    // Fetch tasks for the project
     useEffect(() => {
-        // Sample data for resources (e.g., team members)
-        const sampleResources = [
-            { id: '1', title: 'Team Member 1' },
-            { id: '2', title: 'Team Member 2' },
-        ];
+        const fetchTasks = async () => {
+            const response = await fetch(`/api/tasks/project/${projectId}`);
+            const json = await response.json();
 
-        // Sample data for tasks
-        const sampleEvents = [
-            {
-                id: '1',
-                resourceId: '1', // Assigned to Team Member 1
-                title: 'Task 1',
-                start: moment().add(-2, 'days').toISOString(), // Start time
-                end: moment().add(3, 'days').toISOString(), // End time
-                projectId: '67d0586dd9f8d1460f6780b4', // Belongs to Project 1
-            },
-            {
-                id: '2',
-                resourceId: '1', // Assigned to Team Member 1
-                title: 'Task 2',
-                start: moment().add(-1, 'days').toISOString(),
-                end: moment().add(2, 'days').toISOString(),
-                projectId: '67d0586dd9f8d1460f6780b4', // Belongs to Project 1
-            },
-            {
-                id: '3',
-                resourceId: '2', // Assigned to Team Member 2
-                title: 'Task 3',
-                start: moment().add(0, 'days').toISOString(),
-                end: moment().add(4, 'days').toISOString(),
-                projectId: '67d0586dd9f8d1460f6780b4', // Belongs to Project 2
-            },
-        ];
-
-        // Filter tasks for the specific project
-        const filteredEvents = sampleEvents.filter((event) => event.projectId === projectId);
-        console.log('Filtered Events:', filteredEvents); // Debugging
-        console.log('Resources:', sampleResources); // Debugging
-
-        setResources(sampleResources);
-        setEvents(filteredEvents);
-    }, [projectId]);
+            if (response.ok) {
+                dispatch({ type: 'SET_TASKS', payload: json });
+            };
+        }
+        fetchTasks();
+    }, [projectId, dispatch,]);
 
     return (
         <div>
@@ -66,27 +29,23 @@ const ProjectDetails = () => {
                     <h1 className='text-white text-4xl font-extrabold italic'>Project Tasks</h1>
                 </div>
 
-                {/* Render FullCalendar with Timeline View */}
-                <div style={{ height: '500px', marginTop: '20px' }}>
-                    <FullCalendar
-                        plugins={[timelinePlugin, resourceTimelinePlugin, interactionPlugin]}
-                        initialView="resourceTimelineMonth" // Default view
-                        resources={resources} // Resources (e.g., team members)
-                        events={events} // Tasks or events
-                        editable={true} // Allow events to be editable
-                        headerToolbar={{
-                            left: 'today prev,next',
-                            center: 'title',
-                            right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth',
-                        }}
-                        resourceAreaWidth="20%" // Width of the resource area
-                        resourceAreaHeaderContent="Team Members" // Header for the resource area
-                        eventContent={(eventInfo) => (
-                            <div style={{ padding: '4px', backgroundColor: '#4A90E2', color: 'white', borderRadius: '4px' }}>
-                                {eventInfo.event.title}
-                            </div>
-                        )}
-                    />
+                <div>
+                    {tasks && tasks.length > 0 ? (
+                        <ul>
+                            {tasks.map((task) => (
+                                <li key={task._id} className='my-4 p-4 bg-white rounded-lg shadow-md'>
+                                    <h2 className='text-xl font-bold'>{task.taskName}</h2>
+                                    <p className='text-gray-600'>{task.description}</p>
+                                    <p className='text-sm text-gray-500'>
+                                        Due Date: {new Date(task.dueDate).toLocaleDateString()}
+                                    </p>
+                                    <p className='text-sm text-gray-500'>Assigned To: {task.assignedTo}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No tasks found for this project.</p>
+                    )}
                 </div>
             </div>
         </div>
