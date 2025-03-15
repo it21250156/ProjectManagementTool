@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSignup } from "../hooks/useSignup";
 import { useLogin } from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
@@ -14,62 +14,81 @@ const Signup = () => {
   const [signupPassword, setSignupPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const { signup, error, isLoading } = useSignup();
-  const { login, isLoggedIn, logout } = useLogin();
+  const [isFlipped, setIsFlipped] = useState(false); // Add state for flip
+
+  // Use the hooks
+  const { signup, error: signupError, isLoading: isSignupLoading } = useSignup();
+  const { login, error: loginError, isLoading: isLoginLoading } = useLogin();
+
   const navigate = useNavigate();
 
-  const handleSignin = async (e) => {
-    e.preventDefault();
-    await signup(name, signupEmail, signupPassword);
-
-    if (!error) {
-      navigate("/home");
-    }
-  };
+  const flipCheckboxRef = useRef(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await login(loginEmail, loginPassword);
+    const result = await login(loginEmail, loginPassword);
 
-    if (!error) {
-      navigate("/home");
+    if (result.success) {
+      navigate("/home"); // Navigate to home page on successful login
+    } else {
+      alert(loginError || 'Login failed'); // Show error message in an alert
+    }
+  };
+
+  const handleSignin = async (e) => {
+    e.preventDefault();
+    const result = await signup(name, signupEmail, signupPassword);
+
+    if (result.success) {
+      // Switch back to the login form
+      if (flipCheckboxRef.current) {
+        flipCheckboxRef.current.checked = false;
+        setIsFlipped(false);
+      }
+      alert("Signup successful! Please log in.");
+    } else {
+      alert(signupError || "Signup failed");
     }
   };
 
   return (
     <div>
       <div className="main-container">
-        <div class="container">
-          <input type="checkbox" id="flip" />
-          <div class="cover">
-            <div class="front">
+        <div className="container">
+          <input
+            type="checkbox"
+            id="flip"
+            ref={flipCheckboxRef}
+          />
+          <div className="cover">
+            <div className="front">
               <img src={frontImg} alt="" />
-              <div class="text">
-                <span class="text-1">
+              <div className="text">
+                <span className="text-1">
                   Every new friend is a <br /> new adventure
                 </span>
-                <span class="text-2">Let's get connected</span>
+                <span className="text-2">Let's get connected</span>
               </div>
             </div>
-            <div class="back">
-              <img class="backImg" src={backImg} alt="" />
-              <div class="text">
-                <span class="text-1">
+            <div className="back">
+              <img className="backImg" src={backImg} alt="" />
+              <div className="text">
+                <span className="text-1">
                   Complete miles of journey <br /> with one step
                 </span>
-                <span class="text-2">Let's get started</span>
+                <span className="text-2">Let's get started</span>
               </div>
             </div>
           </div>
-          <div class="forms">
-            <div class="form-content">
+          <div className="forms">
+            <div className="form-content">
               {/* Login form */}
-              <div class="login-form">
-                <div class="title">Login</div>
+              <div className="login-form">
+                <div className="title">Login</div>
                 <form action="#" onSubmit={handleLogin}>
-                  <div class="input-boxes">
-                    <div class="input-box">
-                      <i class="fas fa-envelope"></i>
+                  <div className="input-boxes">
+                    <div className="input-box">
+                      <i className="fas fa-envelope"></i>
                       <input
                         type="text"
                         placeholder="Enter your email"
@@ -78,8 +97,8 @@ const Signup = () => {
                         required
                       />
                     </div>
-                    <div class="input-box">
-                      <i class="fas fa-lock"></i>
+                    <div className="input-box">
+                      <i className="fas fa-lock"></i>
                       <input
                         type="password"
                         placeholder="Enter your password"
@@ -88,27 +107,33 @@ const Signup = () => {
                         required
                       />
                     </div>
-                    <div class="text">
+                    {/* Login form fields */}
+                    {loginError && (
+                      <div className="error-message" style={{ color: 'red', marginBottom: '10px' }}>
+                        {loginError}
+                      </div>
+                    )}
+                    <div className="text">
                       <a href="#">Forgot password?</a>
                     </div>
-                    <div class="button input-box">
+                    <div className="button input-box">
                       <input type="submit" value="Login" />
                     </div>
-                    <div class="text sign-up-text">
+                    <div className="text sign-up-text">
                       Don't have an account?{" "}
-                      <label for="flip">Signup now</label>
+                      <label htmlFor="flip">Signup now</label>
                     </div>
                   </div>
                 </form>
               </div>
 
               {/* Signup Form */}
-              <div class="signup-form">
-                <div class="title">Signup</div>
+              <div className="signup-form">
+                <div className="title">Signup</div>
                 <form action="#" onSubmit={handleSignin}>
-                  <div class="input-boxes">
-                    <div class="input-box">
-                      <i class="fas fa-user"></i>
+                  <div className="input-boxes">
+                    <div className="input-box">
+                      <i className="fas fa-user"></i>
                       <input
                         type="text"
                         placeholder="Enter your name"
@@ -117,18 +142,18 @@ const Signup = () => {
                         required
                       />
                     </div>
-                    <div class="input-box">
-                      <i class="fas fa-envelope"></i>
+                    <div className="input-box">
+                      <i className="fas fa-envelope"></i>
                       <input
-                        type="text"
+                        type="email"
                         placeholder="Enter your email"
                         onChange={(e) => setSignupEmail(e.target.value)}
                         value={signupEmail}
                         required
                       />
                     </div>
-                    <div class="input-box">
-                      <i class="fas fa-lock"></i>
+                    <div className="input-box">
+                      <i className="fas fa-lock"></i>
                       <input
                         type="password"
                         placeholder="Enter your password"
@@ -137,17 +162,23 @@ const Signup = () => {
                         required
                       />
                     </div>
-                    <div class="button input-box">
+                    {/* Signup form fields */}
+                    {signupError && (
+                      <div className="error-message" style={{ color: 'red', marginBottom: '10px' }}>
+                        {signupError}
+                      </div>
+                    )}
+                    <div className="button input-box">
                       <input
                         type="submit"
                         value="Signup"
-                        disabled={isLoading}
+                        disabled={isSignupLoading}
                       />
                     </div>
-                    {error && error.message}
-                    <div class="text sign-up-text">
+
+                    <div className="text sign-up-text">
                       Already have an account?{" "}
-                      <label for="flip">Login now</label>
+                      <label htmlFor="flip">Login now</label>
                     </div>
                   </div>
                 </form>
