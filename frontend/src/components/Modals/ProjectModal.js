@@ -84,7 +84,7 @@ const ProjectModal = ({ closeModal }) => {
 
                         <div className='mb-3 font-bold'>
                             <label>Members</label>
-                            <MultiSelectDropdown options={options} placeholder="Select options" />
+                            <MultiSelectDropdown options={options} placeholder="Select Members" />
                         </div>
 
                         <div className="my-5">
