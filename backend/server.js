@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 })
 
 // routes
-app.use('/api/user', userRoutes)
+app.use('/api/', userRoutes)
 app.use('/api/tasks', taskRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/skills', skillRoutes);

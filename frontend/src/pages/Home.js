@@ -1,12 +1,10 @@
 import { useEffect } from 'react'
-import AddTasksForm from '../components/AddTasksForm';
 import { useTasksContext } from '../hooks/useTasksContext';
-import TaskCard from '../components/TaskCard';
 import Header from '../components/Header';
 
 const Home = () => {
 
-    const { tasks, dispatch } = useTasksContext()
+    const { dispatch } = useTasksContext()
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -22,9 +20,6 @@ const Home = () => {
     return (
         <div>
             <Header />
-            {/* <div>
-            <AddTasksForm />
-        </div> */}
             <div >
                 <h1>Home Page</h1>
             </div>
