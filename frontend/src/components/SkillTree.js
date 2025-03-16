@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SkillTree = () => {
     const [skills, setSkills] = useState([]);
-    const [userSkills, setUserSkills] = useState([]);
+    const [userSkills, setUserSkills] = useState([]); // ✅ Track only skill IDs
     const [availablePoints, setAvailablePoints] = useState(0);
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(true);
@@ -36,7 +36,13 @@ const SkillTree = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-                setUserSkills(response.data.unlockedSkills || []);
+                console.log("User Profile Data:", response.data); // ✅ Debugging
+
+                // ✅ Store only skill IDs
+                const unlockedSkillIds = response.data.unlockedSkills.map(skill => skill._id);
+                console.log("Unlocked Skill IDs:", unlockedSkillIds); // ✅ Debugging
+
+                setUserSkills(unlockedSkillIds);
                 setAvailablePoints(response.data.points || 0);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -48,7 +54,7 @@ const SkillTree = () => {
 
         fetchSkills();
         fetchUserData();
-    }, [navigate]);
+    }, [navigate]); // ✅ Fetch fresh data on page load
 
     const handleUnlockSkill = async (skillId, pointsRequired) => {
         if (availablePoints < pointsRequired) {
@@ -65,8 +71,15 @@ const SkillTree = () => {
             );
 
             setMessage(response.data.message);
-            setAvailablePoints(prev => prev - pointsRequired);
-            setUserSkills([...userSkills, skills.find(skill => skill._id === skillId)]);
+            
+            // ✅ Fetch updated user data immediately after unlocking a skill
+            const updatedUserResponse = await axios.get('/api/user/profile', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            const updatedSkillIds = updatedUserResponse.data.unlockedSkills.map(skill => skill._id);
+            setUserSkills(updatedSkillIds);
+            setAvailablePoints(updatedUserResponse.data.points || 0);
         } catch (error) {
             setMessage(error.response?.data?.message || 'Error unlocking skill');
         }
@@ -96,31 +109,35 @@ const SkillTree = () => {
 
                         {/* Skill Tree Grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {skills.map((skill) => (
-                                <div
-                                    key={skill._id}
-                                    className={`p-4 rounded-lg shadow-md transition-all ${
-                                        userSkills.some(s => s._id === skill._id) ? 'bg-green-300' : 'bg-white'
-                                    }`}
-                                >
-                                    <h3 className="text-xl font-semibold">{skill.name}</h3>
-                                    <p className="text-gray-700">{skill.description}</p>
-                                    <p className="font-bold">Points Required: {skill.pointsRequired}</p>
+                            {skills.map((skill) => {
+                                const isUnlocked = userSkills.includes(skill._id); // ✅ Fix comparison
 
-                                    {userSkills.some(s => s._id === skill._id) ? (
-                                        <button className="w-full mt-2 p-2 bg-green-500 text-white rounded" disabled>
-                                            Unlocked
-                                        </button>
-                                    ) : (
-                                        <button
-                                            className="w-full mt-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-                                            onClick={() => handleUnlockSkill(skill._id, skill.pointsRequired)}
-                                        >
-                                            Unlock
-                                        </button>
-                                    )}
-                                </div>
-                            ))}
+                                return (
+                                    <div
+                                        key={skill._id}
+                                        className={`p-4 rounded-lg shadow-md transition-all ${
+                                            isUnlocked ? 'bg-green-300' : 'bg-white'
+                                        }`}
+                                    >
+                                        <h3 className="text-xl font-semibold">{skill.name}</h3>
+                                        <p className="text-gray-700">{skill.description}</p>
+                                        <p className="font-bold">Points Required: {skill.pointsRequired}</p>
+
+                                        {isUnlocked ? (
+                                            <button className="w-full mt-2 p-2 bg-green-500 text-white rounded" disabled>
+                                                Unlocked
+                                            </button>
+                                        ) : (
+                                            <button
+                                                className="w-full mt-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                                                onClick={() => handleUnlockSkill(skill._id, skill.pointsRequired)}
+                                            >
+                                                Unlock
+                                            </button>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </>
                 )}
