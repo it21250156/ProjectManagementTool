@@ -29,15 +29,24 @@ const ProjectDetails = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus }),
             });
-
+    
             if (response.ok) {
                 const updatedTask = await response.json();
                 console.log('Updated Task:', updatedTask);
-                // Update global state
+    
+                // ✅ Update local task list immediately
                 dispatch({
                     type: 'UPDATE_TASK',
                     payload: updatedTask,
                 });
+    
+                // ✅ Fetch tasks again to ensure data is synced
+                const refreshResponse = await fetch(`/api/tasks/project/${projectId}`);
+                const refreshedTasks = await refreshResponse.json();
+                if (refreshResponse.ok) {
+                    dispatch({ type: 'SET_TASKS', payload: refreshedTasks });
+                }
+    
             } else {
                 console.error('Failed to update task status');
             }
@@ -45,6 +54,7 @@ const ProjectDetails = () => {
             console.error('Error updating task status:', error);
         }
     };
+    
 
     return (
         <div>
