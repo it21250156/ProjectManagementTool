@@ -21,6 +21,7 @@ const ProjectSchema = new mongoose.Schema({
   },
   projectName: { type: String, required: true },
   projectDescription: { type: String, default: "" }, // ✅ Allow empty description
+  startDate: { type: Date, required: true }, // ✅ Added required start date
   members: [MemberSchema],
 });
 
