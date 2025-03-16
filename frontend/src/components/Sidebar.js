@@ -1,12 +1,17 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import TaskModal from './Modals/TaskModal';
 import ProjectModal from './Modals/ProjectModal';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+
+    const { dispatch } = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
@@ -22,6 +27,13 @@ const Sidebar = () => {
         closeModal();
     };
     const closeProjectModal = () => setIsProjectModalOpen(false);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+
+        dispatch({ type: 'LOGOUT' });
+        navigate('/');
+    };
 
     return (
         <>
@@ -75,7 +87,10 @@ const Sidebar = () => {
                 </div>
 
                 <div className='mt-auto'>
-                    <button type="button" class="text-white bg-[#f5a623] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold py-4 text-lg w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    <button
+                        type="button"
+                        onClick={handleLogout}
+                        class="text-white bg-[#f5a623] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold py-4 text-lg w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                         Logout
                     </button>
                 </div>

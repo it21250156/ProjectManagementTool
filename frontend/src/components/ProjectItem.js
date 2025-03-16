@@ -24,7 +24,7 @@ const ProjectItem = ({ project }) => {
 
                 <div>
                     <Tooltip content="Leaderboard" placement="bottom">
-                        <Link className='mx-4'><MdOutlineLeaderboard /></Link>
+                        <Link to={`/project/${project._id}/leaderboard`} className='mx-4'><MdOutlineLeaderboard /></Link>
                     </Tooltip>
                 </div>
 
