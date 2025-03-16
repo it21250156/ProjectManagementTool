@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
 
-const MemberSchema = new mongoose.Schema({
-  memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-});
-
 const ProjectSchema = new mongoose.Schema({
   projectId: {
     type: String,
@@ -13,7 +9,7 @@ const ProjectSchema = new mongoose.Schema({
   projectName: { type: String, required: true },
   projectDescription: { type: String, default: "" },
   startDate: { type: Date, required: true },
-  members: [MemberSchema],
+  members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Array of User ObjectIds
 });
 
-module.exports = mongoose.model('Project', ProjectSchema);
+module.exports = mongoose.model('Project', ProjectSchema); ""

@@ -13,12 +13,12 @@ const MultiSelectDropdown = ({ options, placeholder = "Select options", onChange
             // Remove if already selected
             const updatedOptions = selectedOptions.filter((item) => item.value !== option.value);
             setSelectedOptions(updatedOptions);
-            onChange(updatedOptions.map(opt => opt.value)); // Send only values
+            onChange(updatedOptions); // Send full selected options (objects)
         } else {
             // Add if not selected
             const updatedOptions = [...selectedOptions, option];
             setSelectedOptions(updatedOptions);
-            onChange(updatedOptions.map(opt => opt.value)); // Send only values
+            onChange(updatedOptions); // Send full selected options (objects)
         }
     };
 
@@ -26,7 +26,7 @@ const MultiSelectDropdown = ({ options, placeholder = "Select options", onChange
     const removeChip = (option) => {
         const updatedOptions = selectedOptions.filter((item) => item.value !== option.value);
         setSelectedOptions(updatedOptions);
-        onChange(updatedOptions.map(opt => opt.value)); // Send only values
+        onChange(updatedOptions); // Send full selected options (objects)
     };
 
     return (

@@ -49,11 +49,14 @@ const ProjectModal = ({ closeModal }) => {
             return;
         }
 
+        // Extract member ObjectIds from selectedMembers
+        const memberIds = selectedMembers.map(member => member.value);
+
         const project = {
             projectName,
             projectDescription,
             startDate,
-            members: selectedMembers.map(member => ({ memberId: member.value }))
+            members: memberIds, // Directly store ObjectIds
         };
 
         try {
@@ -75,10 +78,9 @@ const ProjectModal = ({ closeModal }) => {
 
         } catch (error) {
             console.error('Error creating project:', error);
-            setError(error.message);
+            setError(error.message || 'Failed to create project. Please try again.');
         }
     };
-
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-md" onClick={closeModal}>
