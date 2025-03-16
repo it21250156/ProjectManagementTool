@@ -5,15 +5,15 @@ const MemberSchema = new mongoose.Schema({
 });
 
 const ProjectSchema = new mongoose.Schema({
-  projectId: { 
-    type: String, 
-    unique: true, 
+  projectId: {
+    type: String,
+    unique: true,
     default: () => new mongoose.Types.ObjectId().toString(),
   },
   projectName: { type: String, required: true },
-  projectDescription: { type: String, default: "" }, 
-  startDate: { type: Date, required: true }, 
-  members: [MemberSchema], // ✅ Removed tasks field
+  projectDescription: { type: String, default: "" },
+  startDate: { type: Date, required: true },
+  members: [MemberSchema],
 });
 
 module.exports = mongoose.model('Project', ProjectSchema);

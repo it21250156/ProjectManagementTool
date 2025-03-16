@@ -90,12 +90,35 @@ const getTasksByProject = async (req, res) => {
     }
 
     try {
-        const tasks = await Task.find({ project: projectId });
+        const tasks = await Task.find({ project: projectId }).populate('assignedTo', 'name'); // Populate assignedTo with user's name
         res.status(200).json(tasks);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
+const updateTaskStatus = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+        const task = await Task.findByIdAndUpdate(
+            id,
+            { status },
+            { new: true } // Return the updated document
+        ).populate('assignedTo', 'name');
+
+        if (!task) {
+            return res.status(404).json({ error: 'Task not found' });
+        }
+
+        res.status(200).json(task);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 
 
 module.exports = {
@@ -105,4 +128,5 @@ module.exports = {
     updateTask,
     deleteTask,
     getTasksByProject,
+    updateTaskStatus,
 };
