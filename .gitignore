@@ -1,3 +1,14 @@
+# Ignore Python virtual environment
+venv/
+flask_api/venv/
+
+# Ignore Python cache & compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore metadata and temporary files
 .metadata
 bin/
 tmp/
@@ -9,7 +20,11 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+
+# Ignore Node.js dependencies
 node_modules
+
+# Ignore DLL files
 *.dll
 
 # External tool builders
