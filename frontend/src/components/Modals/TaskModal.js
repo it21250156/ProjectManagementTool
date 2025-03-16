@@ -12,6 +12,7 @@ const TaskModal = ({ closeModal }) => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null)
+  const [priority, setPriority] = useState('Low');
 
   const [projects, setProjects] = useState([]);
 
@@ -28,32 +29,6 @@ const TaskModal = ({ closeModal }) => {
 
     fetchProjects();
   }, []);
-
-  // useEffect(() => {
-  //   const fetchMembers = async () => {
-  //     try {
-  //       const response = await fetch('/api/users', {
-  //         headers: {
-  //           'Authorization': `Bearer ${localStorage.getItem('token')}`,
-  //         },
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch members');
-  //       }
-
-  //       const data = await response.json();
-  //       setMembers(data); // Set the fetched members to state
-  //     } catch (error) {
-  //       console.error('Error fetching members:', error);
-  //       setError('Failed to load members. Please try again later.');
-  //     } finally {
-  //       setLoading(false); // Set loading to false after fetching
-  //     }
-  //   };
-
-  //   fetchMembers();
-  // }, []);
 
   // Fetch members for the selected project
   useEffect(() => {
@@ -95,7 +70,7 @@ const TaskModal = ({ closeModal }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const task = { taskName, taskDescription, dueDate, assignedTo, project };
+    const task = { taskName, taskDescription, dueDate, assignedTo, project, priority, };
 
     const response = await fetch('/api/tasks/add', {
       method: 'POST',
@@ -116,6 +91,7 @@ const TaskModal = ({ closeModal }) => {
       setDueDate('');
       setAssignedTo('');
       setProject('');
+      setPriority('');
       setError(null);
       console.log('New task added successfully', json);
       dispatch({ type: 'CREATE_TASKS', payload: json });
@@ -198,6 +174,22 @@ const TaskModal = ({ closeModal }) => {
                 onChange={(e) => setDueDate(e.target.value)}
                 value={dueDate}
                 className="border-none bg-[#50E3C2] w-full rounded-lg font-normal" />
+            </div>
+
+            <div className="mb-3 font-bold">
+              <label>Priority</label>
+              <br />
+              <select
+                id="priority"
+                name="priority"
+                onChange={(e) => setPriority(e.target.value)}
+                value={priority}
+                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal"
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
             </div>
 
             <div className="mb-3 font-bold">

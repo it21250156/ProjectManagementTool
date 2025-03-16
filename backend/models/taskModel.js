@@ -22,6 +22,11 @@ const taskSchema = new Schema({
         default: 'Pending',
         enum: ['Pending', 'In Progress', 'Testing', 'Completed']
     },
+    priority: {
+        type: String,
+        default: 'Low',
+        enum: ['Low', 'Medium', 'High']
+    },
     project: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',

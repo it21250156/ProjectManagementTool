@@ -32,10 +32,10 @@ const getTask = async (req, res) => {
 
 // Create a Task
 const createTask = async (req, res) => {
-    const { taskName, dueDate, assignedTo, project } = req.body;
+    const { taskName, dueDate, assignedTo, project, priority } = req.body;
 
     try {
-        const task = await Task.create({ taskName, dueDate, assignedTo, project });
+        const task = await Task.create({ taskName, dueDate, assignedTo, project, priority });
         res.status(201).json(task);
     } catch (error) {
         res.status(400).json({ error: error.message });
