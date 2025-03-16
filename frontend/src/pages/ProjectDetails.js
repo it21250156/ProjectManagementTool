@@ -16,10 +16,35 @@ const ProjectDetails = () => {
 
             if (response.ok) {
                 dispatch({ type: 'SET_TASKS', payload: json });
-            };
-        }
+            }
+        };
         fetchTasks();
-    }, [projectId, dispatch,]);
+    }, [projectId, dispatch]);
+
+    // Handle status change
+    const handleStatusChange = async (taskId, newStatus) => {
+        try {
+            const response = await fetch(`/api/tasks/${taskId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus }),
+            });
+
+            if (response.ok) {
+                const updatedTask = await response.json();
+                console.log('Updated Task:', updatedTask);
+                // Update global state
+                dispatch({
+                    type: 'UPDATE_TASK',
+                    payload: updatedTask,
+                });
+            } else {
+                console.error('Failed to update task status');
+            }
+        } catch (error) {
+            console.error('Error updating task status:', error);
+        }
+    };
 
     return (
         <div>
@@ -39,7 +64,20 @@ const ProjectDetails = () => {
                                     <p className='text-sm text-gray-500'>
                                         Due Date: {new Date(task.dueDate).toLocaleDateString()}
                                     </p>
-                                    <p className='text-sm text-gray-500'>Assigned To: {task.assignedTo}</p>
+                                    <p className='text-sm text-gray-500'>Assigned To: {task.assignedTo?.name || 'Unassigned'}</p>
+                                    <div className='mt-2'>
+                                        <label className='font-bold'>Status:</label>
+                                        <select
+                                            value={task.status}
+                                            onChange={(e) => handleStatusChange(task._id, e.target.value)}
+                                            className='ml-2 p-1 border rounded'
+                                        >
+                                            <option value='Pending'>Pending</option>
+                                            <option value='In Progress'>In Progress</option>
+                                            <option value='Testing'>Testing</option>
+                                            <option value='Completed'>Completed</option>
+                                        </select>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
