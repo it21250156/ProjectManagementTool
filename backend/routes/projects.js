@@ -6,9 +6,10 @@ const dayjs = require('dayjs');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-/**
- * 🎖️ Helper Functions
- */
+const {
+  getMembersForProject
+} = require("../controllers/projectController");
+
 
 // ✅ Calculate XP-based badges
 const calculateBadges = (earnedXP) => {
@@ -86,29 +87,34 @@ router.post('/', async (req, res) => {
   const { projectName, projectDescription, startDate, members } = req.body;
 
   try {
-      if (!projectName || !startDate || !Array.isArray(members) || members.length === 0) {
-          return res.status(400).json({ message: 'Invalid project data' });
-      }
+    // Validate input
+    if (!projectName || !startDate || !Array.isArray(members) || members.length === 0) {
+      return res.status(400).json({ message: 'Invalid project data' });
+    }
 
-      // ✅ Ensure members are mapped correctly
-      const formattedMembers = members.map(member => ({
-          memberId: new mongoose.Types.ObjectId(member.memberId), // Convert to ObjectId
-          tasks: [] // Default empty task list
-      }));
+    // ✅ Ensure members are valid ObjectIds
+    const formattedMembers = members.map(member => new mongoose.Types.ObjectId(member));
 
-      const newProject = new Project({
-          projectName,
-          projectDescription,
-          startDate,
-          members: formattedMembers,
-      });
+    // ✅ Validate that the members exist in the User collection
+    const existingUsers = await User.find({ _id: { $in: formattedMembers } }).select('_id');
+    if (existingUsers.length !== formattedMembers.length) {
+      return res.status(400).json({ message: 'One or more member IDs are invalid' });
+    }
 
-      await newProject.save();
-      res.status(201).json({ message: 'Project created successfully!', project: newProject });
+    // Create the new project
+    const newProject = new Project({
+      projectName,
+      projectDescription,
+      startDate,
+      members: formattedMembers, // Directly store ObjectIds
+    });
+
+    await newProject.save();
+    res.status(201).json({ message: 'Project created successfully!', project: newProject });
 
   } catch (error) {
-      console.error('Error saving project:', error);
-      res.status(500).json({ message: 'Server error while creating project' });
+    console.error('Error saving project:', error);
+    res.status(500).json({ message: 'Server error while creating project' });
   }
 });
 
@@ -233,5 +239,7 @@ router.put('/:projectId/complete-task', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Error marking task as completed' });
   }
 });
+
+router.get("/:projectId/members", getMembersForProject);
 
 module.exports = router;

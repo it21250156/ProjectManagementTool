@@ -9,37 +9,11 @@ const TaskModal = ({ closeModal }) => {
   const [project, setProject] = useState('')
   const [dueDate, setDueDate] = useState('')
   const [assignedTo, setAssignedTo] = useState('')
-  const [members, setMembers] = useState([]); // State to store the list of members
-  const [loading, setLoading] = useState(true); // State to track loading status
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null)
 
   const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const response = await fetch('/api/users', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch members');
-        }
-
-        const data = await response.json();
-        setMembers(data); // Set the fetched members to state
-      } catch (error) {
-        console.error('Error fetching members:', error);
-        setError('Failed to load members. Please try again later.');
-      } finally {
-        setLoading(false); // Set loading to false after fetching
-      }
-    };
-
-    fetchMembers();
-  }, []);
 
   // Fetch all projects when the component mounts
   useEffect(() => {
@@ -54,6 +28,69 @@ const TaskModal = ({ closeModal }) => {
 
     fetchProjects();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchMembers = async () => {
+  //     try {
+  //       const response = await fetch('/api/users', {
+  //         headers: {
+  //           'Authorization': `Bearer ${localStorage.getItem('token')}`,
+  //         },
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch members');
+  //       }
+
+  //       const data = await response.json();
+  //       setMembers(data); // Set the fetched members to state
+  //     } catch (error) {
+  //       console.error('Error fetching members:', error);
+  //       setError('Failed to load members. Please try again later.');
+  //     } finally {
+  //       setLoading(false); // Set loading to false after fetching
+  //     }
+  //   };
+
+  //   fetchMembers();
+  // }, []);
+
+  // Fetch members for the selected project
+  useEffect(() => {
+    if (!project) return; // Do nothing if no project is selected
+
+    const fetchMembersForProject = async () => {
+      try {
+        console.log("Fetching members for project:", project); // Debugging
+        const response = await fetch(`/api/projects/${project}/members`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        console.log("Response status:", response.status); // Debugging
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch members for the project");
+        }
+
+        const data = await response.json();
+        console.log("Members data:", data); // Debugging
+
+        // Filter out null or undefined members
+        const validMembers = data.filter((member) => member && member._id);
+        setMembers(validMembers); // Set the fetched members to state
+      } catch (error) {
+        console.error("Error fetching members:", error); // Debugging
+        setError("Failed to load members. Please try again later.");
+      } finally {
+        setLoading(false); // Set loading to false after fetching
+      }
+    };
+
+    fetchMembersForProject();
+  }, [project]); // Run this effect whenever the selected project changes
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -172,12 +209,17 @@ const TaskModal = ({ closeModal }) => {
                 onChange={(e) => setAssignedTo(e.target.value)}
                 value={assignedTo}
                 className="border-none bg-[#50E3C2] w-full rounded-lg font-normal"
+                disabled={!project} // Disable if no project is selected
               >
                 <option value="">Select a member</option>
                 {loading ? (
-                  <option value="" disabled>Loading members...</option>
+                  <option value="" disabled>
+                    Loading members...
+                  </option>
                 ) : error ? (
-                  <option value="" disabled>{error}</option>
+                  <option value="" disabled>
+                    {error}
+                  </option>
                 ) : (
                   members.map((member) => (
                     <option key={member._id} value={member._id}>
@@ -187,6 +229,7 @@ const TaskModal = ({ closeModal }) => {
                 )}
               </select>
             </div>
+
 
             <div className="mt-10 font-bold">
               <label className="inline-flex items-center me-5 cursor-pointer">
