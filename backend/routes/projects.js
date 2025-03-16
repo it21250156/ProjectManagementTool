@@ -4,6 +4,7 @@ const User = require('../models/userModel');
 const { verifyToken } = require('../middleware/auth');
 const dayjs = require('dayjs');
 const router = express.Router();
+const mongoose = require('mongoose');
 
 /**
  * 🎖️ Helper Functions
@@ -79,25 +80,37 @@ const getBonusXP = (user, task, baseXP, userTasks) => {
  * 📌 Routes
  */
 
+
 // ✅ Create a new project
 router.post('/', async (req, res) => {
-  const { projectName, projectDescription, members } = req.body; // ✅ No projectId needed
+  const { projectName, projectDescription, startDate, members } = req.body;
 
   try {
-      if (!projectName || !members || members.length === 0) {
+      if (!projectName || !startDate || !Array.isArray(members) || members.length === 0) {
           return res.status(400).json({ message: 'Invalid project data' });
       }
 
-      const newProject = new Project({ projectName, projectDescription, members });
+      // ✅ Ensure members are mapped correctly
+      const formattedMembers = members.map(member => ({
+          memberId: new mongoose.Types.ObjectId(member.memberId), // Convert to ObjectId
+          tasks: [] // Default empty task list
+      }));
+
+      const newProject = new Project({
+          projectName,
+          projectDescription,
+          startDate,
+          members: formattedMembers,
+      });
+
       await newProject.save();
-      
       res.status(201).json({ message: 'Project created successfully!', project: newProject });
+
   } catch (error) {
       console.error('Error saving project:', error);
       res.status(500).json({ message: 'Server error while creating project' });
   }
 });
-
 
 
 // ✅ Get earned XP, completed tasks, badges, and level for the logged-in user
