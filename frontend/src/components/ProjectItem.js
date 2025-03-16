@@ -1,7 +1,9 @@
 import React from 'react';
 import { HiDotsVertical } from "react-icons/hi";
 import { FaTasks } from "react-icons/fa";
+import { MdOutlineLeaderboard } from "react-icons/md";
 import { Link } from 'react-router-dom';
+import { Tooltip } from 'flowbite-react';
 
 const ProjectItem = ({ project }) => {
     return (
@@ -13,12 +15,23 @@ const ProjectItem = ({ project }) => {
                 <p className='m-3'>{project.projectDescription}</p>
             </div>
             <div className='col-span-2 m-auto flex gap-4'>
-                <div className=''>
-                    <Link to={`/project/${project._id}`} className='mx-2'><FaTasks /></Link>
-                </div>
+
                 <div>
-                    <Link className='mx-2'><HiDotsVertical /></Link>
+                    <Tooltip content="View Tasks" placement="bottom">
+                        <Link to={`/project/${project._id}`} className='mx-4'><FaTasks /></Link>
+                    </Tooltip>
                 </div>
+
+                <div>
+                    <Tooltip content="Leaderboard" placement="bottom">
+                        <Link className='mx-4'><MdOutlineLeaderboard /></Link>
+                    </Tooltip>
+                </div>
+
+                <div>
+                    <Link className="mx-4"> <HiDotsVertical /></Link>
+                </div>
+
             </div>
         </div>
     );
