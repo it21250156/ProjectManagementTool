@@ -10,6 +10,7 @@ local.properties
 .loadpath
 .recommenders
 node_modules
+*.dll
 
 # External tool builders
 .externalToolBuilders/
