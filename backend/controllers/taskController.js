@@ -97,28 +97,63 @@ const getTasksByProject = async (req, res) => {
     }
 };
 
+const User = require('../models/userModel'); // Import the User model
+
 const updateTaskStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
     try {
-        const task = await Task.findByIdAndUpdate(
-            id,
-            { status },
-            { new: true } // Return the updated document
-        ).populate('assignedTo', 'name');
-
+        const task = await Task.findById(id).populate('assignedTo', 'name');
         if (!task) {
             return res.status(404).json({ error: 'Task not found' });
         }
 
-        res.status(200).json(task);
+        if (task.status === "Completed") {
+            return res.status(400).json({ error: "Task is already completed!" });
+        }
+
+        let pointsEarned = 0; // ✅ Define here so it is accessible throughout
+
+        // ✅ Only assign points if the task is completed
+        if (status === "Completed") {
+            const assignedUser = await User.findById(task.assignedTo);
+            if (!assignedUser) {
+                return res.status(404).json({ error: 'Assigned user not found' });
+            }
+
+            // ✅ Assign points based on priority
+            switch (task.priority) {
+                case "High": pointsEarned = 10; break;
+                case "Medium": pointsEarned = 5; break;
+                case "Low": pointsEarned = 3; break;
+                default: pointsEarned = 0;
+            }
+
+            // ✅ Update user stats
+            assignedUser.points += pointsEarned;
+            assignedUser.earnedXP += pointsEarned;
+            assignedUser.completedTasks += 1;
+            assignedUser.level = Math.floor(assignedUser.earnedXP / 50) + 1;
+
+            await assignedUser.save();
+        }
+
+        // ✅ Update task status
+        task.status = status;
+        await task.save();
+
+        // ✅ Proper response
+        return res.status(200).json({ 
+            message: `Task marked as ${status}. ${status === "Completed" ? `+${pointsEarned} XP awarded!` : ''}`,
+            updatedTask: task
+        });
+
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error updating task status:", error); 
+        return res.status(500).json({ error: "Server error while updating task" });
     }
 };
-
-
 
 
 module.exports = {
