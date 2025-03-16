@@ -30,6 +30,7 @@ const getTask = async (req, res) => {
     }
 };
 
+
 // Create a Task
 const createTask = async (req, res) => {
     const { taskName, dueDate, assignedTo, project, priority } = req.body;
@@ -144,13 +145,13 @@ const updateTaskStatus = async (req, res) => {
         await task.save();
 
         // ✅ Proper response
-        return res.status(200).json({ 
+        return res.status(200).json({
             message: `Task marked as ${status}. ${status === "Completed" ? `+${pointsEarned} XP awarded!` : ''}`,
             updatedTask: task
         });
 
     } catch (error) {
-        console.error("Error updating task status:", error); 
+        console.error("Error updating task status:", error);
         return res.status(500).json({ error: "Server error while updating task" });
     }
 };

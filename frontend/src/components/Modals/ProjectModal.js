@@ -73,8 +73,10 @@ const ProjectModal = ({ closeModal }) => {
             setProjectName('');
             setProjectDescription('');
             setSelectedMembers([]);
-            closeModal();
+
             dispatch({ type: 'CREATE_PROJECT', payload: json });
+
+            closeModal();
 
         } catch (error) {
             console.error('Error creating project:', error);
