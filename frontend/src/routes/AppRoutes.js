@@ -12,6 +12,7 @@ import ProjectDetails from "../pages/ProjectDetails";
 import MyTasks from '../pages/MyTasks';
 import MyProfile from "../pages/MyProfile";
 import ProjectLeaderboard from "../pages/ProjectLeaderboard";
+import SkillTree from "../pages/SkillTree";
 
 // import Register from '../pages/Register';
 
@@ -33,6 +34,7 @@ const AppRoutes = () => (
         <Route path="/my-tasks" element={<MyTasks />} />
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/project/:projectId/leaderboard" element={<ProjectLeaderboard />} />
+        <Route path="/skilltree" element={<SkillTree />} />
       </Route>
 
       {/* Fallback route for 404 */}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const UserInfo = () => {
     const [projects, setProjects] = useState([]);
@@ -31,7 +31,7 @@ const UserInfo = () => {
                 }
 
                 // Fetch XP, Tasks, Badges, Level
-                const xpResponse = await axios.get('http://localhost:4080/api/projects/user-total-xp', {
+                const xpResponse = await axios.get('/api/projects/user-total-xp', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -41,7 +41,7 @@ const UserInfo = () => {
                 setLevel(xpResponse.data.level);
 
                 // Fetch User Projects
-                const projectsResponse = await axios.get('http://localhost:4080/api/projects/user-projects', {
+                const projectsResponse = await axios.get('/api/projects/user-projects', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setProjects(projectsResponse.data);
@@ -158,12 +158,14 @@ const UserInfo = () => {
                         </div>
 
                         {/* Skill Tree Navigation */}
-                        <button
-                            onClick={() => navigate('/skill-tree')}
-                            className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg mt-6 hover:bg-blue-700 transition-all duration-300"
-                        >
-                            🚀 View Skill Tree
-                        </button>
+                        <Link to={"/skilltree"}>
+                            <button
+                                className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg mt-6 hover:bg-blue-700 transition-all duration-300"
+                            >
+                                🚀 View Skill Tree
+                            </button>
+                        </Link>
+
                     </>
                 )}
             </div>
