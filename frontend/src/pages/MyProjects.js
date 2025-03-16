@@ -13,6 +13,7 @@ const MyProjects = () => {
             const json = await response.json();
 
             if (response.ok) {
+                console.log(json); // Log the API response
                 dispatch({ type: 'SET_PROJECTS', payload: json })
             }
         }

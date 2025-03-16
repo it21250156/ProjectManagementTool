@@ -9,7 +9,7 @@ const ProjectSchema = new mongoose.Schema({
   projectName: { type: String, required: true },
   projectDescription: { type: String, default: "" },
   startDate: { type: Date, required: true },
-  members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Array of User ObjectIds
-});
+  members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+}, { timestamps: true });
 
-module.exports = mongoose.model('Project', ProjectSchema); ""
+module.exports = mongoose.model('Project', ProjectSchema);
