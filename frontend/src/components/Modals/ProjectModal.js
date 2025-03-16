@@ -35,28 +35,21 @@ const ProjectModal = ({ closeModal }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (!projectName.trim()) {
-            setError('Project Name is required');
-            return;
-        }
-    
         const project = { 
             projectName, 
             projectDescription, 
-            members: selectedMembers.map(member => member.value) // Ensure only IDs are sent
+            members: selectedMembers.map(member => member.value) // ✅ Send only user IDs
         };
     
         try {
-            const response = await fetch('/api/projects', {  // ✅ Fixed API endpoint
+            const response = await fetch('/api/projects', { // ✅ Corrected endpoint
                 method: 'POST',
                 body: JSON.stringify(project),
                 headers: { 'Content-Type': 'application/json' }
             });
     
             const json = await response.json();
-            if (!response.ok) {
-                throw new Error(json.message || 'Failed to create project');
-            }
+            if (!response.ok) throw new Error(json.message || 'Failed to create project');
     
             setProjectName('');
             setProjectDescription('');
