@@ -40,39 +40,21 @@ router.get('/profile', verifyToken, async (req, res) => {
   }
 });
 
-// router.post('/signup', async (req, res) => {
-//   const { name, email, password } = req.body;
-
-//   try {
-//     const user = new User({ name, email, password });
-//     await user.save();
-//     res.status(201).json({ message: 'User created successfully' });
-//   } catch (error) {
-//     console.error('Error creating user:', error);
-//     res.status(500).json({ message: 'Error creating user' });
-//   }
-// });
-
-// router.post('/login', async (req, res) => {
-//   const { email, password } = req.body;
-
-//   try {
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     const isMatch = await user.matchPassword(password);
-//     if (!isMatch) {
-//       return res.status(400).json({ message: 'Invalid credentials' });
-//     }
-
-//     // Here you can generate a token or set up a session
-//     res.status(200).json({ message: 'Login successful', user });
-//   } catch (error) {
-//     console.error('Error logging in:', error);
-//     res.status(500).json({ message: 'Error logging in' });
-//   }
-// });
+// Fetch user profile
+router.get('/profile-info', verifyToken, async (req, res) => {
+  try {
+    console.log('Fetching user profile for user ID:', req.user.id); // Debugging
+    const user = await User.findById(req.user.id).select('-password'); // Exclude password
+    if (!user) {
+      console.error('User not found for ID:', req.user.id); // Debugging
+      return res.status(404).json({ message: 'User not found' });
+    }
+    console.log('User data:', user); // Debugging
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 module.exports = router;

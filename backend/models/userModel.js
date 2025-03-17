@@ -5,12 +5,12 @@ const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    points: { type: Number, default: 0 }, // Total points for skill unlocking
-    completedTasks: { type: Number, default: 0 }, // Total completed tasks
-    earnedXP: { type: Number, default: 0 }, // XP for leveling up
-    level: { type: Number, default: 1 }, // ✅ User level
-    unlockedSkills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }], // Unlocked skills
-    badges: [{ type: String }], // Earned badges
+    points: { type: Number, default: 0 },
+    completedTasks: { type: Number, default: 0 },
+    earnedXP: { type: Number, default: 0 },
+    level: { type: Number, default: 1 },
+    unlockedSkills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }],
+    badges: [{ type: String }],
 });
 
 // 🔹 Hash password before saving
