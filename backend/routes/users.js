@@ -43,18 +43,34 @@ router.get('/profile', verifyToken, async (req, res) => {
   }
 });
 
+// Fetch user profile
+router.get('/profile-info', verifyToken, async (req, res) => {
+  try {
+    console.log('Fetching user profile for user ID:', req.user.id); // Debugging
+    const user = await User.findById(req.user.id).select('-password'); // Exclude password
+    if (!user) {
+      console.error('User not found for ID:', req.user.id); // Debugging
+      return res.status(404).json({ message: 'User not found' });
+    }
+    console.log('User data:', user); // Debugging
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 // ✅ Get Top 5 Users by XP (Global Leaderboard)
 router.get('/leaderboard', async (req, res) => {
   try {
-      const topUsers = await User.find({})
-          .sort({ earnedXP: -1 }) // Sort by highest XP
-          .limit(5) // Only get the top 5 users
-          .select('name earnedXP'); // Only return name & XP
+    const topUsers = await User.find({})
+      .sort({ earnedXP: -1 }) // Sort by highest XP
+      .limit(5) // Only get the top 5 users
+      .select('name earnedXP'); // Only return name & XP
 
-      res.status(200).json(topUsers);
+    res.status(200).json(topUsers);
   } catch (error) {
-      console.error('Error fetching global leaderboard:', error);
-      res.status(500).json({ message: 'Error fetching leaderboard' });
+    console.error('Error fetching global leaderboard:', error);
+    res.status(500).json({ message: 'Error fetching leaderboard' });
   }
 });
 

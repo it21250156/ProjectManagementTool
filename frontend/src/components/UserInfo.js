@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import GlobalLeaderboard from '../components/GlobalLeaderboard'; // ✅ Import Leaderboard
 
 const UserInfo = () => {
-    
+
     const [earnedXP, setEarnedXP] = useState(0);
     const [completedTasks, setCompletedTasks] = useState(0);
     const [badges, setBadges] = useState([]);
@@ -41,8 +41,8 @@ const UserInfo = () => {
                 setBadges(xpResponse.data.badges);
                 setLevel(xpResponse.data.level);
 
-                
-                
+
+
             } catch (error) {
                 console.error('Error fetching user data:', error);
                 if (error.response) {
@@ -137,7 +137,7 @@ const UserInfo = () => {
 
                         <div className="border-t border-gray-200 my-6"></div>
 
-                        
+
 
                         {/* 🌍 Global Leaderboard Section */}
                         <div className="border-t border-gray-200 my-6"></div>
