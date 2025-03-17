@@ -17,6 +17,7 @@ MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
 # These models are pre-trained and saved as joblib files
 project_timeline_model = joblib.load(os.path.join(MODEL_DIR, "best_optimized_hybrid_model.pkl"))
 defect_prediction_model = joblib.load(os.path.join(MODEL_DIR, "optimized_defect_prediction_model.pkl"))
+effort_prediction_model = joblib.load(os.path.join(MODEL_DIR, "effort_prediction_model.pkl"))
 defect_preprocessor = joblib.load(os.path.join(MODEL_DIR, "defect_preprocessor.pkl"))
 defect_encoder = joblib.load(os.path.join(MODEL_DIR, "defect_encoder.pkl"))
 
@@ -243,6 +244,30 @@ def get_model_performance():
     except Exception as e:
         print(f"Error fetching model performance: {e}")
         return jsonify({"error": f"Failed to fetch model performance: {str(e)}"}), 500
+
+@app.route('/predict_effort', methods=['POST'])
+def predict_effort():
+    """Predict the effort required for a software project based on input features."""
+    try:
+        data = request.get_json()
+
+        # Extract features from request
+        team_exp = data.get("TeamExp", 0)
+        manager_exp = data.get("ManagerExp", 0)
+        year_end = data.get("YearEnd", 0)
+        length = data.get("Length", 0)
+
+        # Ensure all values are numeric
+        input_features = np.array([[team_exp, manager_exp, year_end, length]])
+
+        # Make prediction
+        predicted_effort = effort_prediction_model.predict(input_features)[0]
+
+        return jsonify({"predicted_effort": round(float(predicted_effort), 2)})
+
+    except Exception as e:
+        print(f"Error in effort prediction: {e}")
+        return jsonify({"error": f"Effort prediction failed: {str(e)}"}), 500
 
 
 if __name__ == '__main__':
