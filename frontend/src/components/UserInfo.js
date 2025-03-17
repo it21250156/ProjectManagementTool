@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import GlobalLeaderboard from '../components/GlobalLeaderboard'; // ✅ Import Leaderboard
 
 const UserInfo = () => {
-    const [projects, setProjects] = useState([]);
+    
     const [earnedXP, setEarnedXP] = useState(0);
     const [completedTasks, setCompletedTasks] = useState(0);
     const [badges, setBadges] = useState([]);
@@ -40,11 +41,8 @@ const UserInfo = () => {
                 setBadges(xpResponse.data.badges);
                 setLevel(xpResponse.data.level);
 
-                // Fetch User Projects
-                const projectsResponse = await axios.get('/api/projects/user-projects', {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                setProjects(projectsResponse.data);
+                
+                
             } catch (error) {
                 console.error('Error fetching user data:', error);
                 if (error.response) {
@@ -139,23 +137,13 @@ const UserInfo = () => {
 
                         <div className="border-t border-gray-200 my-6"></div>
 
-                        {/* User Projects Section */}
-                        <h2 className="text-2xl font-bold text-gray-800 mb-4">📂 Your Projects</h2>
-                        <div className="space-y-4">
-                            {projects.length > 0 ? (
-                                projects.map((project) => (
-                                    <div
-                                        key={project._id}
-                                        onClick={() => navigate(`/project-dashboard/${project._id}`)}
-                                        className="bg-white shadow-md rounded-lg p-4 cursor-pointer transition-all duration-300 hover:bg-blue-600 hover:text-white hover:scale-105"
-                                    >
-                                        <p className="text-lg font-semibold">{project.projectName}</p>
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="text-gray-600">No projects assigned yet.</p>
-                            )}
-                        </div>
+                        
+
+                        {/* 🌍 Global Leaderboard Section */}
+                        <div className="border-t border-gray-200 my-6"></div>
+
+                        <h2 className="text-2xl font-bold text-gray-800 mb-4">🏆 Global Leaderboard</h2>
+                        <GlobalLeaderboard />
 
                         {/* Skill Tree Navigation */}
                         <Link to={"/skilltree"}>

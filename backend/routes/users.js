@@ -43,5 +43,21 @@ router.get('/profile', verifyToken, async (req, res) => {
   }
 });
 
+// ✅ Get Top 5 Users by XP (Global Leaderboard)
+router.get('/leaderboard', async (req, res) => {
+  try {
+      const topUsers = await User.find({})
+          .sort({ earnedXP: -1 }) // Sort by highest XP
+          .limit(5) // Only get the top 5 users
+          .select('name earnedXP'); // Only return name & XP
+
+      res.status(200).json(topUsers);
+  } catch (error) {
+      console.error('Error fetching global leaderboard:', error);
+      res.status(500).json({ message: 'Error fetching leaderboard' });
+  }
+});
+
+
 
 module.exports = router;
