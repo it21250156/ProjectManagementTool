@@ -12,7 +12,7 @@ import ProjectDetails from "../pages/ProjectDetails";
 import MyTasks from '../pages/MyTasks';
 import MyProfile from "../pages/MyProfile";
 import ProjectLeaderboard from "../pages/ProjectLeaderboard";
-import SkillTree from "../pages/SkillTree";
+import SkillTree from "../pages/SkillTreePage";
 
 // import Register from '../pages/Register';
 
