@@ -1,5 +1,6 @@
-import React from 'react'
-import Header from '../components/Header'
+import React from 'react';
+import Header from '../components/Header';
+import Leaderboard from '../components/Leaderboard';
 
 const ProjectLeaderboard = () => {
     return (
@@ -10,11 +11,11 @@ const ProjectLeaderboard = () => {
                     <h1 className='text-white text-4xl font-extrabold italic'>Project Leaderboard</h1>
                 </div>
                 <div>
-                    {/* leader board add here */}
+                    <Leaderboard /> {/* ✅ Importing and using the Leaderboard component */}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ProjectLeaderboard
+export default ProjectLeaderboard;
