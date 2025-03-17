@@ -22,8 +22,11 @@ router.get('/', async (req, res) => {
  */
 router.get('/profile', verifyToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('unlockedSkills');
+    const user = await User.findById(req.user.id).populate('unlockedSkills'); // ✅ Ensure population
+
     if (!user) return res.status(404).json({ message: 'User not found' });
+
+    console.log("🌟 Sending User Profile:", user); // ✅ Debugging Backend Response
 
     res.status(200).json({
       name: user.name,
@@ -32,7 +35,7 @@ router.get('/profile', verifyToken, async (req, res) => {
       completedTasks: user.completedTasks,
       earnedXP: user.earnedXP,
       badges: user.badges,
-      unlockedSkills: user.unlockedSkills,
+      unlockedSkills: user.unlockedSkills || [], // ✅ Ensure it returns an array
     });
   } catch (error) {
     console.error('Error fetching user profile:', error);
@@ -40,39 +43,21 @@ router.get('/profile', verifyToken, async (req, res) => {
   }
 });
 
-// router.post('/signup', async (req, res) => {
-//   const { name, email, password } = req.body;
+// ✅ Get Top 5 Users by XP (Global Leaderboard)
+router.get('/leaderboard', async (req, res) => {
+  try {
+      const topUsers = await User.find({})
+          .sort({ earnedXP: -1 }) // Sort by highest XP
+          .limit(5) // Only get the top 5 users
+          .select('name earnedXP'); // Only return name & XP
 
-//   try {
-//     const user = new User({ name, email, password });
-//     await user.save();
-//     res.status(201).json({ message: 'User created successfully' });
-//   } catch (error) {
-//     console.error('Error creating user:', error);
-//     res.status(500).json({ message: 'Error creating user' });
-//   }
-// });
+      res.status(200).json(topUsers);
+  } catch (error) {
+      console.error('Error fetching global leaderboard:', error);
+      res.status(500).json({ message: 'Error fetching leaderboard' });
+  }
+});
 
-// router.post('/login', async (req, res) => {
-//   const { email, password } = req.body;
 
-//   try {
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     const isMatch = await user.matchPassword(password);
-//     if (!isMatch) {
-//       return res.status(400).json({ message: 'Invalid credentials' });
-//     }
-
-//     // Here you can generate a token or set up a session
-//     res.status(200).json({ message: 'Login successful', user });
-//   } catch (error) {
-//     console.error('Error logging in:', error);
-//     res.status(500).json({ message: 'Error logging in' });
-//   }
-// });
 
 module.exports = router;
