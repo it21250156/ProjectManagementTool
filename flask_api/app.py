@@ -4,6 +4,7 @@ import joblib
 import pandas as pd
 import numpy as np
 import os
+from bson import ObjectId
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -29,8 +30,8 @@ timeline_scaler = joblib.load(os.path.join(MODEL_DIR, "scaler.pkl"))
 
 # Connect to MongoDB using the provided connection string
 # This is where all our project and team data is stored
-client = MongoClient("mongodb+srv://malikadegaldoruwa:MalikaDegal1927@projectcluster.myf7z.mongodb.net/project_management?retryWrites=true&w=majority")
-db = client["project_management"]
+client = MongoClient("mongodb+srv://janithchathurangakck:jani123@cluster0.ncbw8.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0")
+db = client["test"]
 projects_collection = db["projects"]
 teams_collection = db["teams"]
 
@@ -39,15 +40,25 @@ def home():
     """Simple home route to check if the API is running."""
     return jsonify({"message": "Flask API is running!"})
 
+
 @app.route('/get_projects', methods=['GET'])
 def get_projects():
-    """Fetch all projects from MongoDB. This is used to populate dropdowns in the frontend."""
+    """Fetch all projects from MongoDB and ensure ObjectId fields are JSON serializable."""
     try:
-        projects = list(projects_collection.find({}, {"_id": 0, "project_id": 1}))
+        projects = list(projects_collection.find({}))
+
+        # Convert ObjectId fields to strings
+        for project in projects:
+            project['_id'] = str(project['_id'])  # Convert ObjectId to string
+            project['projectId'] = str(project.get('projectId', ''))  # Ensure projectId is a string
+            project['members'] = str(project.get('members', ''))
+
         return jsonify(projects)
     except Exception as e:
         print(f"Error fetching projects: {e}")
         return jsonify({"error": "Failed to fetch projects"}), 500
+
+
 
 @app.route('/get_teams', methods=['GET'])
 def get_teams():
@@ -59,17 +70,28 @@ def get_teams():
         print(f"Error fetching teams: {e}")
         return jsonify({"error": "Failed to fetch teams"}), 500
 
+
 @app.route('/get_project_details/<project_id>', methods=['GET'])
 def get_project_details(project_id):
     """Fetch details for a specific project using its ID. This is used for predictions."""
     try:
-        project_data = projects_collection.find_one({"project_id": str(project_id)}, {"_id": 0})
+        project_data = projects_collection.find_one({"projectId": str(project_id)})
+        
         if not project_data:
             return jsonify({"error": f"Project ID {project_id} not found"}), 404
+
+        # Convert _id to a string to avoid serialization issues
+        if "_id" in project_data:
+            project_data["_id"] = str(project_data["_id"])
+            project_data['projectId'] = str(project_data.get('projectId', ''))  
+            project_data['members'] = str(project_data.get('members', ''))
+
         return jsonify(project_data)
+    
     except Exception as e:
         print(f"Error fetching project details: {e}")
         return jsonify({"error": "Failed to fetch project details"}), 500
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -78,12 +100,17 @@ def predict():
         data = request.json
         project_id = data.get("project_id")
 
-        # Fetch project data from MongoDB
-        project_data = projects_collection.find_one({"project_id": str(project_id)}, {"_id": 0})
+        # ✅ Fetch project data from MongoDB using correct key `projectId`
+        project_data = projects_collection.find_one({"projectId": str(project_id)})
+
         if not project_data:
             return jsonify({"error": "Project not found in MongoDB"}), 404
 
-        # Prepare input for project timeline prediction
+        # ✅ Convert `_id` to a string to avoid serialization issues
+        if "_id" in project_data:
+            project_data["_id"] = str(project_data["_id"])
+
+        # ✅ Prepare input for project timeline prediction
         project_timeline_input = [
             project_data.get("team_size", 0),
             project_data.get("task_count", 0),
@@ -97,15 +124,15 @@ def predict():
             project_data.get("LoC_per_Team_Member", 0)
         ]
 
-        # Scale the input data for the timeline model
+        # ✅ Scale the input data for the timeline model
         scaled_timeline_input = timeline_scaler.transform([project_timeline_input])
         project_timeline_pred = project_timeline_model.predict(scaled_timeline_input)[0]
 
-        # Adjust the timeline prediction based on the impact factor
+        # ✅ Adjust the timeline prediction based on the impact factor
         impact_factor = project_data.get("change_impact_factor", 1.0)
         adjusted_timeline_pred = project_timeline_pred * impact_factor
 
-        # Prepare input for defect prediction
+        # ✅ Prepare input for defect prediction
         defect_prediction_input = pd.DataFrame([{
             "defect_fix_time_minutes": project_data.get("defect_fix_time_minutes", 0),
             "size_added": project_data.get("size_added", 0),
@@ -114,18 +141,18 @@ def predict():
             "effort_hours": project_data.get("effort_hours", 0),
             "complexity_score": project_data.get("task_complexity", 0),
             "testing_coverage": project_data.get("testing_coverage", 0),
-            "team_key": str(project_data.get("team_key", "0"))
+            "team_key": str(project_data.get("team_key", "0")).strip()  # ✅ Remove extra spaces
         }])
 
-        # Encode the team_key column for defect prediction
+        # ✅ Encode the `team_key` column for defect prediction
         defect_prediction_input["team_key_encoded"] = defect_encoder.transform(defect_prediction_input[["team_key"]])
         defect_prediction_input = defect_prediction_input.drop(columns=["team_key"])  # Drop the original categorical column
 
-        # Scale the input data for the defect model
+        # ✅ Scale the input data for the defect model
         scaled_defect_input = defect_preprocessor.transform(defect_prediction_input)
         defect_pred = defect_prediction_model.predict(scaled_defect_input)[0]
 
-        # Return the predictions
+        # ✅ Return the predictions
         return jsonify({
             "predicted_timeline_days_before_impact": round(float(project_timeline_pred), 2),
             "predicted_timeline_days_after_impact": round(float(adjusted_timeline_pred), 2),
@@ -135,6 +162,7 @@ def predict():
     except Exception as e:
         print(f"Error during prediction: {e}")
         return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
+
 
 @app.route('/predict_task_allocation', methods=['POST'])
 def predict_task_allocation():
