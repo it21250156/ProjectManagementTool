@@ -8,7 +8,7 @@ const HomeLayout = () => (
             <Sidebar />
         </div>
         {/* Scrollable Main Content */}
-        <main className="flex-1 ml-64 overflow-y-auto">
+        <main className="flex-1 ml-64 overflow-y-auto bg-gradient-to-r to-[#dfe2e6] from-[#e9f3ff]">
             <Outlet />
         </main>
     </div>
