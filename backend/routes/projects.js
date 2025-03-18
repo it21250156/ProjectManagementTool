@@ -82,40 +82,69 @@ const getBonusXP = (user, task, baseXP, userTasks) => {
  * 📌 Routes
  */
 
+// Function to generate random values based on normal distribution
+const generateRandomValue = (mean, std, min, max) => {
+  let value;
+  do {
+      value = Math.round(mean + std * (Math.random() * 2 - 1)); // Generate a value within range
+  } while (value < min || value > max);
+  return value;
+};
+
 
 // ✅ Create a new project
 router.post('/', async (req, res) => {
-  const { projectName, projectDescription, startDate, members } = req.body;
+  const { projectName, projectDescription, start_date, members } = req.body;
 
   try {
-    // Validate input
-    if (!projectName || !startDate || !Array.isArray(members) || members.length === 0) {
-      return res.status(400).json({ message: 'Invalid project data' });
-    }
+      // Validate input
+      if (!projectName || !start_date || !Array.isArray(members) || members.length === 0) {
+          return res.status(400).json({ message: 'Invalid project data' });
+      }
 
-    // ✅ Ensure members are valid ObjectIds
-    const formattedMembers = members.map(member => new mongoose.Types.ObjectId(member));
+      // ✅ Ensure members are valid ObjectIds
+      const formattedMembers = members.map(member => new mongoose.Types.ObjectId(member));
 
-    // ✅ Validate that the members exist in the User collection
-    const existingUsers = await User.find({ _id: { $in: formattedMembers } }).select('_id');
-    if (existingUsers.length !== formattedMembers.length) {
-      return res.status(400).json({ message: 'One or more member IDs are invalid' });
-    }
+      // ✅ Validate that the members exist in the User collection
+      const existingUsers = await User.find({ _id: { $in: formattedMembers } }).select('_id');
+      if (existingUsers.length !== formattedMembers.length) {
+          return res.status(400).json({ message: 'One or more member IDs are invalid' });
+      }
 
-    // Create the new project
-    const newProject = new Project({
-      projectName,
-      projectDescription,
-      startDate,
-      members: formattedMembers, // Directly store ObjectIds
-    });
+      // ✅ Generate automatic values
+      const newProject = new Project({
+          projectName,
+          projectDescription,
+          start_date,
+          members: formattedMembers, // Directly store ObjectIds
 
-    await newProject.save();
-    res.status(201).json({ message: 'Project created successfully!', project: newProject });
+          // Auto-generated fields
+          team_size: generateRandomValue(9.2, 1.9235, 7, 12),
+          task_count: generateRandomValue(92, 26.5989, 60, 130),
+          developer_experience: generateRandomValue(3.6, 1.1402, 2, 5),
+          priority_level: generateRandomValue(2.2, 0.8367, 1, 3),
+          task_complexity: generateRandomValue(1.64, 0.2702, 1.3, 2),
+          effort_hours: generateRandomValue(4680, 931.1283, 3500, 6000),
+          project_size: generateRandomValue(68400, 14926.4865, 50000, 90000),
+          testing_coverage: Math.min(0.8, Math.max(0.74, (0.766 + 0.02408 * (Math.random() * 2 - 1)).toFixed(3))),
+          Effort_Density: Math.min(0.2, Math.max(0.16, (0.18 + 0.0158 * (Math.random() * 2 - 1)).toFixed(3))),
+          Team_Productivity: generateRandomValue(25.18, 5.2045, 18.9, 32.4),
+          LoC_per_Team_Member: generateRandomValue(3460, 296.6479, 3000, 3800),
+          defect_fix_time_minutes: generateRandomValue(486, 45.0555, 430, 550),
+          size_added: generateRandomValue(1140, 230.2173, 900, 1500),
+          size_deleted: generateRandomValue(280, 49.4975, 220, 350),
+          size_modified: generateRandomValue(750, 111.8034, 600, 900),
+          requirement_changes: generateRandomValue(4.4, 2.0736, 2, 7),
+          change_impact_factor: Math.min(1.2, Math.max(1.0, (1.12 + 0.0837 * (Math.random() * 2 - 1)).toFixed(3))),
+          team_key: generateRandomValue(3, 1.5811, 1, 5) // Categorical value encoded
+      });
+
+      await newProject.save();
+      res.status(201).json({ message: 'Project created successfully!', project: newProject });
 
   } catch (error) {
-    console.error('Error saving project:', error);
-    res.status(500).json({ message: 'Server error while creating project' });
+      console.error('Error saving project:', error);
+      res.status(500).json({ message: 'Server error while creating project' });
   }
 });
 

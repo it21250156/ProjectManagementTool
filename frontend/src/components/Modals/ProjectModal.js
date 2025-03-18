@@ -55,7 +55,7 @@ const ProjectModal = ({ closeModal }) => {
         const project = {
             projectName,
             projectDescription,
-            startDate,
+            start_date: startDate,
             members: memberIds, // Directly store ObjectIds
         };
 
@@ -116,8 +116,8 @@ const ProjectModal = ({ closeModal }) => {
                             <br />
                             <input
                                 type="date"
-                                id="startDate"
-                                name="startDate"
+                                id="start_date"
+                                name="start_date"
                                 min={getTodayDate()}
                                 onChange={(e) => setStartDate(e.target.value)}
                                 value={startDate}

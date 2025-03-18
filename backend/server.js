@@ -15,6 +15,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Force IPv4
+const mongooseOptions = {
+    family: 4, // Force IPv4
+};
+
 // middleware
 app.use(express.json())
 app.use((req, res, next) => {
@@ -36,15 +41,13 @@ console.log('Port:', process.env.PORT);
 app.use('/api/user', userRoutes); // Allow both `/api/users` and `/api/user`
 
 
-// connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
+// Connect to MongoDB with IPv4 option
+mongoose.connect(process.env.MONGO_URI, mongooseOptions)
     .then(() => {
-        // listen for requests
         app.listen(process.env.PORT, () => {
-            console.log('Connected to DB & Server is running on port 4080');
-        })
+            console.log(`Connected to DB & Server is running on port ${process.env.PORT}`);
+        });
     })
     .catch((error) => {
-        console.log(error)
-    })
-
+        console.error("MongoDB Connection Error:", error.message);
+    });

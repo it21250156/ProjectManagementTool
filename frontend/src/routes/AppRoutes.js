@@ -17,6 +17,8 @@ import Dashboard from '../components/Dashboard';
 import TaskAllocation from '../components/TaskAllocation';
 import ModelPerformance from "../components/ModelPerformance";
 import ProjectProgress from "../components/ProjectProgress";
+import EffortPrediction from "../components/EffortPrediction";
+
 
 // import Register from '../pages/Register';
 
@@ -43,6 +45,7 @@ const AppRoutes = () => (
         <Route path="/task-allocation" element={<TaskAllocation />} />
         <Route path="/model-performance" element={<ModelPerformance />} />
         <Route path="/project-progress" element={<ProjectProgress />} />
+        <Route path="/effort-prediction" element={<EffortPrediction />} />
       </Route>
 
       {/* Fallback route for 404 */}

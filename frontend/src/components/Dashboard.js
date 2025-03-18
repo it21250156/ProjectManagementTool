@@ -1,80 +1,119 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import for navigation
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Dashboard = () => {
     const [projects, setProjects] = useState([]);
     const [selectedProject, setSelectedProject] = useState("");
     const [predictions, setPredictions] = useState(null);
-    const [startDate, setStartDate] = useState(""); // New state for start date
-    const [endDate, setEndDate] = useState(""); // New state for calculated end date
-    const [progress, setProgress] = useState(0); // Progress for the timeline bar
-    const navigate = useNavigate(); // Hook for navigation
+    const [projectDetails, setProjectDetails] = useState(null);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [progress, setProgress] = useState(0);
+    const [deadlineSaved, setDeadlineSaved] = useState(false);
+    const navigate = useNavigate();
 
-    // Fetch available projects from MongoDB
+    // ✅ Fetch available projects from MongoDB
     useEffect(() => {
         axios.get("http://127.0.0.1:5000/get_projects")
             .then(response => setProjects(response.data))
             .catch(error => console.error("Error fetching projects:", error));
     }, []);
 
-    // Handle project selection
-    const handleProjectSelect = (projectId) => {
+    // ✅ Handle project selection
+    const handleProjectSelect = async (projectId) => {
         setSelectedProject(projectId);
+        setDeadlineSaved(false); // Reset save status when selecting a new project
 
-        // Fetch project details to get the start date
-        axios.get(`http://127.0.0.1:5000/get_project_details/${projectId}`)
-            .then(response => {
-                const projectData = response.data;
-                const formattedStartDate = new Date(projectData.start_date).toISOString().split("T")[0]; // Remove time & GMT
-                setStartDate(formattedStartDate);
-            })
-            .catch(error => console.error("Error fetching project details:", error));
+        try {
+            // ✅ Fetch project details to get additional info
+            const projectResponse = await axios.get(`http://127.0.0.1:5000/get_project_details/${projectId}`);
+            const projectData = projectResponse.data;
 
-        // Fetch predictions
-        axios.post("http://127.0.0.1:5000/predict", { project_id: projectId })
-            .then(response => {
-                setPredictions(response.data);
+            // ✅ Extract and format project details
+            const formattedStartDate = new Date(projectData.start_date).toISOString().split("T")[0];
+            setStartDate(formattedStartDate);
 
-                if (startDate) {
+            setProjectDetails({
+                name: projectData.projectName,
+                requirementChanges: projectData.requirement_changes,
+                developerExperience: projectData.developer_experience
+            });
+
+            // ✅ Fetch predictions
+            const predictResponse = await axios.post("http://127.0.0.1:5000/predict", { project_id: projectId });
+            setPredictions(predictResponse.data);
+
+            // ✅ Ensure startDate is set before calculating endDate
+            setTimeout(() => {
+                if (formattedStartDate) {
                     // Calculate End Date
-                    const calculatedEndDate = new Date(startDate);
-                    calculatedEndDate.setDate(calculatedEndDate.getDate() + response.data.predicted_timeline_days_after_impact);
-                    const formattedEndDate = calculatedEndDate.toISOString().split("T")[0]; // Remove time & GMT
-                    setEndDate(formattedEndDate);
+                    const calculatedEndDate = new Date(formattedStartDate);
+                    calculatedEndDate.setDate(calculatedEndDate.getDate() + predictResponse.data.predicted_timeline_days_after_impact);
+                    setEndDate(calculatedEndDate.toISOString().split("T")[0]);
 
-                    // Calculate Progress
+                    // ✅ Calculate Progress
                     const today = new Date();
-                    const start = new Date(startDate);
-                    const end = new Date(formattedEndDate);
+                    const start = new Date(formattedStartDate);
+                    const end = new Date(calculatedEndDate);
                     const progressValue = Math.min(100, ((today - start) / (end - start)) * 100);
                     setProgress(progressValue);
                 }
-            })
-            .catch(error => console.error("Error fetching predictions:", error));
+            }, 500);
+        } catch (error) {
+            console.error("Error fetching project details or predictions:", error);
+        }
+    };
+
+    // ✅ Save the estimated end date as the project deadline
+    const handleSaveDeadline = async () => {
+        if (!selectedProject || !endDate) return;
+
+        try {
+            const response = await axios.put("http://127.0.0.1:5000/update_project_deadline", {
+                project_id: selectedProject,
+                project_deadline: endDate
+            });
+
+            if (response.data.message) {
+                setDeadlineSaved(true); // Show success message
+            }
+        } catch (error) {
+            console.error("Error saving project deadline:", error);
+        }
     };
 
     return (
         <div style={{ padding: "20px" }}>
             <h2>📊 Project Dashboard</h2>
 
-            {/* Navigation Button to Task Allocation */}
+            {/* ✅ Navigation Button to Task Allocation */}
             <button onClick={() => navigate("/task-allocation")} style={{ marginBottom: "10px" }}>
                 ➡️ Go to Task Allocation
             </button>
 
-            {/* Project Selection Dropdown */}
+            {/* ✅ Project Selection Dropdown */}
             <label><strong>Select Project:</strong></label>
             <select onChange={(e) => handleProjectSelect(e.target.value)} value={selectedProject}>
                 <option value="">-- Select --</option>
                 {projects.map((project) => (
-                    <option key={project.project_id} value={project.project_id}>
-                        {project.project_id}
+                    <option key={project.projectId} value={project.projectId}>
+                        {project.projectName}
                     </option>
                 ))}
             </select>
 
-            {/* Show Predictions */}
+            {/* ✅ Display Project Details */}
+            {projectDetails && (
+                <div style={{ marginTop: "15px", padding: "10px", background: "#f5f5f5", borderRadius: "8px" }}>
+                    <h3>📌 Project Details</h3>
+                    <p><strong>Project Name:</strong> {projectDetails.name}</p>
+                    <p><strong>Requirement Changes:</strong> {projectDetails.requirementChanges}</p>
+                    <p><strong>Average Developer Experience:</strong> {projectDetails.developerExperience}</p>
+                </div>
+            )}
+
+            {/* ✅ Show Predictions */}
             {predictions && selectedProject && (
                 <div style={{ marginTop: "20px" }}>
                     <h3>✅ Predictions</h3>
@@ -83,30 +122,20 @@ const Dashboard = () => {
                     <p><strong>Final Adjusted Project Timeline (Days):</strong> {predictions.predicted_timeline_days_after_impact}</p>
                     <p><strong>Predicted Defect Count:</strong> {predictions.predicted_defect_count}</p>
 
-                    {/* Display Start and End Date */}
-                    <h4>📆 Project Timeline</h4>
+                    {/* ✅ Display Start and End Date */}
+                    <h4>📆 Project Dates</h4>
                     <p><strong>Start Date:</strong> {startDate || "Not available"}</p>
-                    <p><strong>Estimated End Date:</strong> {endDate || "Calculating..."}</p>
+                    <p>
+                        <strong>Estimated End Date:</strong> {endDate || "Calculating..."}
+                        {endDate && (
+                            <button onClick={handleSaveDeadline} style={{ marginLeft: "10px", padding: "5px 10px", background: "#4CAF50", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
+                                Save Deadline
+                            </button>
+                        )}
+                    </p>
+                    {deadlineSaved && <p style={{ color: "green" }}>✅ Deadline saved successfully!</p>}
 
-                    {/* Progress Bar for Project Timeline */}
-                    <div style={{ marginTop: "15px", padding: "10px", borderRadius: "10px", background: "#f9f9f9" }}>
-                        <h4>📅 Project Progress</h4>
-                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px" }}>
-                            <span>{startDate}</span>
-                            <span>{endDate}</span>
-                        </div>
-                        <div style={{ width: "100%", height: "20px", background: "#e0e0e0", borderRadius: "10px", marginTop: "5px", position: "relative" }}>
-                            <div style={{
-                                width: `${progress}%`,
-                                height: "100%",
-                                background: "#37474f",
-                                borderRadius: "10px",
-                                transition: "width 0.5s ease-in-out"
-                            }}></div>
-                        </div>
-                    </div>
-
-                    {/* Impact Explanation Table */}
+                    {/* ✅ Impact Explanation Table */}
                     <h4>📌 Requirement Change Impact Guide</h4>
                     <table border="1" cellPadding="5" style={{ borderCollapse: "collapse", width: "60%" }}>
                         <thead>
@@ -135,11 +164,10 @@ const Dashboard = () => {
                         </tbody>
                     </table>
 
-                    {/* Navigation Button to Model Performance */}
-<button onClick={() => navigate("/model-performance")} style={{ marginBottom: "10px" }}>
-    📈 View Model Performance
-</button>
-
+                    {/* ✅ Navigation Button to Model Performance */}
+                    <button onClick={() => navigate("/model-performance")} style={{ marginTop: "15px", padding: "10px", background: "#4A90E2", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
+                        📈 View Model Performance
+                    </button>
                 </div>
             )}
         </div>
