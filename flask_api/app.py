@@ -101,17 +101,17 @@ def predict():
         data = request.json
         project_id = data.get("project_id")
 
-        # ✅ Fetch project data from MongoDB using correct key `projectId`
+        # Fetch project data from MongoDB using correct key `projectId`
         project_data = projects_collection.find_one({"projectId": str(project_id)})
 
         if not project_data:
             return jsonify({"error": "Project not found in MongoDB"}), 404
 
-        # ✅ Convert `_id` to a string to avoid serialization issues
+        # Convert `_id` to a string to avoid serialization issues
         if "_id" in project_data:
             project_data["_id"] = str(project_data["_id"])
 
-        # ✅ Prepare input for project timeline prediction
+        # Prepare input for project timeline prediction
         project_timeline_input = [
             project_data.get("team_size", 0),
             project_data.get("task_count", 0),
@@ -125,15 +125,15 @@ def predict():
             project_data.get("LoC_per_Team_Member", 0)
         ]
 
-        # ✅ Scale the input data for the timeline model
+        # Scale the input data for the timeline model
         scaled_timeline_input = timeline_scaler.transform([project_timeline_input])
         project_timeline_pred = project_timeline_model.predict(scaled_timeline_input)[0]
 
-        # ✅ Adjust the timeline prediction based on the impact factor
+        # Adjust the timeline prediction based on the impact factor
         impact_factor = project_data.get("change_impact_factor", 1.0)
         adjusted_timeline_pred = project_timeline_pred * impact_factor
 
-        # ✅ Prepare input for defect prediction
+        # Prepare input for defect prediction
         defect_prediction_input = pd.DataFrame([{
             "defect_fix_time_minutes": project_data.get("defect_fix_time_minutes", 0),
             "size_added": project_data.get("size_added", 0),
@@ -145,15 +145,15 @@ def predict():
             "team_key": str(project_data.get("team_key", "0")).strip()  # ✅ Remove extra spaces
         }])
 
-        # ✅ Encode the `team_key` column for defect prediction
+        # Encode the `team_key` column for defect prediction
         defect_prediction_input["team_key_encoded"] = defect_encoder.transform(defect_prediction_input[["team_key"]])
         defect_prediction_input = defect_prediction_input.drop(columns=["team_key"])  # Drop the original categorical column
 
-        # ✅ Scale the input data for the defect model
+        # Scale the input data for the defect model
         scaled_defect_input = defect_preprocessor.transform(defect_prediction_input)
         defect_pred = defect_prediction_model.predict(scaled_defect_input)[0]
 
-        # ✅ Return the predictions
+        # Return the predictions
         return jsonify({
             "predicted_timeline_days_before_impact": round(float(project_timeline_pred), 2),
             "predicted_timeline_days_after_impact": round(float(adjusted_timeline_pred), 2),
@@ -163,6 +163,32 @@ def predict():
     except Exception as e:
         print(f"Error during prediction: {e}")
         return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
+
+@app.route('/update_project_deadline', methods=['PUT'])
+def update_project_deadline():
+    """Update the estimated end date as the project deadline in MongoDB."""
+    try:
+        data = request.json
+        project_id = data.get("project_id")
+        project_deadline = data.get("project_deadline")
+
+        if not project_id or not project_deadline:
+            return jsonify({"error": "Project ID and deadline are required"}), 400
+
+        # Update the project document in MongoDB
+        result = projects_collection.update_one(
+            {"projectId": str(project_id)},
+            {"$set": {"projectDeadline": project_deadline}}
+        )
+
+        if result.matched_count == 0:
+            return jsonify({"error": "Project not found"}), 404
+
+        return jsonify({"message": "Project deadline updated successfully!", "project_deadline": project_deadline})
+
+    except Exception as e:
+        print(f"Error updating project deadline: {e}")
+        return jsonify({"error": "Failed to update project deadline"}), 500
 
 
 @app.route('/predict_task_allocation', methods=['POST'])
