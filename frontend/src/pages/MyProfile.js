@@ -68,7 +68,7 @@ const MyProfile = () => {
                                 <div className='my-3'>
                                     <h3 className='font-semibold '>Name</h3>
                                     <p className='text-[#4a90e2] text-xl italic mx-5 font-semibold'>{userData.name}</p>
-                                    <h3 className='font-semibold'>Email</h3>
+                                    <h3 className='font-semibold'>Emailt</h3>
                                     <p className='text-[#4a90e2] text-xl italic mx-5 font-semibold'>{userData.email}</p>
                                 </div>
                                 <button className='w-1/4 mt-4 bg-[#50e3c2] text-white hover:bg-[#7ce2cc] p-4 rounded-lg font-bold'>Edit Profile</button>
