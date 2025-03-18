@@ -64,28 +64,24 @@ const MyProfile = () => {
                         ) : error ? (
                             <p className='text-red-500'>{error}</p>
                         ) : userData ? (
-                            <div className='grid grid-cols-4'>
-                                <div className='my-3 col font-semibold'>
-                                    <p>Name: </p>
-                                    <p>Email: </p>
-                                    <p>Level: </p>
-
+                            <div className='bg-white shadow-lg rounded-lg p-6 mb-6'>
+                                <div className='my-3'>
+                                    <h3 className='font-semibold '>Name</h3>
+                                    <p className='text-[#4a90e2] text-xl italic mx-5 font-semibold'>{userData.name}</p>
+                                    <h3 className='font-semibold'>Email: </h3>
+                                    <p className='text-[#4a90e2] text-xl italic mx-5 font-semibold'>{userData.email}</p>
                                 </div>
-                                <div className='my-3 col-span-3'>
-                                    <p>{userData.name}</p>
-                                    <p>{userData.email}</p>
-                                    <p>{userData.level}</p>
-                                </div>
+                                <button className='w-1/4 mt-4 bg-[#50e3c2] text-white hover:bg-[#7ce2cc] p-4 rounded-lg font-bold'>Edit Profile</button>
                             </div>
+
                         ) : (
                             <p>No user data found.</p>
                         )}
-                        <button className='w-full mt-4 bg-blue-500 text-white hover:bg-blue-600'>Edit Profile</button>
                     </div>
 
                     {/* UserInfo Component */}
                     <div className='border-2 border-[#f5a623] rounded-lg p-4'>
-                        <h2 className='text-xl font-semibold text-[#f5a623]'>Personal Information</h2>
+                        <h2 className='text-xl font-semibold text-[#f5a623]'>User Performance</h2>
 
                         <UserInfo />
                     </div>
