@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import '../assets/css/FullCalender.css';
@@ -7,8 +7,8 @@ import { useTasksContext } from '../hooks/useTasksContext';
 const ProjectDetails = () => {
     const { projectId } = useParams();
     const { tasks, dispatch } = useTasksContext();
+    const [notifications, setNotifications] = useState([]); // ✅ Store multiple notifications
 
-    // Fetch tasks for the project
     useEffect(() => {
         const fetchTasks = async () => {
             const response = await fetch(`/api/tasks/project/${projectId}`);
@@ -21,7 +21,6 @@ const ProjectDetails = () => {
         fetchTasks();
     }, [projectId, dispatch]);
 
-    // Handle status change
     const handleStatusChange = async (taskId, newStatus) => {
         try {
             const response = await fetch(`/api/tasks/${taskId}`, {
@@ -32,21 +31,33 @@ const ProjectDetails = () => {
     
             if (response.ok) {
                 const updatedTask = await response.json();
-                console.log('Updated Task:', updatedTask);
+                dispatch({ type: 'UPDATE_TASK', payload: updatedTask });
     
-                // ✅ Update local task list immediately
-                dispatch({
-                    type: 'UPDATE_TASK',
-                    payload: updatedTask,
-                });
+                // ✅ Show notifications
+                let newNotifications = [
+                    `✅ Task completed! Earned ${updatedTask.totalXP} XP (Base: ${updatedTask.baseXP}, Bonus: ${updatedTask.bonusXP})`
+                ];
     
-                // ✅ Fetch tasks again to ensure data is synced
-                const refreshResponse = await fetch(`/api/tasks/project/${projectId}`);
-                const refreshedTasks = await refreshResponse.json();
-                if (refreshResponse.ok) {
-                    dispatch({ type: 'SET_TASKS', payload: refreshedTasks });
+                if (updatedTask.activatedSkills.length > 0) {
+                    newNotifications.push(`🔥 Activated Skills: ${updatedTask.activatedSkills.join(", ")}`);
                 }
     
+                if (updatedTask.levelUp) {
+                    newNotifications.push(`🎉 You leveled up to Level ${updatedTask.level}!`);
+                }
+    
+                if (updatedTask.newBadges.length > 0) {
+                    updatedTask.newBadges.forEach(badge => {
+                        newNotifications.push(`🏅 New Badge Earned: ${badge}`);
+                    });
+                }
+    
+                setNotifications(newNotifications);
+    
+                // Auto-hide notifications after 5 seconds
+                setTimeout(() => {
+                    setNotifications([]);
+                }, 5000);
             } else {
                 console.error('Failed to update task status');
             }
@@ -63,6 +74,15 @@ const ProjectDetails = () => {
                 <div className='mx-0 my-2 p-8 rounded-2xl bg-[#f5a623]'>
                     <h1 className='text-white text-4xl font-extrabold italic'>Project Tasks</h1>
                 </div>
+
+                {/* ✅ Show Notifications */}
+                {notifications.length > 0 && (
+                    <div className="bg-green-500 text-white p-4 rounded-md text-center mb-4">
+                        {notifications.map((note, index) => (
+                            <p key={index}>{note}</p>
+                        ))}
+                    </div>
+                )}
 
                 <div>
                     {tasks && tasks.length > 0 ? (

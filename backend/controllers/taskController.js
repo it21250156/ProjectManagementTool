@@ -96,7 +96,6 @@ const getTasksByProject = async (req, res) => {
     }
 };
 
-// ✅ Update Task Status & Apply Gamification XP
 const updateTaskStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
@@ -104,22 +103,29 @@ const updateTaskStatus = async (req, res) => {
     try {
         const task = await Task.findById(id).populate('assignedTo', 'name');
 
-        if (!task) return res.status(404).json({ error: 'Task not found' });
+        if (!task) {
+            return res.status(404).json({ error: 'Task not found' });
+        }
 
-        let totalXP = 0; // ✅ Ensure `totalXP` is always defined
         let baseXP = 0;
         let bonusXP = 0;
+        let totalXP = 0;
+        let levelUp = false;
+        let newBadges = [];
+        let updatedLevel = null;
+        let activatedSkills = []; // ✅ Store activated skills
 
         if (status === "Completed") {
             const user = await User.findById(task.assignedTo).populate('unlockedSkills');
-            if (!user) return res.status(404).json({ error: 'User not found' });
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
 
             // ✅ Determine Base XP from Priority
-            switch (task.priority.toLowerCase()) {
+            switch (task.priority.toLowerCase()) { 
                 case 'high': baseXP = 10; break;
                 case 'medium': baseXP = 5; break;
                 case 'low': baseXP = 3; break;
-                default: baseXP = 5;
             }
 
             const now = dayjs();
@@ -127,24 +133,50 @@ const updateTaskStatus = async (req, res) => {
             // ✅ Apply Skill Effects
             if (user.unlockedSkills.some(skill => skill.name === "Early Bird") && now.hour() < 12) {
                 bonusXP += 3;
+                activatedSkills.push("Early Bird");
             }
             if (user.unlockedSkills.some(skill => skill.name === "Night Owl") && now.hour() >= 20) {
                 bonusXP += 3;
+                activatedSkills.push("Night Owl");
             }
             if (user.unlockedSkills.some(skill => skill.name === "Fast Finisher")) {
                 bonusXP += 2;
+                activatedSkills.push("Fast Finisher");
             }
             if (user.unlockedSkills.some(skill => skill.name === "Deadline Master") && now.isBefore(dayjs(task.dueDate))) {
-                bonusXP += baseXP; // Double XP for early completion
+                bonusXP += baseXP;
+                activatedSkills.push("Deadline Master");
             }
 
-            // ✅ Calculate Total XP
             totalXP = baseXP + bonusXP;
+            const prevLevel = user.level;
 
             // ✅ Update User XP & Level
             user.earnedXP += totalXP;
             user.points += baseXP;
             user.completedTasks += 1;
+
+            user.level = Math.floor(Math.log2(user.earnedXP / 50) + 1);
+            updatedLevel = user.level;
+
+            if (user.level > prevLevel) {
+                levelUp = true;
+            }
+
+            // ✅ Check for new badges
+            const badgeMilestones = {
+                30: "Task Beginner",
+                100: "Task Master",
+                200: "XP Achiever",
+                500: "Legendary Worker"
+            };
+
+            Object.entries(badgeMilestones).forEach(([xp, badge]) => {
+                if (user.earnedXP >= xp && !user.badges.includes(badge)) {
+                    user.badges.push(badge);
+                    newBadges.push(badge);
+                }
+            });
 
             await user.save();
         }
@@ -154,14 +186,23 @@ const updateTaskStatus = async (req, res) => {
         await task.save();
 
         res.status(200).json({ 
-            message: `Task completed! Total XP: ${totalXP} (Base: ${baseXP}, Bonus: ${bonusXP})`, 
+            message: `Task completed! Total XP: ${totalXP} (Base: ${baseXP}, Bonus: ${bonusXP})`,
+            baseXP,
+            bonusXP,
+            totalXP,
+            levelUp,
+            newBadges,
+            activatedSkills, // ✅ Send activated skills
+            level: updatedLevel,
             task 
         });
+
     } catch (error) {
         console.error('Error updating task status:', error);
         res.status(500).json({ error: 'Error updating task status' });
     }
 };
+
 
 module.exports = {
     getAllTasks,
