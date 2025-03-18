@@ -9,7 +9,7 @@ const GlobalLeaderboard = () => {
     useEffect(() => {
         const fetchLeaderboard = async () => {
             try {
-                const response = await axios.get('/api/user/leaderboard'); // ✅ Fetch top 5 users
+                const response = await axios.get('/api/user/leaderboard');
                 setUsers(response.data);
             } catch (error) {
                 console.error('Error fetching leaderboard:', error);
@@ -23,9 +23,7 @@ const GlobalLeaderboard = () => {
     }, []);
 
     return (
-        <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4 text-center">🌍 Global Leaderboard</h2>
-
+        <div className="bg-white rounded-lg mt-5">
             {loading ? (
                 <p className="text-center">Loading leaderboard...</p>
             ) : error ? (
@@ -35,14 +33,13 @@ const GlobalLeaderboard = () => {
                     {users.map((user, index) => (
                         <li
                             key={user._id}
-                            className={`p-2 border-b border-gray-300 text-lg flex justify-between ${
-                                index === 0 ? 'font-bold text-yellow-500' : 'text-gray-700'
-                            }`}
+                            className={`m-2 px-5 border-b border-gray-300 text-lg flex justify-between  ${index === 0 ? 'font-bold text-white text-4xl py-5 px-8 scale-110 mb-6 bg-[#4a90e2] rounded-full shadow-lg' : 'text-gray-700 hover:bg-slate-100'}`}
                         >
-                            <span>
-                                {index + 1}. {user.name}
+                            <span className={`font-bold italic my-2 ${index === 0 ? 'text-5xl' : 'text-3xl'}`}>
+                                {index + 1}. <span className='text-xl ml-10 font-normal'>{user.name}</span>
                             </span>
-                            <span>{user.earnedXP} XP</span>
+
+                            <span className={`font-black text-3xl ${index === 0 ? ' text-white text-5xl p-5' : 'text-gray-700'}`} >{user.earnedXP} XP</span>
                         </li>
                     ))}
                 </ul>

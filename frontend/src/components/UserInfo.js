@@ -100,9 +100,6 @@ const UserInfo = () => {
                             </div>
                         </div>
 
-
-
-
                         {/* XP Progress Bar */}
                         <div className="w-full bg-gray-200 rounded-full h-3 mt-4">
                             <div
@@ -137,25 +134,12 @@ const UserInfo = () => {
                             </div>
                         </div>
                     </div>
-
                     <div className="border-t border-gray-200 my-6"></div>
-
-
 
                     {/* 🌍 Global Leaderboard Section */}
                     <div className="border-t border-gray-200 my-6"></div>
 
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4">🏆 Global Leaderboard</h2>
-                    <GlobalLeaderboard />
 
-                    {/* Skill Tree Navigation */}
-                    <Link to={"/skilltree"}>
-                        <button
-                            className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg mt-6 hover:bg-blue-700 transition-all duration-300"
-                        >
-                            🚀 View Skill Tree
-                        </button>
-                    </Link>
 
                 </>
             )}

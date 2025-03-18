@@ -64,7 +64,7 @@ router.get('/leaderboard', async (req, res) => {
   try {
     const topUsers = await User.find({})
       .sort({ earnedXP: -1 }) // Sort by highest XP
-      .limit(5) // Only get the top 5 users
+      .limit(25) // Only get the top 5 users
       .select('name earnedXP'); // Only return name & XP
 
     res.status(200).json(topUsers);

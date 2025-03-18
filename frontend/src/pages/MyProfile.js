@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import UserInfo from '../components/UserInfo';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const MyProfile = () => {
     const [userData, setUserData] = useState(null);
@@ -57,8 +57,8 @@ const MyProfile = () => {
                 </div>
                 <div className='grid grid-cols-2 gap-4'>
                     {/* Personal Information Section */}
-                    <div className='border-2 border-[#f5a623] rounded-lg p-4'>
-                        <h2 className='text-xl font-semibold text-[#f5a623]'>Personal Information</h2>
+                    <div className='p-4'>
+                        <h2 className='text-xl font-semibold text-[#4a90e2] mb-2'>Personal Information</h2>
                         {loading ? (
                             <p>Loading...</p>
                         ) : error ? (
@@ -68,7 +68,7 @@ const MyProfile = () => {
                                 <div className='my-3'>
                                     <h3 className='font-semibold '>Name</h3>
                                     <p className='text-[#4a90e2] text-xl italic mx-5 font-semibold'>{userData.name}</p>
-                                    <h3 className='font-semibold'>Email: </h3>
+                                    <h3 className='font-semibold'>Emailt</h3>
                                     <p className='text-[#4a90e2] text-xl italic mx-5 font-semibold'>{userData.email}</p>
                                 </div>
                                 <button className='w-1/4 mt-4 bg-[#50e3c2] text-white hover:bg-[#7ce2cc] p-4 rounded-lg font-bold'>Edit Profile</button>
@@ -77,15 +77,24 @@ const MyProfile = () => {
                         ) : (
                             <p>No user data found.</p>
                         )}
+                        {/* Skill Tree Navigation */}
+                        <Link to={"/skilltree"}>
+                            <button
+                                className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg mt-6 hover:bg-blue-700 transition-all duration-300"
+                            >
+                                🚀 View Skill Tree
+                            </button>
+                        </Link>
                     </div>
 
                     {/* UserInfo Component */}
-                    <div className='border-2 border-[#f5a623] rounded-lg p-4'>
-                        <h2 className='text-xl font-semibold text-[#f5a623]'>User Performance</h2>
+                    <div className='p-4'>
+                        <h2 className='text-xl font-semibold text-[#4a90e2] mb-2'>User Performance</h2>
 
                         <UserInfo />
                     </div>
                 </div>
+
             </div>
         </div>
     );
