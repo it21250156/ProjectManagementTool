@@ -13,38 +13,38 @@ const Dashboard = () => {
     const [deadlineSaved, setDeadlineSaved] = useState(false);
     const navigate = useNavigate();
 
-    // ✅ Fetch available projects from MongoDB
+    // Fetch available projects from MongoDB
     useEffect(() => {
         axios.get("http://127.0.0.1:5000/get_projects")
             .then(response => setProjects(response.data))
             .catch(error => console.error("Error fetching projects:", error));
     }, []);
 
-    // ✅ Handle project selection
+    // Handle project selection
     const handleProjectSelect = async (projectId) => {
         setSelectedProject(projectId);
         setDeadlineSaved(false); // Reset save status when selecting a new project
 
         try {
-            // ✅ Fetch project details to get additional info
+            // Fetch project details to get additional info
             const projectResponse = await axios.get(`http://127.0.0.1:5000/get_project_details/${projectId}`);
             const projectData = projectResponse.data;
 
-            // ✅ Extract and format project details
+            // Extract and format project details
             const formattedStartDate = new Date(projectData.start_date).toISOString().split("T")[0];
             setStartDate(formattedStartDate);
 
             setProjectDetails({
                 name: projectData.projectName,
                 requirementChanges: projectData.requirement_changes,
-                developerExperience: projectData.developer_experience
+                teamSize: projectData.team_size
             });
 
-            // ✅ Fetch predictions
+            // Fetch predictions
             const predictResponse = await axios.post("http://127.0.0.1:5000/predict", { project_id: projectId });
             setPredictions(predictResponse.data);
 
-            // ✅ Ensure startDate is set before calculating endDate
+            // Ensure startDate is set before calculating endDate
             setTimeout(() => {
                 if (formattedStartDate) {
                     // Calculate End Date
@@ -52,7 +52,7 @@ const Dashboard = () => {
                     calculatedEndDate.setDate(calculatedEndDate.getDate() + predictResponse.data.predicted_timeline_days_after_impact);
                     setEndDate(calculatedEndDate.toISOString().split("T")[0]);
 
-                    // ✅ Calculate Progress
+                    // Calculate Progress
                     const today = new Date();
                     const start = new Date(formattedStartDate);
                     const end = new Date(calculatedEndDate);
@@ -65,7 +65,7 @@ const Dashboard = () => {
         }
     };
 
-    // ✅ Save the estimated end date as the project deadline
+    // Save the estimated end date as the project deadline
     const handleSaveDeadline = async () => {
         if (!selectedProject || !endDate) return;
 
@@ -85,14 +85,14 @@ const Dashboard = () => {
 
     return (
         <div style={{ padding: "20px" }}>
-            <h2>📊 Project Dashboard</h2>
+            <h2> Project Dashboard</h2>
 
-            {/* ✅ Navigation Button to Task Allocation */}
+            {/* Navigation Button to Task Allocation */}
             <button onClick={() => navigate("/task-allocation")} style={{ marginBottom: "10px" }}>
-                ➡️ Go to Task Allocation
+                 Go to Task Allocation
             </button>
 
-            {/* ✅ Project Selection Dropdown */}
+            {/* Project Selection Dropdown */}
             <label><strong>Select Project:</strong></label>
             <select onChange={(e) => handleProjectSelect(e.target.value)} value={selectedProject}>
                 <option value="">-- Select --</option>
@@ -103,27 +103,27 @@ const Dashboard = () => {
                 ))}
             </select>
 
-            {/* ✅ Display Project Details */}
+            {/* Display Project Details */}
             {projectDetails && (
                 <div style={{ marginTop: "15px", padding: "10px", background: "#f5f5f5", borderRadius: "8px" }}>
-                    <h3>📌 Project Details</h3>
+                    <h3> Project Details</h3>
                     <p><strong>Project Name:</strong> {projectDetails.name}</p>
                     <p><strong>Requirement Changes:</strong> {projectDetails.requirementChanges}</p>
-                    <p><strong>Average Developer Experience:</strong> {projectDetails.developerExperience}</p>
+                    <p><strong>Team Member Count:</strong> {projectDetails.teamSize}</p>
                 </div>
             )}
 
-            {/* ✅ Show Predictions */}
+            {/* Show Predictions */}
             {predictions && selectedProject && (
                 <div style={{ marginTop: "20px" }}>
-                    <h3>✅ Predictions</h3>
+                    <h3> Predictions</h3>
                     <p><strong>Original Predicted Project Timeline (Days):</strong> {predictions.predicted_timeline_days_before_impact}</p>
                     <p><strong>Extra Days Due to Requirement Changes:</strong> {Math.round(predictions.predicted_timeline_days_after_impact - predictions.predicted_timeline_days_before_impact)}</p>
                     <p><strong>Final Adjusted Project Timeline (Days):</strong> {predictions.predicted_timeline_days_after_impact}</p>
                     <p><strong>Predicted Defect Count:</strong> {predictions.predicted_defect_count}</p>
 
-                    {/* ✅ Display Start and End Date */}
-                    <h4>📆 Project Dates</h4>
+                    {/* Display Start and End Date */}
+                    <h4> Project Dates</h4>
                     <p><strong>Start Date:</strong> {startDate || "Not available"}</p>
                     <p>
                         <strong>Estimated End Date:</strong> {endDate || "Calculating..."}
@@ -133,10 +133,10 @@ const Dashboard = () => {
                             </button>
                         )}
                     </p>
-                    {deadlineSaved && <p style={{ color: "green" }}>✅ Deadline saved successfully!</p>}
+                    {deadlineSaved && <p style={{ color: "green" }}> Deadline saved successfully!</p>}
 
-                    {/* ✅ Impact Explanation Table */}
-                    <h4>📌 Requirement Change Impact Guide</h4>
+                    {/* Impact Explanation Table */}
+                    <h4> Requirement Change Impact Guide</h4>
                     <table border="1" cellPadding="5" style={{ borderCollapse: "collapse", width: "60%" }}>
                         <thead>
                             <tr>
@@ -164,9 +164,9 @@ const Dashboard = () => {
                         </tbody>
                     </table>
 
-                    {/* ✅ Navigation Button to Model Performance */}
+                    {/* Navigation Button to Model Performance */}
                     <button onClick={() => navigate("/model-performance")} style={{ marginTop: "15px", padding: "10px", background: "#4A90E2", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
-                        📈 View Model Performance
+                         View Model Performance
                     </button>
                 </div>
             )}

@@ -7,6 +7,7 @@ const taskRoutes = require('./routes/tasks')
 const projectRoutes = require('./routes/projects')
 const skillRoutes = require('./routes/skills');
 const authRoutes = require('./routes/auth');
+const teamRoutes = require('./routes/teams')
 const cors = require('cors');
 
 // express app
@@ -33,6 +34,7 @@ app.use('/api/users', userRoutes)
 app.use('/api/tasks', taskRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/skills', skillRoutes);
+app.use('/api/teams', teamRoutes);
 
 console.log('Mongo URI:', process.env.MONGO_URI);
 console.log('Port:', process.env.PORT);
