@@ -1,22 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useProjectsContext } from '../hooks/useProjectsContext';
-import Header from '../components/Header';
 import ProjectItem from '../components/ProjectItem';
 
 const MyProjects = () => {
 
-    const { projects, dispatch } = useProjectsContext()
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { projects, dispatch } = useProjectsContext();
 
     useEffect(() => {
         const fetchProjects = async () => {
-            const response = await fetch('/api/projects');
-            const json = await response.json();
-
-            if (response.ok) {
-                console.log(json); // Log the API response
-                dispatch({ type: 'SET_PROJECTS', payload: json })
+            try {
+                const response = await fetch('/api/projects');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch projects');
+                }
+                const json = await response.json();
+                console.log(json);
+                dispatch({ type: 'SET_PROJECTS', payload: json });
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+                setError(error.message);
+            } finally {
+                setLoading(false);
             }
-        }
+        };
+
         fetchProjects();
     }, [dispatch]);
 
@@ -41,11 +50,26 @@ const MyProjects = () => {
 
                         </div>
                     </div>
-                    {projects && projects
-                        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort by createdAt in descending order
-                        .map((project) => (
-                            <ProjectItem key={project._id} project={project} />
-                        ))}
+                    {loading ? (
+                        // Loading Animation
+                        <div className="flex flex-row gap-2 justify-center mt-8">
+                            <div className="w-4 h-4 rounded-full bg-red-500 animate-bounce"></div>
+                            <div
+                                className="w-4 h-4 rounded-full bg-red-500 animate-bounce [animation-delay:-.3s]"
+                            ></div>
+                            <div
+                                className="w-4 h-4 rounded-full bg-red-500 animate-bounce [animation-delay:-.5s]"
+                            ></div>
+                        </div>
+                    ) : (
+                        // Projects List
+                        projects &&
+                        projects
+                            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                            .map((project) => (
+                                <ProjectItem key={project._id} project={project} />
+                            ))
+                    )}
                 </div>
             </div>
         </div>

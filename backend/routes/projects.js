@@ -304,6 +304,32 @@ router.put('/:projectId/complete-task', verifyToken, async (req, res) => {
   }
 });
 
+router.get('/:projectId/user-progress', verifyToken, async (req, res) => {
+  try {
+      const { projectId } = req.params;
+      const userId = req.user.id;
+
+      // Find tasks assigned to the user for this project
+      const userTasks = await Task.find({ project: projectId, assignedTo: userId });
+
+      if (userTasks.length === 0) {
+          return res.status(200).json({ completionPercentage: 0 });
+      }
+
+      // Count completed tasks
+      const completedTasks = userTasks.filter(task => task.status === 'Completed').length;
+
+      // Calculate completion percentage
+      const completionPercentage = ((completedTasks / userTasks.length) * 100).toFixed(2);
+
+      res.status(200).json({ completionPercentage });
+  } catch (error) {
+      console.error('Error fetching user progress:', error);
+      res.status(500).json({ message: 'Error fetching user progress' });
+  }
+});
+
+
 router.get("/:projectId/members", getMembersForProject);
 
 module.exports = router;

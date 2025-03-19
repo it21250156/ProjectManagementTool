@@ -21,6 +21,7 @@ import EffortPrediction from "../components/EffortPrediction";
 import GlobalLeaderboard from "../components/GlobalLeaderboard";
 import Leaderboard from "../pages/Leaderboard";
 import DeadlinePrediction from "../pages/DeadlinePrediction";
+import TaskAllocate from "../pages/TaskAllocate";
 
 
 
@@ -46,7 +47,7 @@ const AppRoutes = () => (
         <Route path="/project/:projectId/leaderboard" element={<ProjectLeaderboard />} />
         <Route path="/skilltree" element={<SkillTree />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/task-allocation" element={<TaskAllocation />} />
+        <Route path="/task-allocation" element={<TaskAllocate />} />
         <Route path="/model-performance" element={<ModelPerformance />} />
         <Route path="/project-progress" element={<ProjectProgress />} />
         <Route path="/effort-prediction" element={<EffortPrediction />} />

@@ -11,7 +11,7 @@ const ProjectLeaderboard = () => {
                     <h1 className='text-white text-4xl font-extrabold italic'>Project Leaderboard</h1>
                 </div>
                 <div>
-                    <Leaderboard /> {/* ✅ Importing and using the Leaderboard component */}
+                    <Leaderboard />
                 </div>
             </div>
         </div>

@@ -47,8 +47,10 @@ const Sidebar = () => {
         <>
             <div className='col flex flex-col h-screen shadow-lg shadow-[#F5A623]'>
                 <div className='flex-1'>
-                    <div className='logo-div border-b-2 border-[#4a90e2] h-16'>
-                        {/* <h1>Project Management Tool</h1> */}
+                    <div className="logo-div border-b-2 border-[#4a90e2] h-16 flex items-center justify-center">
+                        <h1 className="font-mono font-bold text-4xl bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-300">
+                            CodeFlow.ai
+                        </h1>
                     </div>
                     <div className='m-2'>
                         <button
