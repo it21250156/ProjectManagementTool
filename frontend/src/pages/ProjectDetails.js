@@ -7,19 +7,45 @@ import { useTasksContext } from '../hooks/useTasksContext';
 const ProjectDetails = () => {
     const { projectId } = useParams();
     const { tasks, dispatch } = useTasksContext();
-    const [notifications, setNotifications] = useState([]); // ✅ Store multiple notifications
+    const [notifications, setNotifications] = useState([]);
+    const [completionPercentage, setCompletionPercentage] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [localTasks, setLocalTasks] = useState([]); // ✅ Add local state for re-render
 
     useEffect(() => {
         const fetchTasks = async () => {
-            const response = await fetch(`/api/tasks/project/${projectId}`);
-            const json = await response.json();
+            try {
+                const response = await fetch(`/api/tasks/project/${projectId}`);
+                const json = await response.json();
 
-            if (response.ok) {
-                dispatch({ type: 'SET_TASKS', payload: json });
+                if (response.ok) {
+                    dispatch({ type: 'SET_TASKS', payload: json });
+                    setLocalTasks(json); // ✅ Update local state
+                }
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
             }
         };
+
         fetchTasks();
+        fetchUserProgress();
     }, [projectId, dispatch]);
+
+    const fetchUserProgress = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`/api/projects/${projectId}/user-progress`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            const data = await response.json();
+            setCompletionPercentage(data.completionPercentage || 0);
+        } catch (error) {
+            console.error("Error fetching user progress:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleStatusChange = async (taskId, newStatus) => {
         try {
@@ -28,36 +54,43 @@ const ProjectDetails = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus }),
             });
-    
+
             if (response.ok) {
                 const updatedTask = await response.json();
                 dispatch({ type: 'UPDATE_TASK', payload: updatedTask });
-    
-                // ✅ Show notifications
+
+                // ✅ Update local state immediately to force dropdown update
+                setLocalTasks(prevTasks =>
+                    prevTasks.map(task =>
+                        task._id === taskId ? { ...task, status: newStatus } : task
+                    )
+                );
+
                 let newNotifications = [
                     `✅ Task completed! Earned ${updatedTask.totalXP} XP (Base: ${updatedTask.baseXP}, Bonus: ${updatedTask.bonusXP})`
                 ];
-    
+
                 if (updatedTask.activatedSkills.length > 0) {
                     newNotifications.push(`🔥 Activated Skills: ${updatedTask.activatedSkills.join(", ")}`);
                 }
-    
+
                 if (updatedTask.levelUp) {
                     newNotifications.push(`🎉 You leveled up to Level ${updatedTask.level}!`);
                 }
-    
+
                 if (updatedTask.newBadges.length > 0) {
                     updatedTask.newBadges.forEach(badge => {
                         newNotifications.push(`🏅 New Badge Earned: ${badge}`);
                     });
                 }
-    
+
                 setNotifications(newNotifications);
-    
-                // Auto-hide notifications after 5 seconds
+
                 setTimeout(() => {
                     setNotifications([]);
                 }, 5000);
+
+                fetchUserProgress();
             } else {
                 console.error('Failed to update task status');
             }
@@ -65,17 +98,15 @@ const ProjectDetails = () => {
             console.error('Error updating task status:', error);
         }
     };
-    
 
     return (
         <div>
             <Header />
-            <div className='m-4'>
-                <div className='mx-0 my-2 p-8 rounded-2xl bg-[#f5a623]'>
-                    <h1 className='text-white text-4xl font-extrabold italic'>Project Tasks</h1>
+            <div className="m-4">
+                <div className="mx-0 my-2 p-8 rounded-2xl bg-[#f5a623]">
+                    <h1 className="text-white text-4xl font-extrabold italic">Project Tasks</h1>
                 </div>
 
-                {/* ✅ Show Notifications */}
                 {notifications.length > 0 && (
                     <div className="bg-green-500 text-white p-4 rounded-md text-center mb-4">
                         {notifications.map((note, index) => (
@@ -84,28 +115,42 @@ const ProjectDetails = () => {
                     </div>
                 )}
 
+                <div className="my-4 p-4 bg-white shadow-lg rounded-lg">
+                    <h2 className="text-lg font-bold">Your Task Completion: {completionPercentage}%</h2>
+                    <div className="w-full bg-gray-200 rounded-full h-3 mt-2">
+                        <div
+                            className="bg-blue-500 h-3 rounded-full"
+                            style={{ width: `${completionPercentage}%` }}
+                        ></div>
+                    </div>
+                </div>
+
                 <div>
-                    {tasks && tasks.length > 0 ? (
+                    {loading ? (
+                        <p>Loading tasks...</p>
+                    ) : localTasks.length > 0 ? ( // ✅ Use localTasks instead of tasks
                         <ul>
-                            {tasks.map((task) => (
-                                <li key={task._id} className='my-4 p-4 bg-white rounded-lg shadow-md'>
-                                    <h2 className='text-xl font-bold'>{task.taskName}</h2>
-                                    <p className='text-gray-600'>{task.description}</p>
-                                    <p className='text-sm text-gray-500'>
+                            {localTasks.map((task) => (
+                                <li key={task._id} className="my-4 p-4 bg-white rounded-lg shadow-md">
+                                    <h2 className="text-xl font-bold">{task.taskName}</h2>
+                                    <p className="text-gray-600">{task.description}</p>
+                                    <p className="text-sm text-gray-500">
                                         Due Date: {new Date(task.dueDate).toLocaleDateString()}
                                     </p>
-                                    <p className='text-sm text-gray-500'>Assigned To: {task.assignedTo?.name || 'Unassigned'}</p>
-                                    <div className='mt-2'>
-                                        <label className='font-bold'>Status:</label>
+                                    <p className="text-sm text-gray-500">
+                                        Assigned To: {task.assignedTo?.name || 'Unassigned'}
+                                    </p>
+                                    <div className="mt-2">
+                                        <label className="font-bold">Status:</label>
                                         <select
                                             value={task.status}
                                             onChange={(e) => handleStatusChange(task._id, e.target.value)}
-                                            className='ml-2 p-1 border rounded'
+                                            className="ml-2 p-1 border rounded"
                                         >
-                                            <option value='Pending'>Pending</option>
-                                            <option value='In Progress'>In Progress</option>
-                                            <option value='Testing'>Testing</option>
-                                            <option value='Completed'>Completed</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="In Progress">In Progress</option>
+                                            <option value="Testing">Testing</option>
+                                            <option value="Completed">Completed</option>
                                         </select>
                                     </div>
                                 </li>
