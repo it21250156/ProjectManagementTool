@@ -12,13 +12,13 @@ router.post('/', async (req, res) => {
         // ✅ Validate input
         if (!team_id || !team_name || team_experience_level === undefined || total_members === undefined ||
             past_projects_completed === undefined || !specialization || team_skillset_match === undefined || team_availability === undefined) {
-            return res.status(400).json({ message: 'Invalid team data. All fields are required.' });
+            return res.status(400).json({ status: 'error', message: 'Invalid team data. All fields are required.' });
         }
 
         // ✅ Check if the team ID already exists
         const existingTeam = await Team.findOne({ team_id });
         if (existingTeam) {
-            return res.status(400).json({ message: 'A team with this ID already exists.' });
+            return res.status(400).json({ status: 'error', message: 'A team with this ID already exists.' });
         }
 
         // ✅ Create and save the new team
@@ -34,11 +34,11 @@ router.post('/', async (req, res) => {
         });
 
         await newTeam.save();
-        res.status(201).json({ message: 'Team created successfully!', team: newTeam });
+        res.status(201).json({ status: 'success', message: 'Team created successfully!', team: newTeam });
 
     } catch (error) {
         console.error('Error creating team:', error);
-        res.status(500).json({ message: 'Server error while creating team' });
+        res.status(500).json({ status: 'error', message: 'Server error while creating team' });
     }
 });
 
@@ -46,10 +46,10 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const teams = await Team.find();
-        res.status(200).json(teams);
+        res.status(200).json({ status: 'success', data: teams });
     } catch (error) {
         console.error('Error fetching teams:', error);
-        res.status(500).json({ message: 'Server error while fetching teams' });
+        res.status(500).json({ status: 'error', message: 'Server error while fetching teams' });
     }
 });
 
@@ -59,13 +59,13 @@ router.get('/:team_id', async (req, res) => {
         const team = await Team.findOne({ team_id: req.params.team_id });
 
         if (!team) {
-            return res.status(404).json({ message: 'Team not found' });
+            return res.status(404).json({ status: 'error', message: 'Team not found' });
         }
 
-        res.status(200).json(team);
+        res.status(200).json({ status: 'success', data: team });
     } catch (error) {
         console.error('Error fetching team:', error);
-        res.status(500).json({ message: 'Server error while fetching team' });
+        res.status(500).json({ status: 'error', message: 'Server error while fetching team' });
     }
 });
 
@@ -79,13 +79,13 @@ router.put('/:team_id', async (req, res) => {
         );
 
         if (!updatedTeam) {
-            return res.status(404).json({ message: 'Team not found' });
+            return res.status(404).json({ status: 'error', message: 'Team not found' });
         }
 
-        res.status(200).json({ message: 'Team updated successfully!', team: updatedTeam });
+        res.status(200).json({ status: 'success', message: 'Team updated successfully!', data: updatedTeam });
     } catch (error) {
         console.error('Error updating team:', error);
-        res.status(500).json({ message: 'Server error while updating team' });
+        res.status(500).json({ status: 'error', message: 'Server error while updating team' });
     }
 });
 
@@ -95,13 +95,13 @@ router.delete('/:team_id', async (req, res) => {
         const deletedTeam = await Team.findOneAndDelete({ team_id: req.params.team_id });
 
         if (!deletedTeam) {
-            return res.status(404).json({ message: 'Team not found' });
+            return res.status(404).json({ status: 'error', message: 'Team not found' });
         }
 
-        res.status(200).json({ message: 'Team deleted successfully!', team: deletedTeam });
+        res.status(200).json({ status: 'success', message: 'Team deleted successfully!', data: deletedTeam });
     } catch (error) {
         console.error('Error deleting team:', error);
-        res.status(500).json({ message: 'Server error while deleting team' });
+        res.status(500).json({ status: 'error', message: 'Server error while deleting team' });
     }
 });
 

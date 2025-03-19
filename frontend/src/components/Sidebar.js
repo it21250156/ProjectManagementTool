@@ -3,11 +3,13 @@ import TaskModal from './Modals/TaskModal';
 import ProjectModal from './Modals/ProjectModal';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import TeamModal from './Modals/TeamModal';
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+    const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
 
     const { dispatch } = useContext(AuthContext);
 
@@ -27,6 +29,12 @@ const Sidebar = () => {
         closeModal();
     };
     const closeProjectModal = () => setIsProjectModalOpen(false);
+
+    const openTeamModal = () => {
+        setIsTeamModalOpen(true);
+        closeModal();
+    };
+    const closeTeamModal = () => setIsTeamModalOpen(false);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -52,17 +60,19 @@ const Sidebar = () => {
                         </button>
                     </div>
                     <div className='py-2 px-1 my-1'>
+
+
                         <Link to="/home">
                             <button type="button" class="text-white bg-[#4a90e2] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-lg py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                 Dashboard
                             </button>
                         </Link>
 
-                        <Link to="/my-tasks">
+                        {/* <Link to="/my-tasks">
                             <button type="button" class="text-white bg-[#4a90e2] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-lg py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                 My Tasks
                             </button>
-                        </Link>
+                        </Link> */}
 
                         <Link to="/my-projects">
                             <button
@@ -139,7 +149,11 @@ const Sidebar = () => {
                                     </button>
                                 </li>
                                 <li>
-                                    <button type="button" class="text-white bg-[#F5A623] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-xl text-3xl py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                    <button
+                                        type="button"
+                                        onClick={openTeamModal}
+                                        className="text-white bg-[#F5A623] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-xl text-3xl py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                                    >
                                         Team
                                     </button>
                                 </li>
@@ -150,6 +164,7 @@ const Sidebar = () => {
             )}
             {isTaskModalOpen && <TaskModal closeModal={closeTaskModal} />}
             {isProjectModalOpen && <ProjectModal closeModal={closeProjectModal} />}
+            {isTeamModalOpen && <TeamModal closeModal={closeTeamModal} />}
         </>
     )
 }

@@ -20,6 +20,7 @@ import ProjectProgress from "../components/ProjectProgress";
 import EffortPrediction from "../components/EffortPrediction";
 import GlobalLeaderboard from "../components/GlobalLeaderboard";
 import Leaderboard from "../pages/Leaderboard";
+import DeadlinePrediction from "../pages/DeadlinePrediction";
 
 
 
@@ -50,6 +51,7 @@ const AppRoutes = () => (
         <Route path="/project-progress" element={<ProjectProgress />} />
         <Route path="/effort-prediction" element={<EffortPrediction />} />
         <Route path="/global-leaderboard" element={<Leaderboard />} />
+        <Route path="/deadline-prediction" element={<DeadlinePrediction />} />
       </Route>
 
       {/* Fallback route for 404 */}

@@ -28,32 +28,32 @@ const ProjectDetails = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus }),
             });
-    
+
             if (response.ok) {
                 const updatedTask = await response.json();
                 dispatch({ type: 'UPDATE_TASK', payload: updatedTask });
-    
+
                 // ✅ Show notifications
                 let newNotifications = [
                     `✅ Task completed! Earned ${updatedTask.totalXP} XP (Base: ${updatedTask.baseXP}, Bonus: ${updatedTask.bonusXP})`
                 ];
-    
+
                 if (updatedTask.activatedSkills.length > 0) {
                     newNotifications.push(`🔥 Activated Skills: ${updatedTask.activatedSkills.join(", ")}`);
                 }
-    
+
                 if (updatedTask.levelUp) {
                     newNotifications.push(`🎉 You leveled up to Level ${updatedTask.level}!`);
                 }
-    
+
                 if (updatedTask.newBadges.length > 0) {
                     updatedTask.newBadges.forEach(badge => {
                         newNotifications.push(`🏅 New Badge Earned: ${badge}`);
                     });
                 }
-    
+
                 setNotifications(newNotifications);
-    
+
                 // Auto-hide notifications after 5 seconds
                 setTimeout(() => {
                     setNotifications([]);
@@ -65,13 +65,13 @@ const ProjectDetails = () => {
             console.error('Error updating task status:', error);
         }
     };
-    
+
 
     return (
         <div>
-            <Header />
+            {/* <Header /> */}
             <div className='m-4'>
-                <div className='mx-0 my-2 p-8 rounded-2xl bg-[#f5a623]'>
+                <div className='mx-0 my-2 p-8 rounded-2xl bg-gradient-to-t from-[#f5a623] to-[#fac56f]'>
                     <h1 className='text-white text-4xl font-extrabold italic'>Project Tasks</h1>
                 </div>
 
@@ -89,24 +89,48 @@ const ProjectDetails = () => {
                         <ul>
                             {tasks.map((task) => (
                                 <li key={task._id} className='my-4 p-4 bg-white rounded-lg shadow-md'>
-                                    <h2 className='text-xl font-bold'>{task.taskName}</h2>
-                                    <p className='text-gray-600'>{task.description}</p>
-                                    <p className='text-sm text-gray-500'>
-                                        Due Date: {new Date(task.dueDate).toLocaleDateString()}
-                                    </p>
-                                    <p className='text-sm text-gray-500'>Assigned To: {task.assignedTo?.name || 'Unassigned'}</p>
-                                    <div className='mt-2'>
-                                        <label className='font-bold'>Status:</label>
-                                        <select
-                                            value={task.status}
-                                            onChange={(e) => handleStatusChange(task._id, e.target.value)}
-                                            className='ml-2 p-1 border rounded'
-                                        >
-                                            <option value='Pending'>Pending</option>
-                                            <option value='In Progress'>In Progress</option>
-                                            <option value='Testing'>Testing</option>
-                                            <option value='Completed'>Completed</option>
-                                        </select>
+                                    <div className='grid grid-cols-3'>
+                                        <div>
+                                            <h2 className='text-lg font-semibold'>{task.taskName}
+                                                <span
+                                                    className={`text-white mx-2 text-xs font-bold inline-block px-2 py-1 rounded-full ${task.priority === 'High'
+                                                        ? 'bg-red-500'
+                                                        : task.priority === 'Medium'
+                                                            ? 'bg-orange-500'
+                                                            : 'bg-lime-500'
+                                                        }`}
+                                                >
+                                                    {task.priority}
+                                                </span>
+                                            </h2>
+
+                                            <p className='text-sm text-gray-500 my-3'>Assigned To: {task.assignedTo?.name || 'Unassigned'}</p>
+
+                                        </div>
+                                        <div >
+                                            <p className="text-md text-center">Due Date</p>
+                                            <div className='flex justify-center items-center'>
+                                                <p className="text-lg bg-red-700 text-white text-center py-2 px-5 my-2 mx-10 rounded-xl font-semibold">
+                                                    {new Date(task.dueDate).toLocaleDateString()}
+
+                                                </p>
+                                            </div>
+
+
+                                        </div>
+                                        <div className="mb-3 font-bold">
+                                            <label className='font-bold mr-5'>Status</label>
+                                            <select
+                                                value={task.status}
+                                                onChange={(e) => handleStatusChange(task._id, e.target.value)}
+                                                className="border-none bg-[#50E3C2] rounded-lg font-normal"
+                                            >
+                                                <option value="Pending">Pending</option>
+                                                <option value="In Progress">In Progress</option>
+                                                <option value="Testing">Testing</option>
+                                                <option value="Completed">Completed</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </li>
                             ))}
