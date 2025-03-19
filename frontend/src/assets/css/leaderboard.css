@@ -1,0 +1,18 @@
+/* Leaderboard.css */
+@keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(15deg);
+    }
+    50% {
+      transform: translateY(-10px) rotate(15deg);
+    }
+  }
+  
+  .floating-image {
+    animation: float 3s ease-in-out infinite;
+    position: absolute;
+    height: 33.33%;
+    width: auto;
+    z-index: 0;
+    transform: rotate(15deg);
+  }
