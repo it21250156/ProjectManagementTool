@@ -11,6 +11,7 @@ import MyProjects from "../pages/MyProjects";
 import ProjectDetails from "../pages/ProjectDetails";
 import MyTasks from '../pages/MyTasks';
 import MyProfile from "../pages/MyProfile";
+import PredictDelayForANewTask from "../pages/PredictDelayForANewTask";
 import ProjectLeaderboard from "../pages/ProjectLeaderboard";
 import SkillTree from "../pages/SkillTreePage";
 import Dashboard from '../components/Dashboard';
@@ -44,6 +45,7 @@ const AppRoutes = () => (
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/project/:projectId/leaderboard" element={<ProjectLeaderboard />} />
         <Route path="/skilltree" element={<SkillTree />} />
+        <Route path="/predict-delay" element={<PredictDelayForANewTask />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/task-allocation" element={<TaskAllocation />} />
         <Route path="/model-performance" element={<ModelPerformance />} />

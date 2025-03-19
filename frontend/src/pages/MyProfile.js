@@ -85,6 +85,13 @@ const MyProfile = () => {
                                 🚀 View Skill Tree
                             </button>
                         </Link>
+                        <Link to={"/predict-delay"}>
+                            <button
+                                className="w-full bg-gray-600 text-white font-bold py-3 rounded-lg mt-6 hover:bg-gray-700 transition-all duration-300"
+                            >
+                                 View Delay Probability
+                            </button>
+                        </Link>
                     </div>
 
                     {/* UserInfo Component */}
