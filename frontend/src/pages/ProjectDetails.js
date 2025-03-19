@@ -9,27 +9,29 @@ const ProjectDetails = () => {
     const { tasks, dispatch } = useTasksContext();
     const [notifications, setNotifications] = useState([]);
     const [completionPercentage, setCompletionPercentage] = useState(0);
+    const [projectCompletion, setProjectCompletion] = useState(0);
     const [loading, setLoading] = useState(true);
-    const [localTasks, setLocalTasks] = useState([]); // ✅ Add local state for re-render
+    const [localTasks, setLocalTasks] = useState([]);
 
     useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const response = await fetch(`/api/tasks/project/${projectId}`);
-                const json = await response.json();
-
-                if (response.ok) {
-                    dispatch({ type: 'SET_TASKS', payload: json });
-                    setLocalTasks(json); // ✅ Update local state
-                }
-            } catch (error) {
-                console.error("Error fetching tasks:", error);
-            }
-        };
-
         fetchTasks();
         fetchUserProgress();
     }, [projectId, dispatch]);
+
+    const fetchTasks = async () => {
+        try {
+            const response = await fetch(`/api/tasks/project/${projectId}`);
+            const json = await response.json();
+
+            if (response.ok) {
+                dispatch({ type: 'SET_TASKS', payload: json });
+                setLocalTasks(json);
+                calculateProjectCompletion(json);
+            }
+        } catch (error) {
+            console.error("Error fetching tasks:", error);
+        }
+    };
 
     const fetchUserProgress = async () => {
         try {
@@ -47,6 +49,17 @@ const ProjectDetails = () => {
         }
     };
 
+    const calculateProjectCompletion = (taskList) => {
+        const totalTasks = taskList.length;
+        if (totalTasks === 0) {
+            setProjectCompletion(0);
+            return;
+        }
+
+        const completedTasks = taskList.filter(task => task.status === 'Completed').length;
+        setProjectCompletion(Math.round((completedTasks / totalTasks) * 100));
+    };
+
     const handleStatusChange = async (taskId, newStatus) => {
         try {
             const response = await fetch(`/api/tasks/${taskId}`, {
@@ -59,12 +72,12 @@ const ProjectDetails = () => {
                 const updatedTask = await response.json();
                 dispatch({ type: 'UPDATE_TASK', payload: updatedTask });
 
-                // ✅ Update local state immediately to force dropdown update
-                setLocalTasks(prevTasks =>
-                    prevTasks.map(task =>
-                        task._id === taskId ? { ...task, status: newStatus } : task
-                    )
+                // ✅ Update local state immediately
+                const updatedTasks = localTasks.map(task =>
+                    task._id === taskId ? { ...task, status: newStatus } : task
                 );
+                setLocalTasks(updatedTasks);
+                calculateProjectCompletion(updatedTasks); // ✅ Update Project Completion Live
 
                 let newNotifications = [
                     `✅ Task completed! Earned ${updatedTask.totalXP} XP (Base: ${updatedTask.baseXP}, Bonus: ${updatedTask.bonusXP})`
@@ -85,10 +98,7 @@ const ProjectDetails = () => {
                 }
 
                 setNotifications(newNotifications);
-
-                setTimeout(() => {
-                    setNotifications([]);
-                }, 5000);
+                setTimeout(() => setNotifications([]), 5000);
 
                 fetchUserProgress();
             } else {
@@ -115,11 +125,22 @@ const ProjectDetails = () => {
                     </div>
                 )}
 
+                {/* ✅ Live Project Progress */}
                 <div className="my-4 p-4 bg-white shadow-lg rounded-lg">
-                    <h2 className="text-lg font-bold">Your Task Completion: {completionPercentage}%</h2>
+                    <h2 className="text-lg font-bold">📊 Total Project Completion: {projectCompletion}%</h2>
                     <div className="w-full bg-gray-200 rounded-full h-3 mt-2">
                         <div
-                            className="bg-blue-500 h-3 rounded-full"
+                            className="bg-blue-500 h-3 rounded-full transition-all"
+                            style={{ width: `${projectCompletion}%` }}
+                        ></div>
+                    </div>
+                </div>
+
+                <div className="my-4 p-4 bg-white shadow-lg rounded-lg">
+                    <h2 className="text-lg font-bold">💪 Your Task Completion: {completionPercentage}%</h2>
+                    <div className="w-full bg-gray-200 rounded-full h-3 mt-2">
+                        <div
+                            className="bg-green-500 h-3 rounded-full transition-all"
                             style={{ width: `${completionPercentage}%` }}
                         ></div>
                     </div>
@@ -128,7 +149,7 @@ const ProjectDetails = () => {
                 <div>
                     {loading ? (
                         <p>Loading tasks...</p>
-                    ) : localTasks.length > 0 ? ( // ✅ Use localTasks instead of tasks
+                    ) : localTasks.length > 0 ? (
                         <ul>
                             {localTasks.map((task) => (
                                 <li key={task._id} className="my-4 p-4 bg-white rounded-lg shadow-md">
