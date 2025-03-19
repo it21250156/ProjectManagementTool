@@ -1,501 +1,501 @@
-task_id,task_type,task_complexity,task_priority,estimated_effort_hours,team_experience_level,total_members,past_projects_completed,specialization,team_skillset_match,team_availability,assigned_team
-f0f9c6bc,Bug Fixing,1,1,39.67,3,13,16,Mobile App Development,67.19,30.34,T8
-a96b4054,Testing,3,3,29.3,3,7,16,Web Development,77.4,36.1,T4
-3abad251,Feature Development,1,3,48.97,3,9,16,Mobile App Development,76.65,92.06,T2
-46b79443,Feature Development,2,3,41.25,2,8,16,Web Development,97.57,36.18,T10
-59fed919,Bug Fixing,1,3,36.19,2,11,16,Cybersecurity,62.98,58.61,T3
-ce26d5ac,Code Review,1,1,7.51,1,8,16,Web Development,55.96,42.37,T10
-28e14e34,Code Review,3,3,22.7,3,8,16,Web Development,97.23,58.49,T10
-4d4ba4a2,Feature Development,3,2,49.23,2,7,16,Web Development,91.66,50.02,T4
-7e88de17,Code Review,2,3,9.17,2,6,16,Cybersecurity,82.77,43.25,T6
-76b24537,Feature Development,3,3,24.34,3,15,16,Web Development,81.81,46.98,T9
-88dccaac,Testing,2,2,48.7,2,10,16,Cybersecurity,63.52,70.8,T5
-8200a691,Bug Fixing,1,1,20.55,3,15,16,Cybersecurity,94.25,80.01,T9
-c55c28f8,Testing,3,2,46.1,1,5,16,Mobile App Development,84.04,54.99,T7
-546e5e42,Code Review,3,1,45.5,2,10,16,Mobile App Development,99.53,77.34,T5
-8e46c546,Feature Development,3,2,12.51,2,10,16,Mobile App Development,85.09,62.7,T5
-441c1cab,Code Review,3,1,9.26,1,19,16,Cybersecurity,56.43,55.6,T1
-f6c7cfad,Testing,2,2,23.99,1,5,16,Cybersecurity,65.87,65.9,T7
-06c8bbdd,Code Review,3,1,32.7,2,11,16,Web Development,57.74,61.84,T3
-c9b3ec4e,Testing,2,1,19.53,1,7,16,Web Development,58.46,41.0,T4
-8d0912fb,Testing,2,2,24.22,1,7,14,Web Development,90.55,76.5,T4
-529b7961,Testing,3,1,45.0,1,19,16,Web Development,89.93,36.12,T1
-a9db64e2,Feature Development,2,3,7.39,3,6,16,Mobile App Development,55.81,50.85,T6
-28e14e34,Code Review,3,3,22.7,3,8,16,Web Development,97.23,58.49,T10
-c9b3ec4e,Testing,2,1,19.53,1,7,16,Web Development,58.46,41.0,T4
-e2d09784,Feature Development,3,2,45.35,2,15,16,Mobile App Development,73.37,62.56,T9
-3b10d9f6,Feature Development,3,1,34.18,3,10,16,Cybersecurity,54.35,33.89,T5
-8d0912fb,Testing,2,2,24.22,1,7,14,Web Development,90.55,76.5,T4
-2c84c6d9,Bug Fixing,1,1,27.0,1,8,16,Web Development,90.19,69.57,T10
-ccaeb859,Testing,3,2,25.0,1,15,16,Mobile App Development,62.34,61.37,T9
-f0f9c6bc,Bug Fixing,1,1,39.67,3,13,16,Mobile App Development,67.19,30.34,T8
-11da960d,Feature Development,1,2,24.17,1,9,16,Cybersecurity,92.14,54.49,T2
-879c9019,Code Review,1,2,20.96,3,15,16,Mobile App Development,77.4,60.8,T9
-969b57d2,Testing,3,3,49.37,2,9,11,AI & ML,94.13,87.47,T2
-1a8d858e,Bug Fixing,3,2,15.02,3,10,16,Cybersecurity,95.04,93.01,T5
-9e0c7958,Testing,3,3,20.64,1,15,16,AI & ML,65.51,80.73,T9
-74ad27d6,Bug Fixing,3,1,47.82,2,10,16,AI & ML,88.16,75.31,T5
-e3bac0c6,Feature Development,2,1,47.14,2,15,16,AI & ML,98.41,48.15,T9
-f07adefc,Bug Fixing,2,3,15.37,1,8,16,Cybersecurity,71.65,92.76,T10
-bc8e2087,Feature Development,2,3,35.76,1,8,16,Web Development,69.52,42.06,T10
-bea79400,Feature Development,3,1,17.59,1,8,16,Mobile App Development,98.17,83.79,T10
-441c1cab,Code Review,3,1,9.26,1,19,16,Cybersecurity,56.43,55.6,T1
-0326e83a,Code Review,1,2,11.64,3,10,16,AI & ML,93.95,47.66,T5
-a61d209b,Bug Fixing,2,3,23.22,3,11,16,Mobile App Development,93.47,81.17,T3
-d2cfabed,Feature Development,3,3,29.95,3,15,16,Mobile App Development,65.76,56.85,T9
-e4953b00,Feature Development,3,2,24.72,1,8,16,Cybersecurity,85.6,64.93,T10
-1e33f457,Code Review,2,2,6.41,3,7,16,AI & ML,61.18,82.71,T4
-87d513d7,Bug Fixing,1,2,13.2,2,5,16,AI & ML,85.38,76.15,T7
-e5242090,Code Review,2,1,40.18,1,13,16,AI & ML,99.98,83.47,T8
-e5242090,Code Review,2,1,40.18,1,13,16,AI & ML,99.98,83.47,T8
-a93ebada,Bug Fixing,3,1,32.08,3,13,16,AI & ML,91.04,38.3,T8
-d8fd4d1d,Bug Fixing,2,2,15.95,3,10,16,Cybersecurity,81.27,84.25,T5
-969b57d2,Testing,3,3,49.37,2,9,11,AI & ML,94.13,87.47,T2
-b70c3bec,Code Review,1,3,27.48,1,7,16,Web Development,88.31,92.03,T4
-2e7cfac2,Bug Fixing,3,1,21.25,1,9,16,Cybersecurity,97.12,67.18,T2
-5e8f6b80,Feature Development,2,3,45.18,2,7,16,Mobile App Development,67.68,44.63,T4
-a2868177,Feature Development,1,3,44.15,1,15,16,Cybersecurity,92.29,79.62,T9
-546aef1e,Feature Development,1,2,38.83,3,8,16,AI & ML,64.46,68.07,T10
-c4e92369,Bug Fixing,2,3,21.48,1,6,16,AI & ML,74.16,54.16,T6
-269f4f09,Bug Fixing,3,2,15.28,3,10,16,Cybersecurity,62.34,75.34,T5
-41b5da77,Bug Fixing,1,1,34.07,3,15,16,Mobile App Development,83.71,44.25,T9
-6b193524,Bug Fixing,3,1,26.92,1,9,16,Cybersecurity,61.41,62.77,T2
-cabc43c5,Feature Development,1,1,49.86,2,5,16,AI & ML,92.42,98.68,T7
-7084df3a,Code Review,1,1,45.98,2,11,16,Mobile App Development,58.9,49.72,T3
-025e85e2,Code Review,3,2,26.31,1,11,16,Web Development,85.48,61.51,T3
-b556c2a3,Testing,1,1,39.35,2,5,16,Cybersecurity,81.89,33.78,T7
-fd6bfb3c,Testing,2,2,24.61,3,8,15,Mobile App Development,86.92,78.55,T10
-762aca73,Feature Development,2,3,18.35,1,7,16,Cybersecurity,99.47,44.65,T4
-5850b932,Testing,3,2,49.68,1,19,16,AI & ML,74.46,39.15,T1
-c55c28f8,Testing,3,2,46.1,1,5,16,Mobile App Development,84.04,54.99,T7
-0ba8404f,Testing,3,3,15.61,2,7,16,Cybersecurity,86.24,62.21,T4
-cabc43c5,Feature Development,1,1,49.86,2,5,16,AI & ML,92.42,98.68,T7
-ad551098,Feature Development,1,3,18.12,3,15,16,Web Development,68.01,52.5,T9
-1d31f7e2,Feature Development,3,1,19.79,1,13,16,Cybersecurity,79.43,91.77,T8
-441c1cab,Code Review,3,1,9.26,1,19,16,Cybersecurity,56.43,55.6,T1
-762aca73,Feature Development,2,3,18.35,1,7,16,Cybersecurity,99.47,44.65,T4
-342cca78,Testing,3,3,22.79,3,5,16,Cybersecurity,50.35,48.83,T7
-29c1a1bf,Testing,2,2,36.58,1,15,16,Mobile App Development,81.86,50.66,T9
-4c0218a9,Testing,1,2,26.59,1,5,16,Mobile App Development,75.98,63.37,T7
-342cca78,Testing,3,3,22.79,3,5,16,Cybersecurity,50.35,48.83,T7
-8200a691,Bug Fixing,1,1,20.55,3,15,16,Cybersecurity,94.25,80.01,T9
-4f09f7bd,Code Review,3,3,37.8,2,9,16,Mobile App Development,97.12,34.54,T2
-2ff1a221,Code Review,3,2,9.18,3,5,16,AI & ML,50.89,43.99,T7
-f05bec5a,Feature Development,3,2,17.44,1,9,16,Cybersecurity,70.85,99.05,T2
-4b1ecb46,Bug Fixing,1,1,32.76,3,10,16,AI & ML,57.95,84.65,T5
-41de5700,Feature Development,2,2,23.34,2,10,16,Mobile App Development,68.29,75.52,T5
-86882bdd,Code Review,3,1,34.69,1,5,14,Mobile App Development,96.93,36.08,T7
-56fab7d3,Code Review,1,1,18.35,3,9,16,AI & ML,63.88,49.5,T2
-30de7237,Code Review,2,2,40.18,2,11,16,Cybersecurity,58.11,38.11,T3
-2db8b47c,Code Review,3,3,49.6,2,5,16,Cybersecurity,56.93,39.8,T7
-b70c3bec,Code Review,1,3,27.48,1,7,16,Web Development,88.31,92.03,T4
-94079ee6,Bug Fixing,1,2,18.29,2,7,16,Mobile App Development,61.53,96.75,T4
-74013e6d,Code Review,3,2,48.48,3,11,16,AI & ML,68.05,53.05,T3
-f073eb00,Bug Fixing,1,2,49.01,3,9,16,AI & ML,64.54,73.46,T2
-0b1bda4e,Feature Development,2,2,30.72,1,6,16,AI & ML,77.62,62.67,T6
-2dace4ac,Code Review,2,3,33.33,1,11,16,Mobile App Development,51.04,63.76,T3
-c9fd1582,Feature Development,3,1,42.39,1,11,16,AI & ML,81.38,89.78,T3
-fd751fec,Feature Development,1,3,32.37,1,6,16,AI & ML,83.61,37.01,T6
-d7abb909,Testing,3,1,5.85,3,6,16,AI & ML,88.95,65.08,T6
-8d0912fb,Testing,2,2,24.22,1,7,14,Web Development,90.55,76.5,T4
-950521e8,Testing,2,2,27.85,1,5,16,Mobile App Development,55.02,81.62,T7
-bea79400,Feature Development,3,1,17.59,1,8,16,Mobile App Development,98.17,83.79,T10
-aa52fa37,Testing,2,3,27.36,1,7,16,Mobile App Development,79.9,66.1,T4
-18204ca1,Feature Development,3,2,37.2,2,19,16,Web Development,73.33,44.86,T1
-c3dcb037,Code Review,2,2,33.96,2,19,16,Web Development,89.85,60.94,T1
-c3dcb037,Code Review,2,2,33.96,2,19,16,Web Development,89.85,60.94,T1
-f629302d,Bug Fixing,3,3,36.79,2,6,16,AI & ML,56.09,36.61,T6
-45d7bcec,Code Review,1,3,24.18,1,5,16,Cybersecurity,76.91,39.9,T7
-e37840d8,Testing,1,2,37.97,2,15,16,AI & ML,50.91,87.77,T9
-8ec31302,Code Review,3,1,15.89,2,15,16,Mobile App Development,90.35,82.34,T9
-f2ded4c5,Testing,2,3,32.41,1,5,10,Mobile App Development,64.04,50.4,T7
-f21b9210,Bug Fixing,3,1,31.59,1,8,16,AI & ML,51.12,30.66,T10
-816d8b65,Bug Fixing,1,3,29.18,2,15,16,Mobile App Development,98.5,64.27,T9
-6a75471b,Feature Development,2,3,15.62,1,19,16,AI & ML,80.71,33.66,T1
-3814dee2,Bug Fixing,2,1,28.48,2,5,16,Mobile App Development,57.6,98.32,T7
-cabc43c5,Feature Development,1,1,49.86,2,5,16,AI & ML,92.42,98.68,T7
-e96cd7a7,Testing,1,3,30.07,3,8,16,AI & ML,62.67,84.21,T10
-a4d30e5a,Code Review,3,1,13.21,2,15,16,Web Development,50.26,50.25,T9
-ff7ebad8,Code Review,1,1,23.02,3,6,16,AI & ML,93.41,44.0,T6
-76aa2b34,Code Review,1,2,8.39,3,5,16,Cybersecurity,50.15,78.75,T7
-6f7211dc,Testing,3,3,35.95,3,8,16,Web Development,55.4,81.94,T10
-7654e1f7,Feature Development,2,3,13.91,3,19,16,AI & ML,82.62,81.92,T1
-96b2ddf8,Testing,3,3,15.69,1,10,16,AI & ML,73.03,31.69,T5
-41de5700,Feature Development,2,2,23.34,2,10,16,Mobile App Development,68.29,75.52,T5
-ae3de9ba,Feature Development,3,1,9.62,3,9,16,AI & ML,98.57,57.77,T2
-2c84c6d9,Bug Fixing,1,1,27.0,1,8,16,Web Development,90.19,69.57,T10
-c800e27c,Bug Fixing,3,3,38.21,1,6,16,Cybersecurity,51.52,88.12,T6
-aa52fa37,Testing,2,3,27.36,1,7,16,Mobile App Development,79.9,66.1,T4
-6e9f4bd2,Feature Development,3,2,16.59,1,15,16,AI & ML,52.35,92.82,T9
-5ced7501,Code Review,2,2,8.9,2,6,16,Web Development,78.95,68.54,T6
-bc8e2087,Feature Development,2,3,35.76,1,8,16,Web Development,69.52,42.06,T10
-46f2622a,Bug Fixing,1,3,31.09,3,11,16,Web Development,75.54,80.0,T3
-ce31e292,Code Review,2,3,17.78,2,19,16,Web Development,63.39,74.48,T1
-30de7237,Code Review,2,2,40.18,2,11,16,Cybersecurity,58.11,38.11,T3
-ef29a046,Feature Development,3,1,44.16,3,15,16,Mobile App Development,56.56,81.76,T9
-770fc877,Feature Development,3,1,16.3,3,5,16,Mobile App Development,96.32,96.2,T7
-673d49a4,Testing,3,3,49.5,2,8,16,Cybersecurity,62.87,40.0,T10
-ad551098,Feature Development,1,3,18.12,3,15,16,Web Development,68.01,52.5,T9
-d62cd89a,Feature Development,1,1,19.47,3,11,16,AI & ML,58.67,90.95,T3
-9de1b214,Bug Fixing,1,3,35.38,1,15,16,Mobile App Development,96.71,40.32,T9
-3b0c02c5,Bug Fixing,2,3,49.19,2,6,16,Web Development,76.36,45.43,T6
-524a7f43,Code Review,3,1,31.21,2,9,10,Cybersecurity,74.25,69.12,T2
-cfece966,Testing,3,3,23.83,2,7,16,Mobile App Development,58.92,43.45,T4
-572770b2,Bug Fixing,3,3,48.83,1,8,16,Cybersecurity,75.01,66.82,T10
-688064cc,Feature Development,1,2,22.5,3,7,16,Mobile App Development,62.08,62.43,T4
-2c84c6d9,Bug Fixing,1,1,27.0,1,8,16,Web Development,90.19,69.57,T10
-41861c1c,Bug Fixing,1,1,9.08,2,10,16,AI & ML,52.75,85.94,T5
-45d7bcec,Code Review,1,3,24.18,1,5,16,Cybersecurity,76.91,39.9,T7
-c93556a7,Testing,1,2,40.28,3,19,16,Web Development,54.52,81.91,T1
-2db8b47c,Code Review,3,3,49.6,2,5,16,Cybersecurity,56.93,39.8,T7
-a9db64e2,Feature Development,2,3,7.39,3,6,16,Mobile App Development,55.81,50.85,T6
-2a21c70f,Testing,2,2,25.81,2,13,16,Web Development,51.07,75.76,T8
-9fa0b034,Code Review,1,1,5.53,2,19,16,Mobile App Development,57.9,41.14,T1
-1765ea3c,Code Review,1,3,46.41,1,8,16,Mobile App Development,75.86,54.0,T10
-9d2773d4,Testing,2,1,28.84,3,5,12,AI & ML,91.6,63.51,T7
-3df2fc1e,Feature Development,2,3,45.61,3,5,16,Mobile App Development,68.2,76.72,T7
-e3bac0c6,Feature Development,2,1,47.14,2,15,16,AI & ML,98.41,48.15,T9
-e00672b7,Testing,3,2,14.79,3,5,16,Mobile App Development,70.84,33.22,T7
-4ef33e77,Code Review,2,2,38.5,2,13,16,Web Development,69.23,97.18,T8
-7654e1f7,Feature Development,2,3,13.91,3,19,16,AI & ML,82.62,81.92,T1
-68a68a18,Testing,3,3,33.51,2,6,16,Web Development,84.34,50.85,T6
-d957ef92,Code Review,2,2,19.61,3,15,16,AI & ML,99.26,44.99,T9
-816d8b65,Bug Fixing,1,3,29.18,2,15,16,Mobile App Development,98.5,64.27,T9
-e96cd7a7,Testing,1,3,30.07,3,8,16,AI & ML,62.67,84.21,T10
-d5e4cb17,Bug Fixing,3,3,13.38,1,13,16,Mobile App Development,83.68,67.97,T8
-76b24537,Feature Development,3,3,24.34,3,15,16,Web Development,81.81,46.98,T9
-407fde5c,Testing,2,2,13.01,3,5,16,AI & ML,54.98,84.06,T7
-0ba8404f,Testing,3,3,15.61,2,7,16,Cybersecurity,86.24,62.21,T4
-ef29a046,Feature Development,3,1,44.16,3,15,16,Mobile App Development,56.56,81.76,T9
-5bf273ec,Bug Fixing,1,1,26.84,1,7,16,AI & ML,78.34,46.11,T4
-40730fd2,Code Review,1,1,24.53,1,9,16,Mobile App Development,75.48,71.89,T2
-c800e27c,Bug Fixing,3,3,38.21,1,6,16,Cybersecurity,51.52,88.12,T6
-c74549ef,Testing,1,3,10.63,2,9,16,Web Development,66.51,46.0,T2
-f05741b3,Bug Fixing,3,1,8.11,2,5,16,Web Development,65.73,32.11,T7
-29415192,Feature Development,1,2,49.94,1,6,16,Mobile App Development,71.83,52.98,T6
-90ba8870,Bug Fixing,2,1,8.85,3,11,16,AI & ML,88.78,92.0,T3
-14d26930,Code Review,2,3,24.77,3,11,16,AI & ML,93.11,61.88,T3
-78fe65b1,Bug Fixing,2,2,43.85,3,5,16,Mobile App Development,93.35,91.75,T7
-53c3e611,Bug Fixing,2,3,17.46,3,15,16,AI & ML,81.87,45.71,T9
-4226d11b,Bug Fixing,1,1,48.62,1,13,16,AI & ML,72.56,43.41,T8
-3b10d9f6,Feature Development,3,1,34.18,3,10,16,Cybersecurity,54.35,33.89,T5
-80fa2f23,Feature Development,3,2,33.68,2,9,16,Mobile App Development,74.95,85.26,T2
-a842eb6c,Code Review,2,3,48.54,3,6,16,Cybersecurity,72.95,61.81,T6
-ff3a6fd5,Code Review,2,3,17.38,2,7,16,Cybersecurity,57.08,46.76,T4
-3df2fc1e,Feature Development,2,3,45.61,3,5,16,Mobile App Development,68.2,76.72,T7
-316b3410,Testing,3,1,8.42,2,19,16,Cybersecurity,76.45,87.88,T1
-c9fd1582,Feature Development,3,1,42.39,1,11,16,AI & ML,81.38,89.78,T3
-c13df2a7,Bug Fixing,2,1,37.79,2,11,16,AI & ML,65.42,89.48,T3
-291f497a,Feature Development,2,3,33.66,1,10,16,Web Development,50.85,31.79,T5
-600ccdb3,Feature Development,2,3,14.6,2,9,16,Web Development,57.36,72.8,T2
-3a947cf8,Code Review,1,3,30.24,1,6,16,Cybersecurity,74.56,79.25,T6
-74ad27d6,Bug Fixing,3,1,47.82,2,10,16,AI & ML,88.16,75.31,T5
-6a75471b,Feature Development,2,3,15.62,1,19,16,AI & ML,80.71,33.66,T1
-499ebf09,Bug Fixing,1,3,6.74,2,5,16,Web Development,64.1,92.42,T7
-e26c2e75,Bug Fixing,2,2,21.45,3,6,16,Mobile App Development,94.33,40.03,T6
-6963642b,Testing,2,2,48.84,3,10,16,Web Development,61.71,41.46,T5
-f55d1623,Bug Fixing,2,1,35.94,3,13,16,Mobile App Development,61.67,49.25,T8
-9bcf96c1,Code Review,2,3,14.95,1,7,16,AI & ML,99.94,92.7,T4
-106c6954,Bug Fixing,2,2,42.03,1,9,16,Cybersecurity,73.36,84.8,T2
-0282cadc,Testing,2,3,47.48,2,5,16,Mobile App Development,57.59,91.8,T7
-8d0912fb,Testing,2,2,24.22,1,7,14,Web Development,90.55,76.5,T4
-28489434,Feature Development,2,3,49.69,1,10,16,Cybersecurity,96.9,75.85,T5
-3b0c02c5,Bug Fixing,2,3,49.19,2,6,16,Web Development,76.36,45.43,T6
-441c1cab,Code Review,3,1,9.26,1,19,16,Cybersecurity,56.43,55.6,T1
-b4ae0eb7,Code Review,1,1,40.04,2,10,16,Web Development,91.04,80.76,T5
-3df2fc1e,Feature Development,2,3,45.61,3,5,16,Mobile App Development,68.2,76.72,T7
-f4bbec1e,Code Review,1,3,24.78,2,6,16,AI & ML,95.3,40.0,T6
-aa52fa37,Testing,2,3,27.36,1,7,16,Mobile App Development,79.9,66.1,T4
-46790a3b,Feature Development,1,3,39.83,2,5,16,Mobile App Development,88.78,84.15,T7
-b86fa9b8,Code Review,2,3,32.0,2,11,16,Mobile App Development,94.78,74.96,T3
-30de7237,Code Review,2,2,40.18,2,11,16,Cybersecurity,58.11,38.11,T3
-a66359a4,Feature Development,2,2,48.29,2,8,16,Mobile App Development,92.32,61.25,T10
-46525255,Feature Development,2,1,19.04,3,15,16,Cybersecurity,58.37,51.28,T9
-69fee229,Code Review,2,2,30.96,2,10,16,AI & ML,73.91,50.57,T5
-d957ef92,Code Review,2,2,19.61,3,15,16,AI & ML,99.26,44.99,T9
-f5dac161,Feature Development,3,1,22.11,3,8,16,AI & ML,60.84,34.07,T10
-342cca78,Testing,3,3,22.79,3,5,16,Cybersecurity,50.35,48.83,T7
-4f09f7bd,Code Review,3,3,37.8,2,9,16,Mobile App Development,97.12,34.54,T2
-117965e2,Bug Fixing,3,1,34.92,3,8,16,Web Development,54.07,66.2,T10
-025e85e2,Code Review,3,2,26.31,1,11,16,Web Development,85.48,61.51,T3
-673d49a4,Testing,3,3,49.5,2,8,16,Cybersecurity,62.87,40.0,T10
-3b0c02c5,Bug Fixing,2,3,49.19,2,6,16,Web Development,76.36,45.43,T6
-816d8b65,Bug Fixing,1,3,29.18,2,15,16,Mobile App Development,98.5,64.27,T9
-879c9019,Code Review,1,2,20.96,3,15,16,Mobile App Development,77.4,60.8,T9
-f6c7cfad,Testing,2,2,23.99,1,5,16,Cybersecurity,65.87,65.9,T7
-6b193524,Bug Fixing,3,1,26.92,1,9,16,Cybersecurity,61.41,62.77,T2
-0389564e,Feature Development,1,1,28.36,2,7,16,Cybersecurity,93.13,64.55,T4
-e26c2e75,Bug Fixing,2,2,21.45,3,6,16,Mobile App Development,94.33,40.03,T6
-291f497a,Feature Development,2,3,33.66,1,10,16,Web Development,50.85,31.79,T5
-9bcf96c1,Code Review,2,3,14.95,1,7,16,AI & ML,99.94,92.7,T4
-f05741b3,Bug Fixing,3,1,8.11,2,5,16,Web Development,65.73,32.11,T7
-231a7210,Bug Fixing,2,3,24.0,1,5,16,Web Development,85.25,33.07,T7
-cabc43c5,Feature Development,1,1,49.86,2,5,16,AI & ML,92.42,98.68,T7
-8d0912fb,Testing,2,2,24.22,1,7,14,Web Development,90.55,76.5,T4
-a61d209b,Bug Fixing,2,3,23.22,3,11,16,Mobile App Development,93.47,81.17,T3
-b70c3bec,Code Review,1,3,27.48,1,7,16,Web Development,88.31,92.03,T4
-0b1bda4e,Feature Development,2,2,30.72,1,6,16,AI & ML,77.62,62.67,T6
-ff3a6fd5,Code Review,2,3,17.38,2,7,16,Cybersecurity,57.08,46.76,T4
-e4a52c9f,Testing,3,3,20.52,1,9,16,Web Development,80.77,56.55,T2
-f0f9c6bc,Bug Fixing,1,1,39.67,3,13,16,Mobile App Development,67.19,30.34,T8
-3c0b5551,Feature Development,1,3,13.03,3,8,16,Cybersecurity,76.73,65.73,T10
-80fa2f23,Feature Development,3,2,33.68,2,9,16,Mobile App Development,74.95,85.26,T2
-572770b2,Bug Fixing,3,3,48.83,1,8,16,Cybersecurity,75.01,66.82,T10
-6692e3ac,Bug Fixing,3,1,40.37,2,5,16,AI & ML,73.62,49.85,T7
-b86fa9b8,Code Review,2,3,32.0,2,11,16,Mobile App Development,94.78,74.96,T3
-a4d30e5a,Code Review,3,1,13.21,2,15,16,Web Development,50.26,50.25,T9
-1d31f7e2,Feature Development,3,1,19.79,1,13,16,Cybersecurity,79.43,91.77,T8
-11da960d,Feature Development,1,2,24.17,1,9,16,Cybersecurity,92.14,54.49,T2
-3e364193,Bug Fixing,3,1,14.88,2,13,16,Cybersecurity,67.63,44.89,T8
-f05bec5a,Feature Development,3,2,17.44,1,9,16,Cybersecurity,70.85,99.05,T2
-74013e6d,Code Review,3,2,48.48,3,11,16,AI & ML,68.05,53.05,T3
-a05d960f,Bug Fixing,1,3,40.65,2,8,16,AI & ML,79.2,98.98,T10
-441c1cab,Code Review,3,1,9.26,1,19,16,Cybersecurity,56.43,55.6,T1
-3e364193,Bug Fixing,3,1,14.88,2,13,16,Cybersecurity,67.63,44.89,T8
-a05d960f,Bug Fixing,1,3,40.65,2,8,16,AI & ML,79.2,98.98,T10
-fd6bfb3c,Testing,2,2,24.61,3,8,15,Mobile App Development,86.92,78.55,T10
-3e364193,Bug Fixing,3,1,14.88,2,13,16,Cybersecurity,67.63,44.89,T8
-2dace4ac,Code Review,2,3,33.33,1,11,16,Mobile App Development,51.04,63.76,T3
-441c1cab,Code Review,3,1,9.26,1,19,16,Cybersecurity,56.43,55.6,T1
-28489434,Feature Development,2,3,49.69,1,10,16,Cybersecurity,96.9,75.85,T5
-7e88de17,Code Review,2,3,9.17,2,6,16,Cybersecurity,82.77,43.25,T6
-94079ee6,Bug Fixing,1,2,18.29,2,7,16,Mobile App Development,61.53,96.75,T4
-342cca78,Testing,3,3,22.79,3,5,16,Cybersecurity,50.35,48.83,T7
-f07adefc,Bug Fixing,2,3,15.37,1,8,16,Cybersecurity,71.65,92.76,T10
-5bf273ec,Bug Fixing,1,1,26.84,1,7,16,AI & ML,78.34,46.11,T4
-7dbfd805,Code Review,1,2,21.22,3,7,16,Cybersecurity,65.75,59.86,T4
-78fe65b1,Bug Fixing,2,2,43.85,3,5,16,Mobile App Development,93.35,91.75,T7
-9b2f4a49,Feature Development,1,3,22.37,2,8,16,Cybersecurity,89.1,35.88,T10
-6692e3ac,Bug Fixing,3,1,40.37,2,5,16,AI & ML,73.62,49.85,T7
-76aa2b34,Code Review,1,2,8.39,3,5,16,Cybersecurity,50.15,78.75,T7
-7084df3a,Code Review,1,1,45.98,2,11,16,Mobile App Development,58.9,49.72,T3
-9b2f4a49,Feature Development,1,3,22.37,2,8,16,Cybersecurity,89.1,35.88,T10
-905f7846,Feature Development,2,3,23.08,3,5,16,AI & ML,55.45,30.93,T7
-422af973,Testing,1,3,38.07,1,5,16,Cybersecurity,90.16,68.87,T7
-1df2ea64,Testing,2,3,35.25,2,15,16,Cybersecurity,73.81,99.69,T9
-11da960d,Feature Development,1,2,24.17,1,9,16,Cybersecurity,92.14,54.49,T2
-238e7f06,Code Review,3,2,25.92,1,6,16,Mobile App Development,86.69,56.0,T6
-5f862b9b,Bug Fixing,1,3,30.08,1,5,16,AI & ML,55.79,37.45,T7
-9e0c7958,Testing,3,3,20.64,1,15,16,AI & ML,65.51,80.73,T9
-e96cd7a7,Testing,1,3,30.07,3,8,16,AI & ML,62.67,84.21,T10
-d8df389b,Feature Development,3,3,16.72,3,7,16,Cybersecurity,68.83,95.59,T4
-ae3de9ba,Feature Development,3,1,9.62,3,9,16,AI & ML,98.57,57.77,T2
-54577139,Code Review,2,3,40.25,2,6,16,Web Development,89.65,55.06,T6
-a66359a4,Feature Development,2,2,48.29,2,8,16,Mobile App Development,92.32,61.25,T10
-1d31f7e2,Feature Development,3,1,19.79,1,13,16,Cybersecurity,79.43,91.77,T8
-aa52fa37,Testing,2,3,27.36,1,7,16,Mobile App Development,79.9,66.1,T4
-e886e7fa,Feature Development,1,2,44.02,1,6,16,AI & ML,69.02,72.86,T6
-f2fff536,Testing,3,3,40.28,3,6,16,Web Development,68.5,66.98,T6
-4226d11b,Bug Fixing,1,1,48.62,1,13,16,AI & ML,72.56,43.41,T8
-572770b2,Bug Fixing,3,3,48.83,1,8,16,Cybersecurity,75.01,66.82,T10
-da28debd,Bug Fixing,1,3,18.53,2,5,16,Cybersecurity,69.96,69.71,T7
-d7678eac,Bug Fixing,3,1,42.08,3,8,16,Mobile App Development,77.81,56.2,T10
-238e7f06,Code Review,3,2,25.92,1,6,16,Mobile App Development,86.69,56.0,T6
-269f4f09,Bug Fixing,3,2,15.28,3,10,16,Cybersecurity,62.34,75.34,T5
-5c827c5a,Bug Fixing,1,1,48.78,1,11,16,Web Development,57.3,92.34,T3
-529b7961,Testing,3,1,45.0,1,19,16,Web Development,89.93,36.12,T1
-2e7cfac2,Bug Fixing,3,1,21.25,1,9,16,Cybersecurity,97.12,67.18,T2
-238e7f06,Code Review,3,2,25.92,1,6,16,Mobile App Development,86.69,56.0,T6
-d8df389b,Feature Development,3,3,16.72,3,7,16,Cybersecurity,68.83,95.59,T4
-cabc43c5,Feature Development,1,1,49.86,2,5,16,AI & ML,92.42,98.68,T7
-f0f9c6bc,Bug Fixing,1,1,39.67,3,13,16,Mobile App Development,67.19,30.34,T8
-9b2f4a49,Feature Development,1,3,22.37,2,8,16,Cybersecurity,89.1,35.88,T10
-6e9f4bd2,Feature Development,3,2,16.59,1,15,16,AI & ML,52.35,92.82,T9
-f07adefc,Bug Fixing,2,3,15.37,1,8,16,Cybersecurity,71.65,92.76,T10
-83674ded,Testing,2,3,45.51,2,5,16,Mobile App Development,70.77,45.33,T7
-499ebf09,Bug Fixing,1,3,6.74,2,5,16,Web Development,64.1,92.42,T7
-76b24537,Feature Development,3,3,24.34,3,15,16,Web Development,81.81,46.98,T9
-69fee229,Code Review,2,2,30.96,2,10,16,AI & ML,73.91,50.57,T5
-407fde5c,Testing,2,2,13.01,3,5,16,AI & ML,54.98,84.06,T7
-ce26d5ac,Code Review,1,1,7.51,1,8,16,Web Development,55.96,42.37,T10
-80fa2f23,Feature Development,3,2,33.68,2,9,16,Mobile App Development,74.95,85.26,T2
-0ba8404f,Testing,3,3,15.61,2,7,16,Cybersecurity,86.24,62.21,T4
-a9db64e2,Feature Development,2,3,7.39,3,6,16,Mobile App Development,55.81,50.85,T6
-83674ded,Testing,2,3,45.51,2,5,16,Mobile App Development,70.77,45.33,T7
-76b24537,Feature Development,3,3,24.34,3,15,16,Web Development,81.81,46.98,T9
-5f862b9b,Bug Fixing,1,3,30.08,1,5,16,AI & ML,55.79,37.45,T7
-ce8d88cd,Code Review,3,3,19.6,2,7,16,Cybersecurity,55.59,49.9,T4
-529b7961,Testing,3,1,45.0,1,19,16,Web Development,89.93,36.12,T1
-a4d30e5a,Code Review,3,1,13.21,2,15,16,Web Development,50.26,50.25,T9
-d6e15ed4,Feature Development,3,1,19.5,2,10,16,Cybersecurity,87.26,46.99,T5
-1df2ea64,Testing,2,3,35.25,2,15,16,Cybersecurity,73.81,99.69,T9
-28e14e34,Code Review,3,3,22.7,3,8,16,Web Development,97.23,58.49,T10
-7dbfd805,Code Review,1,2,21.22,3,7,16,Cybersecurity,65.75,59.86,T4
-3abad251,Feature Development,1,3,48.97,3,9,16,Mobile App Development,76.65,92.06,T2
-28489434,Feature Development,2,3,49.69,1,10,16,Cybersecurity,96.9,75.85,T5
-1fc574d1,Bug Fixing,1,3,21.9,3,19,16,AI & ML,92.3,52.32,T1
-e00672b7,Testing,3,2,14.79,3,5,16,Mobile App Development,70.84,33.22,T7
-d6e15ed4,Feature Development,3,1,19.5,2,10,16,Cybersecurity,87.26,46.99,T5
-441c1cab,Code Review,3,1,9.26,1,19,16,Cybersecurity,56.43,55.6,T1
-3b10d9f6,Feature Development,3,1,34.18,3,10,16,Cybersecurity,54.35,33.89,T5
-d5e4cb17,Bug Fixing,3,3,13.38,1,13,16,Mobile App Development,83.68,67.97,T8
-8d0912fb,Testing,2,2,24.22,1,7,14,Web Development,90.55,76.5,T4
-174f518c,Feature Development,2,1,8.67,3,8,16,Web Development,93.44,39.1,T10
-c13df2a7,Bug Fixing,2,1,37.79,2,11,16,AI & ML,65.42,89.48,T3
-0389564e,Feature Development,1,1,28.36,2,7,16,Cybersecurity,93.13,64.55,T4
-d5b968ef,Bug Fixing,2,2,7.84,3,8,16,Mobile App Development,54.38,70.65,T10
-f073eb00,Bug Fixing,1,2,49.01,3,9,16,AI & ML,64.54,73.46,T2
-f4bbec1e,Code Review,1,3,24.78,2,6,16,AI & ML,95.3,40.0,T6
-e886e7fa,Feature Development,1,2,44.02,1,6,16,AI & ML,69.02,72.86,T6
-a66359a4,Feature Development,2,2,48.29,2,8,16,Mobile App Development,92.32,61.25,T10
-e3bac0c6,Feature Development,2,1,47.14,2,15,16,AI & ML,98.41,48.15,T9
-30de7237,Code Review,2,2,40.18,2,11,16,Cybersecurity,58.11,38.11,T3
-29c1a1bf,Testing,2,2,36.58,1,15,16,Mobile App Development,81.86,50.66,T9
-79d6b7cb,Bug Fixing,1,1,15.4,1,8,16,Web Development,67.83,34.56,T10
-8e46c546,Feature Development,3,2,12.51,2,10,16,Mobile App Development,85.09,62.7,T5
-d7678eac,Bug Fixing,3,1,42.08,3,8,16,Mobile App Development,77.81,56.2,T10
-025e85e2,Code Review,3,2,26.31,1,11,16,Web Development,85.48,61.51,T3
-2db8b47c,Code Review,3,3,49.6,2,5,16,Cybersecurity,56.93,39.8,T7
-529b7961,Testing,3,1,45.0,1,19,16,Web Development,89.93,36.12,T1
-106c6954,Bug Fixing,2,2,42.03,1,9,16,Cybersecurity,73.36,84.8,T2
-ba7cb25d,Code Review,3,3,36.11,2,13,16,Web Development,53.61,58.78,T8
-d8fd4d1d,Bug Fixing,2,2,15.95,3,10,16,Cybersecurity,81.27,84.25,T5
-6a75471b,Feature Development,2,3,15.62,1,19,16,AI & ML,80.71,33.66,T1
-0b1bda4e,Feature Development,2,2,30.72,1,6,16,AI & ML,77.62,62.67,T6
-9de1b214,Bug Fixing,1,3,35.38,1,15,16,Mobile App Development,96.71,40.32,T9
-ce26d5ac,Code Review,1,1,7.51,1,8,16,Web Development,55.96,42.37,T10
-e886e7fa,Feature Development,1,2,44.02,1,6,16,AI & ML,69.02,72.86,T6
-c74549ef,Testing,1,3,10.63,2,9,16,Web Development,66.51,46.0,T2
-fd751fec,Feature Development,1,3,32.37,1,6,16,AI & ML,83.61,37.01,T6
-f2f705d6,Testing,2,2,27.42,2,7,16,AI & ML,50.44,85.19,T4
-ff3a6fd5,Code Review,2,3,17.38,2,7,16,Cybersecurity,57.08,46.76,T4
-79d6b7cb,Bug Fixing,1,1,15.4,1,8,16,Web Development,67.83,34.56,T10
-688064cc,Feature Development,1,2,22.5,3,7,16,Mobile App Development,62.08,62.43,T4
-905f7846,Feature Development,2,3,23.08,3,5,16,AI & ML,55.45,30.93,T7
-6a75471b,Feature Development,2,3,15.62,1,19,16,AI & ML,80.71,33.66,T1
-74ad27d6,Bug Fixing,3,1,47.82,2,10,16,AI & ML,88.16,75.31,T5
-c3dcb037,Code Review,2,2,33.96,2,19,16,Web Development,89.85,60.94,T1
-d957ef92,Code Review,2,2,19.61,3,15,16,AI & ML,99.26,44.99,T9
-da534629,Feature Development,2,3,10.5,3,10,16,Web Development,54.61,66.56,T5
-316b3410,Testing,3,1,8.42,2,19,16,Cybersecurity,76.45,87.88,T1
-45d7bcec,Code Review,1,3,24.18,1,5,16,Cybersecurity,76.91,39.9,T7
-8e46c546,Feature Development,3,2,12.51,2,10,16,Mobile App Development,85.09,62.7,T5
-3b10d9f6,Feature Development,3,1,34.18,3,10,16,Cybersecurity,54.35,33.89,T5
-29c1a1bf,Testing,2,2,36.58,1,15,16,Mobile App Development,81.86,50.66,T9
-da28debd,Bug Fixing,1,3,18.53,2,5,16,Cybersecurity,69.96,69.71,T7
-8ec31302,Code Review,3,1,15.89,2,15,16,Mobile App Development,90.35,82.34,T9
-41de5700,Feature Development,2,2,23.34,2,10,16,Mobile App Development,68.29,75.52,T5
-529b7961,Testing,3,1,45.0,1,19,16,Web Development,89.93,36.12,T1
-762aca73,Feature Development,2,3,18.35,1,7,16,Cybersecurity,99.47,44.65,T4
-c9b3ec4e,Testing,2,1,19.53,1,7,16,Web Development,58.46,41.0,T4
-31add281,Feature Development,1,3,27.07,1,13,16,AI & ML,68.87,35.26,T8
-f05bec5a,Feature Development,3,2,17.44,1,9,16,Cybersecurity,70.85,99.05,T2
-1d31f7e2,Feature Development,3,1,19.79,1,13,16,Cybersecurity,79.43,91.77,T8
-2db8b47c,Code Review,3,3,49.6,2,5,16,Cybersecurity,56.93,39.8,T7
-8e46c546,Feature Development,3,2,12.51,2,10,16,Mobile App Development,85.09,62.7,T5
-2dace4ac,Code Review,2,3,33.33,1,11,16,Mobile App Development,51.04,63.76,T3
-7f85ef9f,Testing,2,1,31.9,1,11,16,AI & ML,65.86,76.68,T3
-54577139,Code Review,2,3,40.25,2,6,16,Web Development,89.65,55.06,T6
-238e7f06,Code Review,3,2,25.92,1,6,16,Mobile App Development,86.69,56.0,T6
-71259f8a,Bug Fixing,1,3,16.08,3,5,16,Cybersecurity,77.22,56.41,T7
-1df2ea64,Testing,2,3,35.25,2,15,16,Cybersecurity,73.81,99.69,T9
-8e46c546,Feature Development,3,2,12.51,2,10,16,Mobile App Development,85.09,62.7,T5
-e3bac0c6,Feature Development,2,1,47.14,2,15,16,AI & ML,98.41,48.15,T9
-422af973,Testing,1,3,38.07,1,5,16,Cybersecurity,90.16,68.87,T7
-117965e2,Bug Fixing,3,1,34.92,3,8,16,Web Development,54.07,66.2,T10
-a9db64e2,Feature Development,2,3,7.39,3,6,16,Mobile App Development,55.81,50.85,T6
-54577139,Code Review,2,3,40.25,2,6,16,Web Development,89.65,55.06,T6
-f05bec5a,Feature Development,3,2,17.44,1,9,16,Cybersecurity,70.85,99.05,T2
-79d6b7cb,Bug Fixing,1,1,15.4,1,8,16,Web Development,67.83,34.56,T10
-69fee229,Code Review,2,2,30.96,2,10,16,AI & ML,73.91,50.57,T5
-238e7f06,Code Review,3,2,25.92,1,6,16,Mobile App Development,86.69,56.0,T6
-269f4f09,Bug Fixing,3,2,15.28,3,10,16,Cybersecurity,62.34,75.34,T5
-f4bbec1e,Code Review,1,3,24.78,2,6,16,AI & ML,95.3,40.0,T6
-4c0218a9,Testing,1,2,26.59,1,5,16,Mobile App Development,75.98,63.37,T7
-422af973,Testing,1,3,38.07,1,5,16,Cybersecurity,90.16,68.87,T7
-231a7210,Bug Fixing,2,3,24.0,1,5,16,Web Development,85.25,33.07,T7
-7dbfd805,Code Review,1,2,21.22,3,7,16,Cybersecurity,65.75,59.86,T4
-29c1a1bf,Testing,2,2,36.58,1,15,16,Mobile App Development,81.86,50.66,T9
-499ebf09,Bug Fixing,1,3,6.74,2,5,16,Web Development,64.1,92.42,T7
-a05d960f,Bug Fixing,1,3,40.65,2,8,16,AI & ML,79.2,98.98,T10
-f2fff536,Testing,3,3,40.28,3,6,16,Web Development,68.5,66.98,T6
-8ec31302,Code Review,3,1,15.89,2,15,16,Mobile App Development,90.35,82.34,T9
-94079ee6,Bug Fixing,1,2,18.29,2,7,16,Mobile App Development,61.53,96.75,T4
-9fa0b034,Code Review,1,1,5.53,2,19,16,Mobile App Development,57.9,41.14,T1
-6a75471b,Feature Development,2,3,15.62,1,19,16,AI & ML,80.71,33.66,T1
-ce8d88cd,Code Review,3,3,19.6,2,7,16,Cybersecurity,55.59,49.9,T4
-7f85ef9f,Testing,2,1,31.9,1,11,16,AI & ML,65.86,76.68,T3
-f05741b3,Bug Fixing,3,1,8.11,2,5,16,Web Development,65.73,32.11,T7
-ba7cb25d,Code Review,3,3,36.11,2,13,16,Web Development,53.61,58.78,T8
-e96cd7a7,Testing,1,3,30.07,3,8,16,AI & ML,62.67,84.21,T10
-f05bec5a,Feature Development,3,2,17.44,1,9,16,Cybersecurity,70.85,99.05,T2
-a9db64e2,Feature Development,2,3,7.39,3,6,16,Mobile App Development,55.81,50.85,T6
-905f7846,Feature Development,2,3,23.08,3,5,16,AI & ML,55.45,30.93,T7
-e4a52c9f,Testing,3,3,20.52,1,9,16,Web Development,80.77,56.55,T2
-04c4f699,Testing,3,2,25.49,3,11,16,Mobile App Development,92.47,57.44,T3
-529b7961,Testing,3,1,45.0,1,19,16,Web Development,89.93,36.12,T1
-816d8b65,Bug Fixing,1,3,29.18,2,15,16,Mobile App Development,98.5,64.27,T9
-2e7cfac2,Bug Fixing,3,1,21.25,1,9,16,Cybersecurity,97.12,67.18,T2
-5c827c5a,Bug Fixing,1,1,48.78,1,11,16,Web Development,57.3,92.34,T3
-54577139,Code Review,2,3,40.25,2,6,16,Web Development,89.65,55.06,T6
-aa52fa37,Testing,2,3,27.36,1,7,16,Mobile App Development,79.9,66.1,T4
-174f518c,Feature Development,2,1,8.67,3,8,16,Web Development,93.44,39.1,T10
-41861c1c,Bug Fixing,1,1,9.08,2,10,16,AI & ML,52.75,85.94,T5
-1d31f7e2,Feature Development,3,1,19.79,1,13,16,Cybersecurity,79.43,91.77,T8
-5f862b9b,Bug Fixing,1,3,30.08,1,5,16,AI & ML,55.79,37.45,T7
-54577139,Code Review,2,3,40.25,2,6,16,Web Development,89.65,55.06,T6
-87d513d7,Bug Fixing,1,2,13.2,2,5,16,AI & ML,85.38,76.15,T7
-aa52fa37,Testing,2,3,27.36,1,7,16,Mobile App Development,79.9,66.1,T4
-238e7f06,Code Review,3,2,25.92,1,6,16,Mobile App Development,86.69,56.0,T6
-da28debd,Bug Fixing,1,3,18.53,2,5,16,Cybersecurity,69.96,69.71,T7
-31add281,Feature Development,1,3,27.07,1,13,16,AI & ML,68.87,35.26,T8
-69fee229,Code Review,2,2,30.96,2,10,16,AI & ML,73.91,50.57,T5
-41861c1c,Bug Fixing,1,1,9.08,2,10,16,AI & ML,52.75,85.94,T5
-5c827c5a,Bug Fixing,1,1,48.78,1,11,16,Web Development,57.3,92.34,T3
-f5dac161,Feature Development,3,1,22.11,3,8,16,AI & ML,60.84,34.07,T10
-316b3410,Testing,3,1,8.42,2,19,16,Cybersecurity,76.45,87.88,T1
-f05bec5a,Feature Development,3,2,17.44,1,9,16,Cybersecurity,70.85,99.05,T2
-da534629,Feature Development,2,3,10.5,3,10,16,Web Development,54.61,66.56,T5
-71259f8a,Bug Fixing,1,3,16.08,3,5,16,Cybersecurity,77.22,56.41,T7
-3c0b5551,Feature Development,1,3,13.03,3,8,16,Cybersecurity,76.73,65.73,T10
-31add281,Feature Development,1,3,27.07,1,13,16,AI & ML,68.87,35.26,T8
-441c1cab,Code Review,3,1,9.26,1,19,16,Cybersecurity,56.43,55.6,T1
-f55d1623,Bug Fixing,2,1,35.94,3,13,16,Mobile App Development,61.67,49.25,T8
-d5b968ef,Bug Fixing,2,2,7.84,3,8,16,Mobile App Development,54.38,70.65,T10
-422af973,Testing,1,3,38.07,1,5,16,Cybersecurity,90.16,68.87,T7
-3b10d9f6,Feature Development,3,1,34.18,3,10,16,Cybersecurity,54.35,33.89,T5
-e26c2e75,Bug Fixing,2,2,21.45,3,6,16,Mobile App Development,94.33,40.03,T6
-c800e27c,Bug Fixing,3,3,38.21,1,6,16,Cybersecurity,51.52,88.12,T6
-441c1cab,Code Review,3,1,9.26,1,19,16,Cybersecurity,56.43,55.6,T1
-879c9019,Code Review,1,2,20.96,3,15,16,Mobile App Development,77.4,60.8,T9
-29c1a1bf,Testing,2,2,36.58,1,15,16,Mobile App Development,81.86,50.66,T9
-78fe65b1,Bug Fixing,2,2,43.85,3,5,16,Mobile App Development,93.35,91.75,T7
-c55c28f8,Testing,3,2,46.1,1,5,16,Mobile App Development,84.04,54.99,T7
-ff7ebad8,Code Review,1,1,23.02,3,6,16,AI & ML,93.41,44.0,T6
-a66359a4,Feature Development,2,2,48.29,2,8,16,Mobile App Development,92.32,61.25,T10
-e3d5cda0,Testing,3,2,29.56,3,11,16,Mobile App Development,93.8,41.26,T3
-da534629,Feature Development,2,3,10.5,3,10,16,Web Development,54.61,66.56,T5
-e3d5cda0,Testing,3,2,29.56,3,11,16,Mobile App Development,93.8,41.26,T3
-117965e2,Bug Fixing,3,1,34.92,3,8,16,Web Development,54.07,66.2,T10
-9e0c7958,Testing,3,3,20.64,1,15,16,AI & ML,65.51,80.73,T9
-407fde5c,Testing,2,2,13.01,3,5,16,AI & ML,54.98,84.06,T7
-04c4f699,Testing,3,2,25.49,3,11,16,Mobile App Development,92.47,57.44,T3
-7084df3a,Code Review,1,1,45.98,2,11,16,Mobile App Development,58.9,49.72,T3
-e37840d8,Testing,1,2,37.97,2,15,16,AI & ML,50.91,87.77,T9
-46790a3b,Feature Development,1,3,39.83,2,5,16,Mobile App Development,88.78,84.15,T7
-74ad27d6,Bug Fixing,3,1,47.82,2,10,16,AI & ML,88.16,75.31,T5
-d2cfabed,Feature Development,3,3,29.95,3,15,16,Mobile App Development,65.76,56.85,T9
-e26c2e75,Bug Fixing,2,2,21.45,3,6,16,Mobile App Development,94.33,40.03,T6
-b70c3bec,Code Review,1,3,27.48,1,7,16,Web Development,88.31,92.03,T4
-3abad251,Feature Development,1,3,48.97,3,9,16,Mobile App Development,76.65,92.06,T2
-c93556a7,Testing,1,2,40.28,3,19,16,Web Development,54.52,81.91,T1
-a66359a4,Feature Development,2,2,48.29,2,8,16,Mobile App Development,92.32,61.25,T10
-7654e1f7,Feature Development,2,3,13.91,3,19,16,AI & ML,82.62,81.92,T1
-e3bac0c6,Feature Development,2,1,47.14,2,15,16,AI & ML,98.41,48.15,T9
-4ef33e77,Code Review,2,2,38.5,2,13,16,Web Development,69.23,97.18,T8
-1fc574d1,Bug Fixing,1,3,21.9,3,19,16,AI & ML,92.3,52.32,T1
-117965e2,Bug Fixing,3,1,34.92,3,8,16,Web Development,54.07,66.2,T10
-106c6954,Bug Fixing,2,2,42.03,1,9,16,Cybersecurity,73.36,84.8,T2
-e5242090,Code Review,2,1,40.18,1,13,16,AI & ML,99.98,83.47,T8
-46790a3b,Feature Development,1,3,39.83,2,5,16,Mobile App Development,88.78,84.15,T7
-2dace4ac,Code Review,2,3,33.33,1,11,16,Mobile App Development,51.04,63.76,T3
-f2f705d6,Testing,2,2,27.42,2,7,16,AI & ML,50.44,85.19,T4
-79d6b7cb,Bug Fixing,1,1,15.4,1,8,16,Web Development,67.83,34.56,T10
-2c84c6d9,Bug Fixing,1,1,27.0,1,8,16,Web Development,90.19,69.57,T10
-600ccdb3,Feature Development,2,3,14.6,2,9,16,Web Development,57.36,72.8,T2
-bc8e2087,Feature Development,2,3,35.76,1,8,16,Web Development,69.52,42.06,T10
-cfece966,Testing,3,3,23.83,2,7,16,Mobile App Development,58.92,43.45,T4
-ff3a6fd5,Code Review,2,3,17.38,2,7,16,Cybersecurity,57.08,46.76,T4
-269f4f09,Bug Fixing,3,2,15.28,3,10,16,Cybersecurity,62.34,75.34,T5
-ff3a6fd5,Code Review,2,3,17.38,2,7,16,Cybersecurity,57.08,46.76,T4
-269f4f09,Bug Fixing,3,2,15.28,3,10,16,Cybersecurity,62.34,75.34,T5
+task_id,task_type,task_complexity,task_priority,estimated_effort_hours,team_experience_level,total_members,past_projects_completed,team_skillset_match,team_availability,assigned_team
+f0f9c6bc,Bug Fixing,1,1,39.67,3,13,4,67.19,30.34,T8
+a96b4054,Testing,3,3,29.3,3,7,4,77.4,36.1,T4
+3abad251,Feature Development,1,3,48.97,3,9,1,76.65,92.06,T2
+46b79443,Feature Development,2,3,41.25,2,8,2,97.57,36.18,T10
+59fed919,Bug Fixing,1,3,36.19,2,11,4,62.98,58.61,T3
+ce26d5ac,Code Review,1,1,7.51,1,8,2,55.96,42.37,T10
+28e14e34,Code Review,3,3,22.7,3,8,2,97.23,58.49,T10
+4d4ba4a2,Feature Development,3,2,49.23,2,7,4,91.66,50.02,T4
+7e88de17,Code Review,2,3,9.17,2,6,1,82.77,43.25,T6
+76b24537,Feature Development,3,3,24.34,3,15,1,81.81,46.98,T9
+88dccaac,Testing,2,2,48.7,2,10,1,63.52,70.8,T5
+8200a691,Bug Fixing,1,1,20.55,3,15,1,94.25,80.01,T9
+c55c28f8,Testing,3,2,46.1,1,5,3,84.04,54.99,T7
+546e5e42,Code Review,3,1,45.5,2,10,1,99.53,77.34,T5
+8e46c546,Feature Development,3,2,12.51,2,10,1,85.09,62.7,T5
+441c1cab,Code Review,3,1,9.26,1,19,1,56.43,55.6,T1
+f6c7cfad,Testing,2,2,23.99,1,5,3,65.87,65.9,T7
+06c8bbdd,Code Review,3,1,32.7,2,11,4,57.74,61.84,T3
+c9b3ec4e,Testing,2,1,19.53,1,7,4,58.46,41.0,T4
+8d0912fb,Testing,2,2,24.22,1,7,4,90.55,76.5,T4
+529b7961,Testing,3,1,45.0,1,19,1,89.93,36.12,T1
+a9db64e2,Feature Development,2,3,7.39,3,6,1,55.81,50.85,T6
+28e14e34,Code Review,3,3,22.7,3,8,2,97.23,58.49,T10
+c9b3ec4e,Testing,2,1,19.53,1,7,6,58.46,41.0,T4
+e2d09784,Feature Development,3,2,45.35,2,15,1,73.37,62.56,T9
+3b10d9f6,Feature Development,3,1,34.18,3,10,1,54.35,33.89,T5
+8d0912fb,Testing,2,2,24.22,1,7,6,90.55,76.5,T4
+2c84c6d9,Bug Fixing,1,1,27.0,1,8,3,90.19,69.57,T10
+ccaeb859,Testing,3,2,25.0,1,15,1,62.34,61.37,T9
+f0f9c6bc,Bug Fixing,1,1,39.67,3,13,4,67.19,30.34,T8
+11da960d,Feature Development,1,2,24.17,1,9,1,92.14,54.49,T2
+879c9019,Code Review,1,2,20.96,3,15,3,77.4,60.8,T9
+969b57d2,Testing,3,3,49.37,2,9,1,94.13,87.47,T2
+1a8d858e,Bug Fixing,3,2,15.02,3,10,2,95.04,93.01,T5
+9e0c7958,Testing,3,3,20.64,1,15,3,65.51,80.73,T9
+74ad27d6,Bug Fixing,3,1,47.82,2,10,2,88.16,75.31,T5
+e3bac0c6,Feature Development,2,1,47.14,2,15,3,98.41,48.15,T9
+f07adefc,Bug Fixing,2,3,15.37,1,8,3,71.65,92.76,T10
+bc8e2087,Feature Development,2,3,35.76,1,8,3,69.52,42.06,T10
+bea79400,Feature Development,3,1,17.59,1,8,3,98.17,83.79,T10
+441c1cab,Code Review,3,1,9.26,1,19,1,56.43,55.6,T1
+0326e83a,Code Review,1,2,11.64,3,10,2,93.95,47.66,T5
+a61d209b,Bug Fixing,2,3,23.22,3,11,4,93.47,81.17,T3
+d2cfabed,Feature Development,3,3,29.95,3,15,3,65.76,56.85,T9
+e4953b00,Feature Development,3,2,24.72,1,8,3,85.6,64.93,T10
+1e33f457,Code Review,2,2,6.41,3,7,6,61.18,82.71,T4
+87d513d7,Bug Fixing,1,2,13.2,2,5,3,85.38,76.15,T7
+e5242090,Code Review,2,1,40.18,1,13,4,99.98,83.47,T8
+e5242090,Code Review,2,1,40.18,1,13,4,99.98,83.47,T8
+a93ebada,Bug Fixing,3,1,32.08,3,13,5,91.04,38.3,T8
+d8fd4d1d,Bug Fixing,2,2,15.95,3,10,2,81.27,84.25,T5
+969b57d2,Testing,3,3,49.37,2,9,1,94.13,87.47,T2
+b70c3bec,Code Review,1,3,27.48,1,7,6,88.31,92.03,T4
+2e7cfac2,Bug Fixing,3,1,21.25,1,9,3,97.12,67.18,T2
+5e8f6b80,Feature Development,2,3,45.18,2,7,6,67.68,44.63,T4
+a2868177,Feature Development,1,3,44.15,1,15,3,92.29,79.62,T9
+546aef1e,Feature Development,1,2,38.83,3,8,5,64.46,68.07,T10
+c4e92369,Bug Fixing,2,3,21.48,1,6,1,74.16,54.16,T6
+269f4f09,Bug Fixing,3,2,15.28,3,10,2,62.34,75.34,T5
+41b5da77,Bug Fixing,1,1,34.07,3,15,4,83.71,44.25,T9
+6b193524,Bug Fixing,3,1,26.92,1,9,3,61.41,62.77,T2
+cabc43c5,Feature Development,1,1,49.86,2,5,3,92.42,98.68,T7
+7084df3a,Code Review,1,1,45.98,2,11,4,58.9,49.72,T3
+025e85e2,Code Review,3,2,26.31,1,11,5,85.48,61.51,T3
+b556c2a3,Testing,1,1,39.35,2,5,4,81.89,33.78,T7
+fd6bfb3c,Testing,2,2,24.61,3,8,5,86.92,78.55,T10
+762aca73,Feature Development,2,3,18.35,1,7,8,99.47,44.65,T4
+5850b932,Testing,3,2,49.68,1,19,1,74.46,39.15,T1
+c55c28f8,Testing,3,2,46.1,1,5,4,84.04,54.99,T7
+0ba8404f,Testing,3,3,15.61,2,7,8,86.24,62.21,T4
+cabc43c5,Feature Development,1,1,49.86,2,5,4,92.42,98.68,T7
+ad551098,Feature Development,1,3,18.12,3,15,4,68.01,52.5,T9
+1d31f7e2,Feature Development,3,1,19.79,1,13,5,79.43,91.77,T8
+441c1cab,Code Review,3,1,9.26,1,19,2,56.43,55.6,T1
+762aca73,Feature Development,2,3,18.35,1,7,8,99.47,44.65,T4
+342cca78,Testing,3,3,22.79,3,5,4,50.35,48.83,T7
+29c1a1bf,Testing,2,2,36.58,1,15,4,81.86,50.66,T9
+4c0218a9,Testing,1,2,26.59,1,5,4,75.98,63.37,T7
+342cca78,Testing,3,3,22.79,3,5,6,50.35,48.83,T7
+8200a691,Bug Fixing,1,1,20.55,3,15,4,94.25,80.01,T9
+4f09f7bd,Code Review,3,3,37.8,2,9,3,97.12,34.54,T2
+2ff1a221,Code Review,3,2,9.18,3,5,6,50.89,43.99,T7
+f05bec5a,Feature Development,3,2,17.44,1,9,3,70.85,99.05,T2
+4b1ecb46,Bug Fixing,1,1,32.76,3,10,3,57.95,84.65,T5
+41de5700,Feature Development,2,2,23.34,2,10,3,68.29,75.52,T5
+86882bdd,Code Review,3,1,34.69,1,5,6,96.93,36.08,T7
+56fab7d3,Code Review,1,1,18.35,3,9,3,63.88,49.5,T2
+30de7237,Code Review,2,2,40.18,2,11,5,58.11,38.11,T3
+2db8b47c,Code Review,3,3,49.6,2,5,6,56.93,39.8,T7
+b70c3bec,Code Review,1,3,27.48,1,7,8,88.31,92.03,T4
+94079ee6,Bug Fixing,1,2,18.29,2,7,8,61.53,96.75,T4
+74013e6d,Code Review,3,2,48.48,3,11,5,68.05,53.05,T3
+f073eb00,Bug Fixing,1,2,49.01,3,9,5,64.54,73.46,T2
+0b1bda4e,Feature Development,2,2,30.72,1,6,1,77.62,62.67,T6
+2dace4ac,Code Review,2,3,33.33,1,11,5,51.04,63.76,T3
+c9fd1582,Feature Development,3,1,42.39,1,11,5,81.38,89.78,T3
+fd751fec,Feature Development,1,3,32.37,1,6,2,83.61,37.01,T6
+d7abb909,Testing,3,1,5.85,3,6,2,88.95,65.08,T6
+8d0912fb,Testing,2,2,24.22,1,7,9,90.55,76.5,T4
+950521e8,Testing,2,2,27.85,1,5,6,55.02,81.62,T7
+bea79400,Feature Development,3,1,17.59,1,8,5,98.17,83.79,T10
+aa52fa37,Testing,2,3,27.36,1,7,9,79.9,66.1,T4
+18204ca1,Feature Development,3,2,37.2,2,19,2,73.33,44.86,T1
+c3dcb037,Code Review,2,2,33.96,2,19,2,89.85,60.94,T1
+c3dcb037,Code Review,2,2,33.96,2,19,2,89.85,60.94,T1
+f629302d,Bug Fixing,3,3,36.79,2,6,2,56.09,36.61,T6
+45d7bcec,Code Review,1,3,24.18,1,5,8,76.91,39.9,T7
+e37840d8,Testing,1,2,37.97,2,15,4,50.91,87.77,T9
+8ec31302,Code Review,3,1,15.89,2,15,5,90.35,82.34,T9
+f2ded4c5,Testing,2,3,32.41,1,5,8,64.04,50.4,T7
+f21b9210,Bug Fixing,3,1,31.59,1,8,5,51.12,30.66,T10
+816d8b65,Bug Fixing,1,3,29.18,2,15,5,98.5,64.27,T9
+6a75471b,Feature Development,2,3,15.62,1,19,2,80.71,33.66,T1
+3814dee2,Bug Fixing,2,1,28.48,2,5,8,57.6,98.32,T7
+cabc43c5,Feature Development,1,1,49.86,2,5,8,92.42,98.68,T7
+e96cd7a7,Testing,1,3,30.07,3,8,5,62.67,84.21,T10
+a4d30e5a,Code Review,3,1,13.21,2,15,5,50.26,50.25,T9
+ff7ebad8,Code Review,1,1,23.02,3,6,2,93.41,44.0,T6
+76aa2b34,Code Review,1,2,8.39,3,5,8,50.15,78.75,T7
+6f7211dc,Testing,3,3,35.95,3,8,7,55.4,81.94,T10
+7654e1f7,Feature Development,2,3,13.91,3,19,3,82.62,81.92,T1
+96b2ddf8,Testing,3,3,15.69,1,10,3,73.03,31.69,T5
+41de5700,Feature Development,2,2,23.34,2,10,3,68.29,75.52,T5
+ae3de9ba,Feature Development,3,1,9.62,3,9,5,98.57,57.77,T2
+2c84c6d9,Bug Fixing,1,1,27.0,1,8,7,90.19,69.57,T10
+c800e27c,Bug Fixing,3,3,38.21,1,6,2,51.52,88.12,T6
+aa52fa37,Testing,2,3,27.36,1,7,9,79.9,66.1,T4
+6e9f4bd2,Feature Development,3,2,16.59,1,15,5,52.35,92.82,T9
+5ced7501,Code Review,2,2,8.9,2,6,3,78.95,68.54,T6
+bc8e2087,Feature Development,2,3,35.76,1,8,7,69.52,42.06,T10
+46f2622a,Bug Fixing,1,3,31.09,3,11,6,75.54,80.0,T3
+ce31e292,Code Review,2,3,17.78,2,19,3,63.39,74.48,T1
+30de7237,Code Review,2,2,40.18,2,11,6,58.11,38.11,T3
+ef29a046,Feature Development,3,1,44.16,3,15,5,56.56,81.76,T9
+770fc877,Feature Development,3,1,16.3,3,5,10,96.32,96.2,T7
+673d49a4,Testing,3,3,49.5,2,8,7,62.87,40.0,T10
+ad551098,Feature Development,1,3,18.12,3,15,7,68.01,52.5,T9
+d62cd89a,Feature Development,1,1,19.47,3,11,6,58.67,90.95,T3
+9de1b214,Bug Fixing,1,3,35.38,1,15,7,96.71,40.32,T9
+3b0c02c5,Bug Fixing,2,3,49.19,2,6,3,76.36,45.43,T6
+524a7f43,Code Review,3,1,31.21,2,9,5,74.25,69.12,T2
+cfece966,Testing,3,3,23.83,2,7,9,58.92,43.45,T4
+572770b2,Bug Fixing,3,3,48.83,1,8,7,75.01,66.82,T10
+688064cc,Feature Development,1,2,22.5,3,7,9,62.08,62.43,T4
+2c84c6d9,Bug Fixing,1,1,27.0,1,8,8,90.19,69.57,T10
+41861c1c,Bug Fixing,1,1,9.08,2,10,3,52.75,85.94,T5
+45d7bcec,Code Review,1,3,24.18,1,5,10,76.91,39.9,T7
+c93556a7,Testing,1,2,40.28,3,19,3,54.52,81.91,T1
+2db8b47c,Code Review,3,3,49.6,2,5,10,56.93,39.8,T7
+a9db64e2,Feature Development,2,3,7.39,3,6,3,55.81,50.85,T6
+2a21c70f,Testing,2,2,25.81,2,13,5,51.07,75.76,T8
+9fa0b034,Code Review,1,1,5.53,2,19,3,57.9,41.14,T1
+1765ea3c,Code Review,1,3,46.41,1,8,8,75.86,54.0,T10
+9d2773d4,Testing,2,1,28.84,3,5,10,91.6,63.51,T7
+3df2fc1e,Feature Development,2,3,45.61,3,5,10,68.2,76.72,T7
+e3bac0c6,Feature Development,2,1,47.14,2,15,7,98.41,48.15,T9
+e00672b7,Testing,3,2,14.79,3,5,12,70.84,33.22,T7
+4ef33e77,Code Review,2,2,38.5,2,13,5,69.23,97.18,T8
+7654e1f7,Feature Development,2,3,13.91,3,19,3,82.62,81.92,T1
+68a68a18,Testing,3,3,33.51,2,6,3,84.34,50.85,T6
+d957ef92,Code Review,2,2,19.61,3,15,7,99.26,44.99,T9
+816d8b65,Bug Fixing,1,3,29.18,2,15,7,98.5,64.27,T9
+e96cd7a7,Testing,1,3,30.07,3,8,8,62.67,84.21,T10
+d5e4cb17,Bug Fixing,3,3,13.38,1,13,5,83.68,67.97,T8
+76b24537,Feature Development,3,3,24.34,3,15,8,81.81,46.98,T9
+407fde5c,Testing,2,2,13.01,3,5,12,54.98,84.06,T7
+0ba8404f,Testing,3,3,15.61,2,7,10,86.24,62.21,T4
+ef29a046,Feature Development,3,1,44.16,3,15,8,56.56,81.76,T9
+5bf273ec,Bug Fixing,1,1,26.84,1,7,10,78.34,46.11,T4
+40730fd2,Code Review,1,1,24.53,1,9,5,75.48,71.89,T2
+c800e27c,Bug Fixing,3,3,38.21,1,6,3,51.52,88.12,T6
+c74549ef,Testing,1,3,10.63,2,9,5,66.51,46.0,T2
+f05741b3,Bug Fixing,3,1,8.11,2,5,12,65.73,32.11,T7
+29415192,Feature Development,1,2,49.94,1,6,4,71.83,52.98,T6
+90ba8870,Bug Fixing,2,1,8.85,3,11,6,88.78,92.0,T3
+14d26930,Code Review,2,3,24.77,3,11,6,93.11,61.88,T3
+78fe65b1,Bug Fixing,2,2,43.85,3,5,12,93.35,91.75,T7
+53c3e611,Bug Fixing,2,3,17.46,3,15,8,81.87,45.71,T9
+4226d11b,Bug Fixing,1,1,48.62,1,13,6,72.56,43.41,T8
+3b10d9f6,Feature Development,3,1,34.18,3,10,5,54.35,33.89,T5
+80fa2f23,Feature Development,3,2,33.68,2,9,6,74.95,85.26,T2
+a842eb6c,Code Review,2,3,48.54,3,6,4,72.95,61.81,T6
+ff3a6fd5,Code Review,2,3,17.38,2,7,10,57.08,46.76,T4
+3df2fc1e,Feature Development,2,3,45.61,3,5,12,68.2,76.72,T7
+316b3410,Testing,3,1,8.42,2,19,4,76.45,87.88,T1
+c9fd1582,Feature Development,3,1,42.39,1,11,8,81.38,89.78,T3
+c13df2a7,Bug Fixing,2,1,37.79,2,11,8,65.42,89.48,T3
+291f497a,Feature Development,2,3,33.66,1,10,5,50.85,31.79,T5
+600ccdb3,Feature Development,2,3,14.6,2,9,6,57.36,72.8,T2
+3a947cf8,Code Review,1,3,30.24,1,6,4,74.56,79.25,T6
+74ad27d6,Bug Fixing,3,1,47.82,2,10,5,88.16,75.31,T5
+6a75471b,Feature Development,2,3,15.62,1,19,4,80.71,33.66,T1
+499ebf09,Bug Fixing,1,3,6.74,2,5,14,64.1,92.42,T7
+e26c2e75,Bug Fixing,2,2,21.45,3,6,4,94.33,40.03,T6
+6963642b,Testing,2,2,48.84,3,10,5,61.71,41.46,T5
+f55d1623,Bug Fixing,2,1,35.94,3,13,6,61.67,49.25,T8
+9bcf96c1,Code Review,2,3,14.95,1,7,10,99.94,92.7,T4
+106c6954,Bug Fixing,2,2,42.03,1,9,6,73.36,84.8,T2
+0282cadc,Testing,2,3,47.48,2,5,14,57.59,91.8,T7
+8d0912fb,Testing,2,2,24.22,1,7,10,90.55,76.5,T4
+28489434,Feature Development,2,3,49.69,1,10,5,96.9,75.85,T5
+3b0c02c5,Bug Fixing,2,3,49.19,2,6,4,76.36,45.43,T6
+441c1cab,Code Review,3,1,9.26,1,19,4,56.43,55.6,T1
+b4ae0eb7,Code Review,1,1,40.04,2,10,6,91.04,80.76,T5
+3df2fc1e,Feature Development,2,3,45.61,3,5,14,68.2,76.72,T7
+f4bbec1e,Code Review,1,3,24.78,2,6,6,95.3,40.0,T6
+aa52fa37,Testing,2,3,27.36,1,7,11,79.9,66.1,T4
+46790a3b,Feature Development,1,3,39.83,2,5,14,88.78,84.15,T7
+b86fa9b8,Code Review,2,3,32.0,2,11,8,94.78,74.96,T3
+30de7237,Code Review,2,2,40.18,2,11,8,58.11,38.11,T3
+a66359a4,Feature Development,2,2,48.29,2,8,8,92.32,61.25,T10
+46525255,Feature Development,2,1,19.04,3,15,8,58.37,51.28,T9
+69fee229,Code Review,2,2,30.96,2,10,6,73.91,50.57,T5
+d957ef92,Code Review,2,2,19.61,3,15,8,99.26,44.99,T9
+f5dac161,Feature Development,3,1,22.11,3,8,8,60.84,34.07,T10
+342cca78,Testing,3,3,22.79,3,5,14,50.35,48.83,T7
+4f09f7bd,Code Review,3,3,37.8,2,9,6,97.12,34.54,T2
+117965e2,Bug Fixing,3,1,34.92,3,8,9,54.07,66.2,T10
+025e85e2,Code Review,3,2,26.31,1,11,8,85.48,61.51,T3
+673d49a4,Testing,3,3,49.5,2,8,9,62.87,40.0,T10
+3b0c02c5,Bug Fixing,2,3,49.19,2,6,6,76.36,45.43,T6
+816d8b65,Bug Fixing,1,3,29.18,2,15,10,98.5,64.27,T9
+879c9019,Code Review,1,2,20.96,3,15,10,77.4,60.8,T9
+f6c7cfad,Testing,2,2,23.99,1,5,16,65.87,65.9,T7
+6b193524,Bug Fixing,3,1,26.92,1,9,6,61.41,62.77,T2
+0389564e,Feature Development,1,1,28.36,2,7,11,93.13,64.55,T4
+e26c2e75,Bug Fixing,2,2,21.45,3,6,6,94.33,40.03,T6
+291f497a,Feature Development,2,3,33.66,1,10,6,50.85,31.79,T5
+9bcf96c1,Code Review,2,3,14.95,1,7,11,99.94,92.7,T4
+f05741b3,Bug Fixing,3,1,8.11,2,5,16,65.73,32.11,T7
+231a7210,Bug Fixing,2,3,24.0,1,5,16,85.25,33.07,T7
+cabc43c5,Feature Development,1,1,49.86,2,5,16,92.42,98.68,T7
+8d0912fb,Testing,2,2,24.22,1,7,11,90.55,76.5,T4
+a61d209b,Bug Fixing,2,3,23.22,3,11,10,93.47,81.17,T3
+b70c3bec,Code Review,1,3,27.48,1,7,11,88.31,92.03,T4
+0b1bda4e,Feature Development,2,2,30.72,1,6,6,77.62,62.67,T6
+ff3a6fd5,Code Review,2,3,17.38,2,7,13,57.08,46.76,T4
+e4a52c9f,Testing,3,3,20.52,1,9,7,80.77,56.55,T2
+f0f9c6bc,Bug Fixing,1,1,39.67,3,13,6,67.19,30.34,T8
+3c0b5551,Feature Development,1,3,13.03,3,8,9,76.73,65.73,T10
+80fa2f23,Feature Development,3,2,33.68,2,9,7,74.95,85.26,T2
+572770b2,Bug Fixing,3,3,48.83,1,8,9,75.01,66.82,T10
+6692e3ac,Bug Fixing,3,1,40.37,2,5,16,73.62,49.85,T7
+b86fa9b8,Code Review,2,3,32.0,2,11,10,94.78,74.96,T3
+a4d30e5a,Code Review,3,1,13.21,2,15,10,50.26,50.25,T9
+1d31f7e2,Feature Development,3,1,19.79,1,13,6,79.43,91.77,T8
+11da960d,Feature Development,1,2,24.17,1,9,7,92.14,54.49,T2
+3e364193,Bug Fixing,3,1,14.88,2,13,6,67.63,44.89,T8
+f05bec5a,Feature Development,3,2,17.44,1,9,7,70.85,99.05,T2
+74013e6d,Code Review,3,2,48.48,3,11,10,68.05,53.05,T3
+a05d960f,Bug Fixing,1,3,40.65,2,8,9,79.2,98.98,T10
+441c1cab,Code Review,3,1,9.26,1,19,4,56.43,55.6,T1
+3e364193,Bug Fixing,3,1,14.88,2,13,7,67.63,44.89,T8
+a05d960f,Bug Fixing,1,3,40.65,2,8,10,79.2,98.98,T10
+fd6bfb3c,Testing,2,2,24.61,3,8,10,86.92,78.55,T10
+3e364193,Bug Fixing,3,1,14.88,2,13,7,67.63,44.89,T8
+2dace4ac,Code Review,2,3,33.33,1,11,10,51.04,63.76,T3
+441c1cab,Code Review,3,1,9.26,1,19,4,56.43,55.6,T1
+28489434,Feature Development,2,3,49.69,1,10,6,96.9,75.85,T5
+7e88de17,Code Review,2,3,9.17,2,6,6,82.77,43.25,T6
+94079ee6,Bug Fixing,1,2,18.29,2,7,13,61.53,96.75,T4
+342cca78,Testing,3,3,22.79,3,5,16,50.35,48.83,T7
+f07adefc,Bug Fixing,2,3,15.37,1,8,10,71.65,92.76,T10
+5bf273ec,Bug Fixing,1,1,26.84,1,7,13,78.34,46.11,T4
+7dbfd805,Code Review,1,2,21.22,3,7,13,65.75,59.86,T4
+78fe65b1,Bug Fixing,2,2,43.85,3,5,16,93.35,91.75,T7
+9b2f4a49,Feature Development,1,3,22.37,2,8,10,89.1,35.88,T10
+6692e3ac,Bug Fixing,3,1,40.37,2,5,16,73.62,49.85,T7
+76aa2b34,Code Review,1,2,8.39,3,5,16,50.15,78.75,T7
+7084df3a,Code Review,1,1,45.98,2,11,10,58.9,49.72,T3
+9b2f4a49,Feature Development,1,3,22.37,2,8,10,89.1,35.88,T10
+905f7846,Feature Development,2,3,23.08,3,5,16,55.45,30.93,T7
+422af973,Testing,1,3,38.07,1,5,16,90.16,68.87,T7
+1df2ea64,Testing,2,3,35.25,2,15,10,73.81,99.69,T9
+11da960d,Feature Development,1,2,24.17,1,9,7,92.14,54.49,T2
+238e7f06,Code Review,3,2,25.92,1,6,8,86.69,56.0,T6
+5f862b9b,Bug Fixing,1,3,30.08,1,5,16,55.79,37.45,T7
+9e0c7958,Testing,3,3,20.64,1,15,10,65.51,80.73,T9
+e96cd7a7,Testing,1,3,30.07,3,8,11,62.67,84.21,T10
+d8df389b,Feature Development,3,3,16.72,3,7,13,68.83,95.59,T4
+ae3de9ba,Feature Development,3,1,9.62,3,9,8,98.57,57.77,T2
+54577139,Code Review,2,3,40.25,2,6,8,89.65,55.06,T6
+a66359a4,Feature Development,2,2,48.29,2,8,11,92.32,61.25,T10
+1d31f7e2,Feature Development,3,1,19.79,1,13,7,79.43,91.77,T8
+aa52fa37,Testing,2,3,27.36,1,7,14,79.9,66.1,T4
+e886e7fa,Feature Development,1,2,44.02,1,6,8,69.02,72.86,T6
+f2fff536,Testing,3,3,40.28,3,6,8,68.5,66.98,T6
+4226d11b,Bug Fixing,1,1,48.62,1,13,7,72.56,43.41,T8
+572770b2,Bug Fixing,3,3,48.83,1,8,11,75.01,66.82,T10
+da28debd,Bug Fixing,1,3,18.53,2,5,16,69.96,69.71,T7
+d7678eac,Bug Fixing,3,1,42.08,3,8,11,77.81,56.2,T10
+238e7f06,Code Review,3,2,25.92,1,6,8,86.69,56.0,T6
+269f4f09,Bug Fixing,3,2,15.28,3,10,6,62.34,75.34,T5
+5c827c5a,Bug Fixing,1,1,48.78,1,11,12,57.3,92.34,T3
+529b7961,Testing,3,1,45.0,1,19,6,89.93,36.12,T1
+2e7cfac2,Bug Fixing,3,1,21.25,1,9,8,97.12,67.18,T2
+238e7f06,Code Review,3,2,25.92,1,6,10,86.69,56.0,T6
+d8df389b,Feature Development,3,3,16.72,3,7,14,68.83,95.59,T4
+cabc43c5,Feature Development,1,1,49.86,2,5,16,92.42,98.68,T7
+f0f9c6bc,Bug Fixing,1,1,39.67,3,13,7,67.19,30.34,T8
+9b2f4a49,Feature Development,1,3,22.37,2,8,11,89.1,35.88,T10
+6e9f4bd2,Feature Development,3,2,16.59,1,15,12,52.35,92.82,T9
+f07adefc,Bug Fixing,2,3,15.37,1,8,12,71.65,92.76,T10
+83674ded,Testing,2,3,45.51,2,5,16,70.77,45.33,T7
+499ebf09,Bug Fixing,1,3,6.74,2,5,16,64.1,92.42,T7
+76b24537,Feature Development,3,3,24.34,3,15,12,81.81,46.98,T9
+69fee229,Code Review,2,2,30.96,2,10,7,73.91,50.57,T5
+407fde5c,Testing,2,2,13.01,3,5,16,54.98,84.06,T7
+ce26d5ac,Code Review,1,1,7.51,1,8,12,55.96,42.37,T10
+80fa2f23,Feature Development,3,2,33.68,2,9,8,74.95,85.26,T2
+0ba8404f,Testing,3,3,15.61,2,7,14,86.24,62.21,T4
+a9db64e2,Feature Development,2,3,7.39,3,6,10,55.81,50.85,T6
+83674ded,Testing,2,3,45.51,2,5,16,70.77,45.33,T7
+76b24537,Feature Development,3,3,24.34,3,15,12,81.81,46.98,T9
+5f862b9b,Bug Fixing,1,3,30.08,1,5,16,55.79,37.45,T7
+ce8d88cd,Code Review,3,3,19.6,2,7,14,55.59,49.9,T4
+529b7961,Testing,3,1,45.0,1,19,6,89.93,36.12,T1
+a4d30e5a,Code Review,3,1,13.21,2,15,12,50.26,50.25,T9
+d6e15ed4,Feature Development,3,1,19.5,2,10,7,87.26,46.99,T5
+1df2ea64,Testing,2,3,35.25,2,15,12,73.81,99.69,T9
+28e14e34,Code Review,3,3,22.7,3,8,12,97.23,58.49,T10
+7dbfd805,Code Review,1,2,21.22,3,7,14,65.75,59.86,T4
+3abad251,Feature Development,1,3,48.97,3,9,8,76.65,92.06,T2
+28489434,Feature Development,2,3,49.69,1,10,7,96.9,75.85,T5
+1fc574d1,Bug Fixing,1,3,21.9,3,19,6,92.3,52.32,T1
+e00672b7,Testing,3,2,14.79,3,5,16,70.84,33.22,T7
+d6e15ed4,Feature Development,3,1,19.5,2,10,7,87.26,46.99,T5
+441c1cab,Code Review,3,1,9.26,1,19,6,56.43,55.6,T1
+3b10d9f6,Feature Development,3,1,34.18,3,10,7,54.35,33.89,T5
+d5e4cb17,Bug Fixing,3,3,13.38,1,13,9,83.68,67.97,T8
+8d0912fb,Testing,2,2,24.22,1,7,15,90.55,76.5,T4
+174f518c,Feature Development,2,1,8.67,3,8,12,93.44,39.1,T10
+c13df2a7,Bug Fixing,2,1,37.79,2,11,12,65.42,89.48,T3
+0389564e,Feature Development,1,1,28.36,2,7,15,93.13,64.55,T4
+d5b968ef,Bug Fixing,2,2,7.84,3,8,12,54.38,70.65,T10
+f073eb00,Bug Fixing,1,2,49.01,3,9,8,64.54,73.46,T2
+f4bbec1e,Code Review,1,3,24.78,2,6,10,95.3,40.0,T6
+e886e7fa,Feature Development,1,2,44.02,1,6,10,69.02,72.86,T6
+a66359a4,Feature Development,2,2,48.29,2,8,13,92.32,61.25,T10
+e3bac0c6,Feature Development,2,1,47.14,2,15,14,98.41,48.15,T9
+30de7237,Code Review,2,2,40.18,2,11,12,58.11,38.11,T3
+29c1a1bf,Testing,2,2,36.58,1,15,14,81.86,50.66,T9
+79d6b7cb,Bug Fixing,1,1,15.4,1,8,13,67.83,34.56,T10
+8e46c546,Feature Development,3,2,12.51,2,10,8,85.09,62.7,T5
+d7678eac,Bug Fixing,3,1,42.08,3,8,13,77.81,56.2,T10
+025e85e2,Code Review,3,2,26.31,1,11,12,85.48,61.51,T3
+2db8b47c,Code Review,3,3,49.6,2,5,16,56.93,39.8,T7
+529b7961,Testing,3,1,45.0,1,19,6,89.93,36.12,T1
+106c6954,Bug Fixing,2,2,42.03,1,9,9,73.36,84.8,T2
+ba7cb25d,Code Review,3,3,36.11,2,13,9,53.61,58.78,T8
+d8fd4d1d,Bug Fixing,2,2,15.95,3,10,8,81.27,84.25,T5
+6a75471b,Feature Development,2,3,15.62,1,19,7,80.71,33.66,T1
+0b1bda4e,Feature Development,2,2,30.72,1,6,10,77.62,62.67,T6
+9de1b214,Bug Fixing,1,3,35.38,1,15,14,96.71,40.32,T9
+ce26d5ac,Code Review,1,1,7.51,1,8,13,55.96,42.37,T10
+e886e7fa,Feature Development,1,2,44.02,1,6,12,69.02,72.86,T6
+c74549ef,Testing,1,3,10.63,2,9,9,66.51,46.0,T2
+fd751fec,Feature Development,1,3,32.37,1,6,12,83.61,37.01,T6
+f2f705d6,Testing,2,2,27.42,2,7,15,50.44,85.19,T4
+ff3a6fd5,Code Review,2,3,17.38,2,7,15,57.08,46.76,T4
+79d6b7cb,Bug Fixing,1,1,15.4,1,8,13,67.83,34.56,T10
+688064cc,Feature Development,1,2,22.5,3,7,15,62.08,62.43,T4
+905f7846,Feature Development,2,3,23.08,3,5,16,55.45,30.93,T7
+6a75471b,Feature Development,2,3,15.62,1,19,7,80.71,33.66,T1
+74ad27d6,Bug Fixing,3,1,47.82,2,10,8,88.16,75.31,T5
+c3dcb037,Code Review,2,2,33.96,2,19,7,89.85,60.94,T1
+d957ef92,Code Review,2,2,19.61,3,15,14,99.26,44.99,T9
+da534629,Feature Development,2,3,10.5,3,10,8,54.61,66.56,T5
+316b3410,Testing,3,1,8.42,2,19,7,76.45,87.88,T1
+45d7bcec,Code Review,1,3,24.18,1,5,16,76.91,39.9,T7
+8e46c546,Feature Development,3,2,12.51,2,10,8,85.09,62.7,T5
+3b10d9f6,Feature Development,3,1,34.18,3,10,9,54.35,33.89,T5
+29c1a1bf,Testing,2,2,36.58,1,15,14,81.86,50.66,T9
+da28debd,Bug Fixing,1,3,18.53,2,5,16,69.96,69.71,T7
+8ec31302,Code Review,3,1,15.89,2,15,15,90.35,82.34,T9
+41de5700,Feature Development,2,2,23.34,2,10,9,68.29,75.52,T5
+529b7961,Testing,3,1,45.0,1,19,7,89.93,36.12,T1
+762aca73,Feature Development,2,3,18.35,1,7,16,99.47,44.65,T4
+c9b3ec4e,Testing,2,1,19.53,1,7,16,58.46,41.0,T4
+31add281,Feature Development,1,3,27.07,1,13,9,68.87,35.26,T8
+f05bec5a,Feature Development,3,2,17.44,1,9,9,70.85,99.05,T2
+1d31f7e2,Feature Development,3,1,19.79,1,13,9,79.43,91.77,T8
+2db8b47c,Code Review,3,3,49.6,2,5,16,56.93,39.8,T7
+8e46c546,Feature Development,3,2,12.51,2,10,9,85.09,62.7,T5
+2dace4ac,Code Review,2,3,33.33,1,11,12,51.04,63.76,T3
+7f85ef9f,Testing,2,1,31.9,1,11,14,65.86,76.68,T3
+54577139,Code Review,2,3,40.25,2,6,12,89.65,55.06,T6
+238e7f06,Code Review,3,2,25.92,1,6,12,86.69,56.0,T6
+71259f8a,Bug Fixing,1,3,16.08,3,5,16,77.22,56.41,T7
+1df2ea64,Testing,2,3,35.25,2,15,15,73.81,99.69,T9
+8e46c546,Feature Development,3,2,12.51,2,10,9,85.09,62.7,T5
+e3bac0c6,Feature Development,2,1,47.14,2,15,15,98.41,48.15,T9
+422af973,Testing,1,3,38.07,1,5,16,90.16,68.87,T7
+117965e2,Bug Fixing,3,1,34.92,3,8,15,54.07,66.2,T10
+a9db64e2,Feature Development,2,3,7.39,3,6,12,55.81,50.85,T6
+54577139,Code Review,2,3,40.25,2,6,13,89.65,55.06,T6
+f05bec5a,Feature Development,3,2,17.44,1,9,9,70.85,99.05,T2
+79d6b7cb,Bug Fixing,1,1,15.4,1,8,15,67.83,34.56,T10
+69fee229,Code Review,2,2,30.96,2,10,9,73.91,50.57,T5
+238e7f06,Code Review,3,2,25.92,1,6,13,86.69,56.0,T6
+269f4f09,Bug Fixing,3,2,15.28,3,10,11,62.34,75.34,T5
+f4bbec1e,Code Review,1,3,24.78,2,6,13,95.3,40.0,T6
+4c0218a9,Testing,1,2,26.59,1,5,16,75.98,63.37,T7
+422af973,Testing,1,3,38.07,1,5,16,90.16,68.87,T7
+231a7210,Bug Fixing,2,3,24.0,1,5,16,85.25,33.07,T7
+7dbfd805,Code Review,1,2,21.22,3,7,16,65.75,59.86,T4
+29c1a1bf,Testing,2,2,36.58,1,15,15,81.86,50.66,T9
+499ebf09,Bug Fixing,1,3,6.74,2,5,16,64.1,92.42,T7
+a05d960f,Bug Fixing,1,3,40.65,2,8,15,79.2,98.98,T10
+f2fff536,Testing,3,3,40.28,3,6,13,68.5,66.98,T6
+8ec31302,Code Review,3,1,15.89,2,15,15,90.35,82.34,T9
+94079ee6,Bug Fixing,1,2,18.29,2,7,16,61.53,96.75,T4
+9fa0b034,Code Review,1,1,5.53,2,19,9,57.9,41.14,T1
+6a75471b,Feature Development,2,3,15.62,1,19,9,80.71,33.66,T1
+ce8d88cd,Code Review,3,3,19.6,2,7,16,55.59,49.9,T4
+7f85ef9f,Testing,2,1,31.9,1,11,14,65.86,76.68,T3
+f05741b3,Bug Fixing,3,1,8.11,2,5,16,65.73,32.11,T7
+ba7cb25d,Code Review,3,3,36.11,2,13,9,53.61,58.78,T8
+e96cd7a7,Testing,1,3,30.07,3,8,15,62.67,84.21,T10
+f05bec5a,Feature Development,3,2,17.44,1,9,9,70.85,99.05,T2
+a9db64e2,Feature Development,2,3,7.39,3,6,13,55.81,50.85,T6
+905f7846,Feature Development,2,3,23.08,3,5,16,55.45,30.93,T7
+e4a52c9f,Testing,3,3,20.52,1,9,10,80.77,56.55,T2
+04c4f699,Testing,3,2,25.49,3,11,14,92.47,57.44,T3
+529b7961,Testing,3,1,45.0,1,19,9,89.93,36.12,T1
+816d8b65,Bug Fixing,1,3,29.18,2,15,16,98.5,64.27,T9
+2e7cfac2,Bug Fixing,3,1,21.25,1,9,10,97.12,67.18,T2
+5c827c5a,Bug Fixing,1,1,48.78,1,11,14,57.3,92.34,T3
+54577139,Code Review,2,3,40.25,2,6,14,89.65,55.06,T6
+aa52fa37,Testing,2,3,27.36,1,7,16,79.9,66.1,T4
+174f518c,Feature Development,2,1,8.67,3,8,15,93.44,39.1,T10
+41861c1c,Bug Fixing,1,1,9.08,2,10,11,52.75,85.94,T5
+1d31f7e2,Feature Development,3,1,19.79,1,13,10,79.43,91.77,T8
+5f862b9b,Bug Fixing,1,3,30.08,1,5,16,55.79,37.45,T7
+54577139,Code Review,2,3,40.25,2,6,14,89.65,55.06,T6
+87d513d7,Bug Fixing,1,2,13.2,2,5,16,85.38,76.15,T7
+aa52fa37,Testing,2,3,27.36,1,7,16,79.9,66.1,T4
+238e7f06,Code Review,3,2,25.92,1,6,14,86.69,56.0,T6
+da28debd,Bug Fixing,1,3,18.53,2,5,16,69.96,69.71,T7
+31add281,Feature Development,1,3,27.07,1,13,10,68.87,35.26,T8
+69fee229,Code Review,2,2,30.96,2,10,11,73.91,50.57,T5
+41861c1c,Bug Fixing,1,1,9.08,2,10,11,52.75,85.94,T5
+5c827c5a,Bug Fixing,1,1,48.78,1,11,14,57.3,92.34,T3
+f5dac161,Feature Development,3,1,22.11,3,8,16,60.84,34.07,T10
+316b3410,Testing,3,1,8.42,2,19,9,76.45,87.88,T1
+f05bec5a,Feature Development,3,2,17.44,1,9,10,70.85,99.05,T2
+da534629,Feature Development,2,3,10.5,3,10,11,54.61,66.56,T5
+71259f8a,Bug Fixing,1,3,16.08,3,5,16,77.22,56.41,T7
+3c0b5551,Feature Development,1,3,13.03,3,8,16,76.73,65.73,T10
+31add281,Feature Development,1,3,27.07,1,13,10,68.87,35.26,T8
+441c1cab,Code Review,3,1,9.26,1,19,9,56.43,55.6,T1
+f55d1623,Bug Fixing,2,1,35.94,3,13,10,61.67,49.25,T8
+d5b968ef,Bug Fixing,2,2,7.84,3,8,16,54.38,70.65,T10
+422af973,Testing,1,3,38.07,1,5,16,90.16,68.87,T7
+3b10d9f6,Feature Development,3,1,34.18,3,10,13,54.35,33.89,T5
+e26c2e75,Bug Fixing,2,2,21.45,3,6,14,94.33,40.03,T6
+c800e27c,Bug Fixing,3,3,38.21,1,6,14,51.52,88.12,T6
+441c1cab,Code Review,3,1,9.26,1,19,10,56.43,55.6,T1
+879c9019,Code Review,1,2,20.96,3,15,16,77.4,60.8,T9
+29c1a1bf,Testing,2,2,36.58,1,15,16,81.86,50.66,T9
+78fe65b1,Bug Fixing,2,2,43.85,3,5,16,93.35,91.75,T7
+c55c28f8,Testing,3,2,46.1,1,5,16,84.04,54.99,T7
+ff7ebad8,Code Review,1,1,23.02,3,6,16,93.41,44.0,T6
+a66359a4,Feature Development,2,2,48.29,2,8,16,92.32,61.25,T10
+e3d5cda0,Testing,3,2,29.56,3,11,16,93.8,41.26,T3
+da534629,Feature Development,2,3,10.5,3,10,13,54.61,66.56,T5
+e3d5cda0,Testing,3,2,29.56,3,11,16,93.8,41.26,T3
+117965e2,Bug Fixing,3,1,34.92,3,8,16,54.07,66.2,T10
+9e0c7958,Testing,3,3,20.64,1,15,16,65.51,80.73,T9
+407fde5c,Testing,2,2,13.01,3,5,16,54.98,84.06,T7
+04c4f699,Testing,3,2,25.49,3,11,16,92.47,57.44,T3
+7084df3a,Code Review,1,1,45.98,2,11,16,58.9,49.72,T3
+e37840d8,Testing,1,2,37.97,2,15,16,50.91,87.77,T9
+46790a3b,Feature Development,1,3,39.83,2,5,16,88.78,84.15,T7
+74ad27d6,Bug Fixing,3,1,47.82,2,10,13,88.16,75.31,T5
+d2cfabed,Feature Development,3,3,29.95,3,15,16,65.76,56.85,T9
+e26c2e75,Bug Fixing,2,2,21.45,3,6,16,94.33,40.03,T6
+b70c3bec,Code Review,1,3,27.48,1,7,16,88.31,92.03,T4
+3abad251,Feature Development,1,3,48.97,3,9,10,76.65,92.06,T2
+c93556a7,Testing,1,2,40.28,3,19,10,54.52,81.91,T1
+a66359a4,Feature Development,2,2,48.29,2,8,16,92.32,61.25,T10
+7654e1f7,Feature Development,2,3,13.91,3,19,10,82.62,81.92,T1
+e3bac0c6,Feature Development,2,1,47.14,2,15,16,98.41,48.15,T9
+4ef33e77,Code Review,2,2,38.5,2,13,10,69.23,97.18,T8
+1fc574d1,Bug Fixing,1,3,21.9,3,19,10,92.3,52.32,T1
+117965e2,Bug Fixing,3,1,34.92,3,8,16,54.07,66.2,T10
+106c6954,Bug Fixing,2,2,42.03,1,9,10,73.36,84.8,T2
+e5242090,Code Review,2,1,40.18,1,13,12,99.98,83.47,T8
+46790a3b,Feature Development,1,3,39.83,2,5,16,88.78,84.15,T7
+2dace4ac,Code Review,2,3,33.33,1,11,16,51.04,63.76,T3
+f2f705d6,Testing,2,2,27.42,2,7,16,50.44,85.19,T4
+79d6b7cb,Bug Fixing,1,1,15.4,1,8,16,67.83,34.56,T10
+2c84c6d9,Bug Fixing,1,1,27.0,1,8,16,90.19,69.57,T10
+600ccdb3,Feature Development,2,3,14.6,2,9,11,57.36,72.8,T2
+bc8e2087,Feature Development,2,3,35.76,1,8,16,69.52,42.06,T10
+cfece966,Testing,3,3,23.83,2,7,16,58.92,43.45,T4
+ff3a6fd5,Code Review,2,3,17.38,2,7,16,57.08,46.76,T4
+269f4f09,Bug Fixing,3,2,15.28,3,10,13,62.34,75.34,T5
+ff3a6fd5,Code Review,2,3,17.38,2,7,16,57.08,46.76,T4
+269f4f09,Bug Fixing,3,2,15.28,3,10,13,62.34,75.34,T5
