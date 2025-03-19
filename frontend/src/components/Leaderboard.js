@@ -32,10 +32,18 @@ const Leaderboard = () => {
 
     return (
         <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4 text-center">🏆 Project Leaderboard</h2>
 
             {loading ? (
-                <p className="text-center">Loading leaderboard...</p>
+                // Loading Animation
+                <div className="flex flex-row gap-2 justify-center mt-8">
+                    <div className="w-4 h-4 rounded-full bg-red-500 animate-bounce"></div>
+                    <div
+                        className="w-4 h-4 rounded-full bg-red-500 animate-bounce [animation-delay:-.3s]"
+                    ></div>
+                    <div
+                        className="w-4 h-4 rounded-full bg-red-500 animate-bounce [animation-delay:-.5s]"
+                    ></div>
+                </div>
             ) : error ? (
                 <p className="text-center text-red-500">{error}</p>
             ) : users.length === 0 ? (
@@ -45,9 +53,8 @@ const Leaderboard = () => {
                     {users.map((user, index) => (
                         <li
                             key={user.memberId}
-                            className={`p-2 border-b border-gray-300 text-lg flex justify-between ${
-                                index === 0 ? 'font-bold text-yellow-500' : 'text-gray-700'
-                            }`}
+                            className={`p-2 border-b border-gray-300 text-lg flex justify-between ${index === 0 ? 'font-bold text-yellow-500' : 'text-gray-700'
+                                }`}
                         >
                             <span>
                                 {index + 1}. {user.name}

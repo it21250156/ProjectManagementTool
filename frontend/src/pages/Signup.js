@@ -29,9 +29,9 @@ const Signup = () => {
     const result = await login(loginEmail, loginPassword);
 
     if (result.success) {
-      navigate("/home"); // Navigate to home page on successful login
+      navigate("/home");
     } else {
-      alert(loginError || 'Login failed'); // Show error message in an alert
+      alert(loginError || 'Login failed');
     }
   };
 

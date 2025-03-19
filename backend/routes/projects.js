@@ -97,29 +97,32 @@ router.post('/', async (req, res) => {
   const { projectName, projectDescription, start_date, members } = req.body;
 
   try {
-      // Validate input
-      if (!projectName || !start_date || !Array.isArray(members) || members.length === 0) {
-          return res.status(400).json({ message: 'Invalid project data' });
-      }
+    // ✅ Validate input
+    if (!projectName || !start_date || !Array.isArray(members) || members.length === 0) {
+        return res.status(400).json({ message: 'Invalid project data' });
+    }
 
-      // ✅ Ensure members are valid ObjectIds
-      const formattedMembers = members.map(member => new mongoose.Types.ObjectId(member));
+    // ✅ Ensure members are valid ObjectIds
+    const formattedMembers = members.map(member => new mongoose.Types.ObjectId(member));
 
-      // ✅ Validate that the members exist in the User collection
-      const existingUsers = await User.find({ _id: { $in: formattedMembers } }).select('_id');
-      if (existingUsers.length !== formattedMembers.length) {
-          return res.status(400).json({ message: 'One or more member IDs are invalid' });
-      }
+    // ✅ Validate that the members exist in the User collection
+    const existingUsers = await User.find({ _id: { $in: formattedMembers } }).select('_id');
+    if (existingUsers.length !== formattedMembers.length) {
+        return res.status(400).json({ message: 'One or more member IDs are invalid' });
+    }
 
-      // ✅ Generate automatic values
-      const newProject = new Project({
-          projectName,
-          projectDescription,
-          start_date,
-          members: formattedMembers, // Directly store ObjectIds
+    // ✅ Calculate team size based on the number of members
+    const teamSize = formattedMembers.length;
+
+    // ✅ Generate automatic values
+    const newProject = new Project({
+        projectName,
+        projectDescription,
+        start_date,
+        members: formattedMembers, // Store ObjectIds
+        team_size: teamSize, // ✅ Use the actual number of members
 
           // Auto-generated fields
-          team_size: generateRandomValue(9.2, 1.9235, 7, 12),
           task_count: generateRandomValue(92, 26.5989, 60, 130),
           developer_experience: generateRandomValue(3.6, 1.1402, 2, 5),
           priority_level: generateRandomValue(2.2, 0.8367, 1, 3),
@@ -300,6 +303,32 @@ router.put('/:projectId/complete-task', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Error marking task as completed' });
   }
 });
+
+router.get('/:projectId/user-progress', verifyToken, async (req, res) => {
+  try {
+      const { projectId } = req.params;
+      const userId = req.user.id;
+
+      // Find tasks assigned to the user for this project
+      const userTasks = await Task.find({ project: projectId, assignedTo: userId });
+
+      if (userTasks.length === 0) {
+          return res.status(200).json({ completionPercentage: 0 });
+      }
+
+      // Count completed tasks
+      const completedTasks = userTasks.filter(task => task.status === 'Completed').length;
+
+      // Calculate completion percentage
+      const completionPercentage = ((completedTasks / userTasks.length) * 100).toFixed(2);
+
+      res.status(200).json({ completionPercentage });
+  } catch (error) {
+      console.error('Error fetching user progress:', error);
+      res.status(500).json({ message: 'Error fetching user progress' });
+  }
+});
+
 
 router.get("/:projectId/members", getMembersForProject);
 
