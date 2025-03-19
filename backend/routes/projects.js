@@ -1,6 +1,7 @@
 const express = require('express');
 const Project = require('../models/projectModel');
 const User = require('../models/userModel');
+const Task = require('../models/taskModel');
 const { verifyToken } = require('../middleware/auth');
 const dayjs = require('dayjs');
 const router = express.Router();
@@ -196,24 +197,55 @@ router.get('/user-projects', verifyToken, async (req, res) => {
   }
 });
 
-// ✅ Get details for a specific project, including leaderboard
-router.get('/:projectId', verifyToken, async (req, res) => {
+// ✅ Get leaderboard for a specific project (Points earned only from this project)
+// ✅ Get project leaderboard
+router.get('/:projectId/leaderboard', async (req, res) => {
   try {
-    const project = await Project.findById(req.params.projectId).populate('members.memberId', 'name email');
+    const { projectId } = req.params;
+
+    // ✅ Ensure project exists
+    const project = await Project.findById(projectId);
     if (!project) return res.status(404).json({ message: 'Project not found' });
 
-    const leaderboard = project.members.map((member) => ({
-      memberId: member.memberId._id,
-      name: member.memberId.name,
-      points: member.tasks.filter((task) => task.completed).reduce((sum, task) => sum + task.points, 0),
-    }));
+    // ✅ Find completed tasks for this project
+    const completedTasks = await Task.find({ project: projectId, status: 'Completed' }).populate('assignedTo', 'name');
 
-    res.status(200).json({ project, leaderboard });
+    if (!completedTasks.length) {
+      return res.status(200).json([]);
+    }
+
+    // ✅ Calculate points earned per user in this project
+    const leaderboard = completedTasks.reduce((acc, task) => {
+      const userId = task.assignedTo?._id.toString();
+      if (!userId) return acc;
+
+      if (!acc[userId]) {
+        acc[userId] = { name: task.assignedTo.name, points: 0 };
+      }
+
+      // Assign points based on task priority
+      let taskPoints = 0;
+      switch (task.priority.toLowerCase()) {
+        case 'high': taskPoints = 10; break;
+        case 'medium': taskPoints = 5; break;
+        case 'low': taskPoints = 3; break;
+        default: taskPoints = 0;
+      }
+
+      acc[userId].points += taskPoints;
+      return acc;
+    }, {});
+
+    // ✅ Convert leaderboard object into an array & sort by points
+    const sortedLeaderboard = Object.values(leaderboard).sort((a, b) => b.points - a.points);
+
+    res.status(200).json(sortedLeaderboard);
   } catch (error) {
-    console.error('Error fetching project details:', error);
-    res.status(500).json({ message: 'Error fetching project details' });
+    console.error('Error fetching project leaderboard:', error);
+    res.status(500).json({ message: 'Error fetching project leaderboard' });
   }
 });
+
 
 // ✅ Mark a task as completed & apply bonus XP from skills
 router.put('/:projectId/complete-task', verifyToken, async (req, res) => {

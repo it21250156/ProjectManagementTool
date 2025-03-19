@@ -12,13 +12,16 @@ import ProjectDetails from "../pages/ProjectDetails";
 import MyTasks from '../pages/MyTasks';
 import MyProfile from "../pages/MyProfile";
 import ProjectLeaderboard from "../pages/ProjectLeaderboard";
-import SkillTree from "../pages/SkillTree";
+import SkillTree from "../pages/SkillTreePage";
 import Dashboard from '../components/Dashboard';
 import TaskAllocation from '../components/TaskAllocation';
 import ModelPerformance from "../components/ModelPerformance";
 import ProjectProgress from "../components/ProjectProgress";
 import EffortPrediction from "../components/EffortPrediction";
- 
+import GlobalLeaderboard from "../components/GlobalLeaderboard";
+import Leaderboard from "../pages/Leaderboard";
+
+
 
 // import Register from '../pages/Register';
 
@@ -44,8 +47,9 @@ const AppRoutes = () => (
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/task-allocation" element={<TaskAllocation />} />
         <Route path="/model-performance" element={<ModelPerformance />} />
-        <Route path="/project-progress" element={<ProjectProgress />} /> 
+        <Route path="/project-progress" element={<ProjectProgress />} />
         <Route path="/effort-prediction" element={<EffortPrediction />} />
+        <Route path="/global-leaderboard" element={<Leaderboard />} />
       </Route>
 
       {/* Fallback route for 404 */}
@@ -53,5 +57,7 @@ const AppRoutes = () => (
     </Routes>
   </Router>
 );
+
+
 
 export default AppRoutes;

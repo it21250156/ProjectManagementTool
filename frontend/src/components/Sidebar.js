@@ -82,6 +82,11 @@ const Sidebar = () => {
                             </button>
                         </Link>
 
+                        <Link to="/global-leaderboard">
+                            <button type="button" class="text-white bg-[#4a90e2] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-lg py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                Global Leaderboard
+                            </button>
+                        </Link>
 
                     </div>
                 </div>
