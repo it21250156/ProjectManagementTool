@@ -56,9 +56,9 @@ const MultiSelectDropdown = ({ options, placeholder = "Select options", onChange
                 )}
             </div>
 
-            {/* Dropdown options */}
+            {/* Dropdown options - now with max-height and overflow-y-auto for scrolling */}
             {isOpen && (
-                <div className="absolute z-10 w-full mt-2 bg-[#50E3C2] border border-gray-300 rounded-lg shadow-lg">
+                <div className="absolute z-10 w-full mt-2 bg-[#50E3C2] border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                     {options.map((option) => (
                         <div
                             key={option.value}
