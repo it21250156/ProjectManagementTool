@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const TeamSchema = new mongoose.Schema({
     team_id: { type: String, unique: true, required: true },
     team_name: { type: String, required: true },
-    team_experience_level: { type: Number, required: true, min: 1, max: 5 }, // Example: 1 = Beginner, 5 = Expert
+    team_experience_level: { type: Number, required: true, min: 1, max: 5 },
     total_members: { type: Number, required: true, min: 1 },
     past_projects_completed: { type: Number, required: true, min: 0 },
     specialization: { type: String, required: true },

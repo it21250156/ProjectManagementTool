@@ -74,126 +74,152 @@ const TaskAllocation = () => {
     const predictedTeamDetails = teams.find(team => team.team_id === predictedTeam);
 
     return (
-        <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-            <h2>🛠️ Task Allocation</h2>
+        <div className="p-5 font-sans">
 
-            {/* Task Type Dropdown */}
-            <label><strong>Task Type:</strong></label>
-            <select name="task_type" value={taskInputs.task_type} onChange={handleInputChange}>
-                <option value="">-- Select Task Type --</option>
-                <option value="Feature Development">Feature Development</option>
-                <option value="Bug Fixing">Bug Fixing</option>
-                <option value="Testing">Testing</option>
-            </select>
+            <div className="mb-3 font-bold">
+                <label htmlFor="task_type" className="block mb-1">Task Type:</label>
+                <select
+                    id="task_type"
+                    name="task_type"
+                    value={taskInputs.task_type}
+                    onChange={handleInputChange}
+                    className="border-none bg-[#50E3C2] w-full rounded-lg font-normal p-2"
+                >
+                    <option value="">-- Select Task Type --</option>
+                    <option value="Feature Development">Feature Development</option>
+                    <option value="Bug Fixing">Bug Fixing</option>
+                    <option value="Testing">Testing</option>
+                </select>
+            </div>
 
-            {/* Task Complexity Dropdown */}
-            <label><strong>Task Complexity:</strong></label>
-            <select name="task_complexity" value={taskInputs.task_complexity} onChange={handleInputChange}>
-                <option value="">-- Select Complexity --</option>
-                <option value="1">Low</option>
-                <option value="2">Medium</option>
-                <option value="3">High</option>
-            </select>
+            <div className="mb-3 font-bold">
+                <label htmlFor="task_complexity" className="block mb-1">Task Complexity:</label>
+                <select
+                    id="task_complexity"
+                    name="task_complexity"
+                    value={taskInputs.task_complexity}
+                    onChange={handleInputChange}
+                    className="border-none bg-[#50E3C2] w-full rounded-lg font-normal p-2"
+                >
+                    <option value="">-- Select Complexity --</option>
+                    <option value="1">Low</option>
+                    <option value="2">Medium</option>
+                    <option value="3">High</option>
+                </select>
+            </div>
 
-            {/* Task Priority Dropdown */}
-            <label><strong>Task Priority:</strong></label>
-            <select name="task_priority" value={taskInputs.task_priority} onChange={handleInputChange}>
-                <option value="">-- Select Priority --</option>
-                <option value="1">Low</option>
-                <option value="2">Medium</option>
-                <option value="3">High</option>
-            </select>
+            <div className="mb-3 font-bold">
+                <label htmlFor="task_priority" className="block mb-1">Task Priority:</label>
+                <select
+                    id="task_priority"
+                    name="task_priority"
+                    value={taskInputs.task_priority}
+                    onChange={handleInputChange}
+                    className="border-none bg-[#50E3C2] w-full rounded-lg font-normal p-2"
+                >
+                    <option value="">-- Select Priority --</option>
+                    <option value="1">Low</option>
+                    <option value="2">Medium</option>
+                    <option value="3">High</option>
+                </select>
+            </div>
 
-            {/* Estimated Effort Hours Input */}
-            <label><strong>Estimated Effort Hours:</strong></label>
-            <input
-                type="number"
-                name="estimated_effort_hours"
-                value={taskInputs.estimated_effort_hours}
-                onChange={handleInputChange}
-                placeholder="Enter estimated hours"
-            />
+            <div className="mb-3 font-bold">
+                <label htmlFor="estimated_effort_hours" className="block mb-1">Estimated Effort Hours:</label>
+                <input
+                    type="number"
+                    id="estimated_effort_hours"
+                    name="estimated_effort_hours"
+                    value={taskInputs.estimated_effort_hours}
+                    onChange={handleInputChange}
+                    placeholder="Enter estimated hours"
+                    className="border-none bg-[#50E3C2] w-full rounded-lg font-normal p-2"
+                />
+            </div>
 
-            {/* Predict Task Allocation Button */}
-            <button onClick={handleTaskAllocation} style={{ marginTop: "10px" }}>
-                {loading ? "⏳ Predicting..." : "🔍 Predict Best Team"}
+            <button
+                onClick={handleTaskAllocation}
+                className="mt-4 px-4 py-2 bg-[#4A90E2] text-white rounded-lg cursor-pointer hover:bg-[#3A80D2]"
+            >
+                {loading ? "Predicting..." : "Predict Best Team"}
             </button>
 
             {/* Display Predicted Best Team */}
             {predictedTeam && (
-                <div style={{
-                    marginTop: "20px",
-                    padding: "15px",
-                    border: "1px solid #ddd",
-                    borderRadius: "8px",
-                    backgroundColor: "#f9f9f9"
-                }}>
-                    <h3>✅ Best Team for this Task</h3>
-                    <p style={{ fontSize: "18px", fontWeight: "bold", color: "#007BFF" }}>
-                        {predictedTeam}
-                    </p>
+                <div className="mt-8">
+                    <hr className="my-5" />
+
+                    {/* Centered predicted team section */}
+                    <div className="flex flex-col items-center justify-center text-center">
+                        <h3 className="text-xl font-semibold text-[#4a90e2] mb-3">Best Team for this Task</h3>
+                        <p className="text-2xl font-semibold text-white bg-[#f5a623] p-5 rounded-full mb-4">
+                            {predictedTeam}
+                        </p>
+                    </div>
+
 
                     {/* Display Team Details */}
                     {predictedTeamDetails && (
-                        <div style={{ marginTop: "10px" }}>
-                            <h4>📋 Team Details</h4>
-                            <table border="1" cellPadding="5" style={{ borderCollapse: "collapse", width: "80%" }}>
-                                <thead>
-                                    <tr>
-                                        <th>Attribute</th>
-                                        <th>Value</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Team ID</td>
-                                        <td>{predictedTeamDetails.team_id}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Experience Level</td>
-                                        <td>{predictedTeamDetails.team_experience_level}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total Members</td>
-                                        <td>{predictedTeamDetails.total_members}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Past Projects Completed</td>
-                                        <td>{predictedTeamDetails.past_projects_completed}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="col p-3">
+                                <h4 className="text-xl font-semibold text-[#4a90e2] mb-1">Team Details</h4>
+                                <div className="shadow-lg border border-[#50e3c2] rounded-lg">
+                                    <table className="table-auto w-full">
+                                        <tbody>
+                                            <tr>
+                                                <td className="p-3 font-medium">Team Code</td>
+                                                <td className="py-3 px-5 font-bold text-[#f5a623]">{predictedTeamDetails.team_id}</td>
+                                            </tr>
+                                            <tr className="bg-gray-50">
+                                                <td className="p-3 font-medium">Experience Level</td>
+                                                <td className="py-3 px-5 font-bold text-[#f5a623]">{predictedTeamDetails.team_experience_level}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="p-3 font-medium">Total Members</td>
+                                                <td className="py-3 px-5 font-bold text-[#f5a623]">{predictedTeamDetails.total_members}</td>
+                                            </tr>
+                                            <tr className="bg-gray-50">
+                                                <td className="p-3 font-medium">Past Projects Completed</td>
+                                                <td className="py-3 px-5 font-bold text-[#f5a623]">{predictedTeamDetails.past_projects_completed}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            {/* Feature Importance Explanation */}
+                            <div className="col p-3">
+                                <h4 className="text-xl font-semibold text-[#4a90e2] mb-1">Why this Team?</h4>
+                                <div className="shadow-lg border border-[#50e3c2] rounded-lg">
+                                    <table className="table-auto w-full">
+                                        <thead>
+                                            <tr className="bg-gray-100">
+                                                <th className="p-3 font-medium text-left">Feature</th>
+                                                <th className="p-3 font-medium text-left">Impact Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {featureImportance.length > 0 ? (
+                                                featureImportance.map((item, index) => (
+                                                    <tr key={index} className={index % 2 === 1 ? "bg-gray-50" : ""}>
+                                                        <td className="p-3">{item[0]}</td>
+                                                        <td className="p-3 font-bold text-[#f5a623]">{(item[1] * 100).toFixed(2)}%</td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="2" className="p-3 text-center">No explanation available.</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p className="text-sm text-gray-600 mt-2">
+                                    <span className="font-medium">How to Read This?</span> Higher impact scores mean the feature played a bigger role in the team selection.
+                                </p>
+                            </div>
                         </div>
                     )}
-
-                    {/* Feature Importance Explanation */}
-                    <h4>📌 Why this Team?</h4>
-                    <table border="1" cellPadding="5" style={{ borderCollapse: "collapse", width: "80%" }}>
-                        <thead>
-                            <tr>
-                                <th>Feature</th>
-                                <th>Impact Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {featureImportance.length > 0 ? (
-                                featureImportance.map((item, index) => (
-                                    <tr key={index}>
-                                        <td>{item[0]}</td>
-                                        <td>{(item[1] * 100).toFixed(2)}%</td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="2">No explanation available.</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-
-                    <p style={{ fontSize: "14px", color: "#555" }}>
-                        📊 **How to Read This?** Higher impact scores mean the feature played a bigger role in the team selection.
-                    </p>
                 </div>
             )}
         </div>
