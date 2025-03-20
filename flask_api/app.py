@@ -19,9 +19,9 @@ try:
     db = client["test"]
     projects_collection = db["projects"]
     teams_collection = db["teams"]
-    print("✅ Successfully connected to MongoDB")
+    print("Successfully connected to MongoDB")
 except Exception as e:
-    print(f"❌ Error connecting to MongoDB: {e}")
+    print(f"Error connecting to MongoDB: {e}")
 
 # Define model directory
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
@@ -37,9 +37,9 @@ try:
     accuracy_metrics = joblib.load(os.path.join(MODEL_DIR, "accuracy_metrics.pkl"))
     feature_importance = joblib.load(os.path.join(MODEL_DIR, "feature_importance.pkl"))
     timeline_scaler = joblib.load(os.path.join(MODEL_DIR, "scaler.pkl"))
-    print("✅ Models loaded successfully")
+    print("Models loaded successfully")
 except Exception as e:
-    print(f"❌ Error loading models: {e}")
+    print(f"Error loading models: {e}")
 
 @app.route('/')
 def home():
@@ -147,7 +147,7 @@ def predict():
             "effort_hours": project_data.get("effort_hours", 0),
             "complexity_score": project_data.get("task_complexity", 0),
             "testing_coverage": project_data.get("testing_coverage", 0),
-            "team_key": str(project_data.get("team_key", "0")).strip()  # ✅ Remove extra spaces
+            "team_key": str(project_data.get("team_key", "0")).strip()  # Remove extra spaces
         }])
 
         # Encode the `team_key` column for defect prediction
