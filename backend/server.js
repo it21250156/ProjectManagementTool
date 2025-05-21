@@ -8,6 +8,7 @@ const projectRoutes = require('./routes/projects')
 const skillRoutes = require('./routes/skills');
 const authRoutes = require('./routes/auth');
 const teamRoutes = require('./routes/teams')
+const geminiRoute = require('./routes/gemini');
 const cors = require('cors');
 
 // express app
@@ -35,6 +36,9 @@ app.use('/api/tasks', taskRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/skills', skillRoutes);
 app.use('/api/teams', teamRoutes);
+console.log('geminiRoute export:', geminiRoute);
+
+app.use('/api/gemini', geminiRoute);
 
 console.log('Mongo URI:', process.env.MONGO_URI);
 console.log('Port:', process.env.PORT);

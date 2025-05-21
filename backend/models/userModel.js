@@ -9,6 +9,11 @@ const UserSchema = new mongoose.Schema({
     completedTasks: { type: Number, default: 0 },
     earnedXP: { type: Number, default: 0 },
     level: { type: Number, default: 1 },
+    experienceLevel: {
+        type: String,
+        enum: ['Junior', 'Mid', 'Senior'],
+        default: 'Junior' // fallback
+      },      
     unlockedSkills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }],
     badges: [{ type: String }],
 });
@@ -16,11 +21,22 @@ const UserSchema = new mongoose.Schema({
 // 🔹 Hash password before saving
 UserSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password, salt);
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
     }
+  
+    // Auto-assign experienceLevel based on level
+    if (this.level <= 3) {
+      this.experienceLevel = 'Junior';
+    } else if (this.level <= 6) {
+      this.experienceLevel = 'Mid';
+    } else {
+      this.experienceLevel = 'Senior';
+    }
+  
     next();
-});
+  });
+  
 
 // 🔹 Compare input password with hashed password
 UserSchema.methods.matchPassword = async function (password) {
@@ -46,7 +62,17 @@ UserSchema.methods.updateLevel = function () {
     }
 
     this.level = newLevel;
+
+    // Auto-update experienceLevel based on new level
+    if (this.level <= 3) {
+        this.experienceLevel = 'Junior';
+    } else if (this.level <= 6) {
+        this.experienceLevel = 'Mid';
+    } else {
+        this.experienceLevel = 'Senior';
+    }
 };
+
 
 // 🔹 Function to update badges (Uses XP instead of Points to prevent losing badges)
 UserSchema.methods.updateBadges = function () {

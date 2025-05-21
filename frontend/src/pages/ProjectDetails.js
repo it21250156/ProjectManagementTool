@@ -11,6 +11,11 @@ const ProjectDetails = () => {
     const [completionPercentage, setCompletionPercentage] = useState(0);
     const [projectCompletion, setProjectCompletion] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [aiResponse, setAiResponse] = useState(null);
+    const [selectedTaskId, setSelectedTaskId] = useState(null);
+    const [aiLoading, setAiLoading] = useState(false);
+    const [aiError, setAiError] = useState(null);
+
 
     useEffect(() => {
         fetchTasks();
@@ -109,6 +114,39 @@ const ProjectDetails = () => {
         console.log("Tasks updated:", tasks);
     }, [tasks]);
 
+    const handleAIHelp = async (task) => {
+        setAiLoading(true);
+        setSelectedTaskId(task._id);
+        setAiResponse(null);
+        setAiError(null);
+
+        try {
+            const response = await fetch("/api/gemini/estimate-risk", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    taskName: task.taskName,
+                    taskDescription: task.taskDescription || "",
+                    complexity: task.priority || "Medium",
+                    experienceLevel: "Junior"
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) throw new Error(data.error || "Failed to get AI response");
+
+            setAiResponse(data);
+        } catch (err) {
+            setAiError(err.message);
+        } finally {
+            setAiLoading(false);
+        }
+    };
+
+
     return (
         <div className='h-screen flex flex-col'>
             {/* <Header /> */}
@@ -133,8 +171,10 @@ const ProjectDetails = () => {
                                 {tasks.map((task) => (
                                     <li key={task._id} className='p-4 bg-white rounded-lg shadow-md mb-2'>
                                         <div className='grid grid-cols-3'>
+                                            {/* Task Details */}
                                             <div>
-                                                <h2 className='text-lg font-semibold'>{task.taskName}
+                                                <h2 className='text-lg font-semibold'>
+                                                    {task.taskName}
                                                     <span
                                                         className={`text-white mx-2 text-xs font-bold inline-block px-2 py-1 rounded-full ${task.priority === 'High'
                                                             ? 'bg-red-500'
@@ -147,20 +187,69 @@ const ProjectDetails = () => {
                                                     </span>
                                                 </h2>
 
-                                                <p className='text-sm text-gray-500 my-3'>Assigned To: {task.assignedTo?.name || 'Unassigned'}</p>
+                                                <p className='text-sm text-gray-500 my-1'>
+                                                    Assigned To: {task.assignedTo?.name || 'Unassigned'}
+                                                </p>
+
+                                                {task.estimatedDuration && (() => {
+                                                    const hours = Math.floor(task.estimatedDuration);
+                                                    const minutes = Math.round((task.estimatedDuration - hours) * 60);
+                                                    return (
+                                                        <div className="text-sm text-blue-700 mt-1 flex items-center gap-1 relative group w-fit">
+                                                            ⏱ Estimated Time:
+                                                            <span className='font-bold ml-1'>
+                                                                {hours} hour{hours !== 1 ? 's' : ''}{minutes > 0 ? ` ${minutes} minute${minutes !== 1 ? 's' : ''}` : ''}
+                                                            </span>
+                                                            <span className="text-gray-500 cursor-pointer text-xs group-hover:underline">ℹ️</span>
+                                                            <div className="absolute top-6 left-0 bg-white text-black text-xs p-2 rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-64 z-10">
+                                                                This duration is estimated using a COCOMO-inspired formula that considers task complexity, developer experience, and effort estimate.
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })()}
+
 
                                             </div>
-                                            <div >
+
+                                            {/* Due Date */}
+                                            <div>
                                                 <p className="text-md text-center">Due Date</p>
                                                 <div className='flex justify-center items-center'>
                                                     <p className="text-lg bg-red-700 text-white text-center py-2 px-5 my-2 mx-10 rounded-xl font-semibold">
                                                         {new Date(task.dueDate).toLocaleDateString()}
-
                                                     </p>
                                                 </div>
-
-
                                             </div>
+
+                                            {task.status !== "Completed" && (
+                                                <div className="my-2">
+                                                    <button
+                                                        onClick={() => handleAIHelp(task)}
+                                                        className="text-xs text-blue-600 underline hover:text-blue-900"
+                                                    >
+                                                        🤖 Ask AI Assistant
+                                                    </button>
+                                                </div>
+                                            )}
+
+
+                                            {/* AI Assistant Result Modal */}
+                                            {selectedTaskId === task._id && aiResponse && (
+                                                <div className="bg-gray-100 p-3 rounded-lg mt-2 border text-sm">
+                                                    <p><strong>⏱ Estimated Time:</strong> {aiResponse.estimatedDuration} hours</p>
+                                                    <p><strong>⚠️ Predicted Risk Level:</strong> {aiResponse.risk}</p>
+                                                    <p className="text-xs text-gray-600 italic">🧠 {aiResponse.reason}</p>
+                                                </div>
+                                            )}
+                                            {selectedTaskId === task._id && aiLoading && (
+                                                <p className="text-sm text-blue-600 mt-2">AI is thinking...</p>
+                                            )}
+                                            {selectedTaskId === task._id && aiError && (
+                                                <p className="text-sm text-red-600 mt-2">❌ {aiError}</p>
+                                            )}
+
+
+                                            {/* Status Control */}
                                             <div className="mb-3 font-bold">
                                                 <label className='font-bold mr-5'>Status</label>
                                                 <select
@@ -178,6 +267,7 @@ const ProjectDetails = () => {
                                     </li>
                                 ))}
                             </ul>
+
                         ) : (
                             <p>No tasks found for this project.</p>
                         )}

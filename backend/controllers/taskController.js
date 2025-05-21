@@ -30,17 +30,50 @@ const getTask = async (req, res) => {
     }
 };
 
-// ✅ Create a Task
+//  Create a Task with complexity and effortEstimate
 const createTask = async (req, res) => {
-    const { taskName, dueDate, assignedTo, project, priority } = req.body;
+    const { taskName, dueDate, assignedTo, project, priority, complexity, effortEstimate } = req.body;
 
     try {
-        const task = await Task.create({ taskName, dueDate, assignedTo, project, priority });
-        res.status(201).json(task);
+        // Fetch the user to access their experienceLevel
+        const user = await User.findById(assignedTo);
+        if (!user) {
+            return res.status(404).json({ error: 'Assigned user not found' });
+        }
+
+        // Predict estimated task duration using COCOMO-inspired logic
+        const estimateTaskDuration = (complexity, effort, experience) => {
+            const complexityFactor = { Low: 1.0, Medium: 1.2, High: 1.5 };
+            const experienceFactor = { Junior: 1.2, Mid: 1.0, Senior: 0.8 };
+
+            const base = effort * complexityFactor[complexity];
+            return base * experienceFactor[experience];
+        };
+
+        const estimatedDuration = estimateTaskDuration(complexity, effortEstimate, user.experienceLevel);
+
+        // Create the task
+        const task = await Task.create({
+            taskName,
+            dueDate,
+            assignedTo,
+            project,
+            priority,
+            complexity,
+            effortEstimate,
+            estimatedDuration
+        });
+
+        res.status(201).json({ 
+            task,
+            estimatedDuration: `${estimatedDuration.toFixed(2)} hours` 
+        });
+
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
+
 
 // ✅ Update a Task
 const updateTask = async (req, res) => {
@@ -122,7 +155,7 @@ const updateTaskStatus = async (req, res) => {
             }
 
             // ✅ Determine Base XP from Priority
-            switch (task.priority.toLowerCase()) { 
+            switch (task.priority.toLowerCase()) {
                 case 'high': baseXP = 10; break;
                 case 'medium': baseXP = 5; break;
                 case 'low': baseXP = 3; break;
@@ -163,6 +196,15 @@ const updateTaskStatus = async (req, res) => {
                 levelUp = true;
             }
 
+            // 🔁 Update experienceLevel based on updated level
+            if (user.level <= 3) {
+                user.experienceLevel = 'Junior';
+            } else if (user.level <= 6) {
+                user.experienceLevel = 'Mid';
+            } else {
+                user.experienceLevel = 'Senior';
+            }
+
             // ✅ Check for new badges
             const badgeMilestones = {
                 30: "Task Beginner",
@@ -185,7 +227,7 @@ const updateTaskStatus = async (req, res) => {
         task.status = status;
         await task.save();
 
-        res.status(200).json({ 
+        res.status(200).json({
             message: `Task completed! Total XP: ${totalXP} (Base: ${baseXP}, Bonus: ${bonusXP})`,
             baseXP,
             bonusXP,
@@ -194,7 +236,7 @@ const updateTaskStatus = async (req, res) => {
             newBadges,
             activatedSkills, // ✅ Send activated skills
             level: updatedLevel,
-            task 
+            task
         });
 
     } catch (error) {
