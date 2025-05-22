@@ -33,10 +33,10 @@ const Home = () => {
                         <div key={index} className={`bg-gradient-to-r ${stat.color} rounded-lg shadow-md p-6 text-white`}>
                             <div className="flex justify-between items-center">
                                 <div>
-                                    <p className="text-sm font-medium opacity-80">{stat.title}</p>
+                                    <p className="text-sm font-medium">{stat.title}</p>
                                     <p className="text-3xl font-bold mt-1">{stat.count}</p>
                                 </div>
-                                <div className="text-4xl opacity-80">{stat.icon}</div>
+                                <div className="text-4xl">{stat.icon}</div>
                             </div>
                         </div>
                     ))}

@@ -85,7 +85,7 @@ const ProjectModal = ({ closeModal }) => {
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-md" onClick={closeModal}>
+        <div className="fixed inset-0 flex items-center justify-center z-90 bg-black/30 backdrop-blur-md" onClick={closeModal}>
             <div className="relative p-4 w-full max-w-2xl bg-[#F5A623] rounded-3xl shadow-md" onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center justify-between p-4">
                     <h3 className="text-4xl font-bold w-full text-white">Create a Project</h3>
