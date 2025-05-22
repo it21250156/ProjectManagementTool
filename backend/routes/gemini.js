@@ -162,4 +162,184 @@ Return valid JSON:
     }
 });
 
+//  Predict Project Timeline using Gemini API
+router.post('/predict-timeline', async (req, res) => {
+    const {
+        projectName,
+        projectDescription,
+        team_size,
+        task_count,
+        developer_experience,
+        priority_level,
+        task_complexity,
+        project_size,
+        testing_coverage,
+        Effort_Density,
+        Team_Productivity,
+        LoC_per_Team_Member,
+        change_impact_factor
+    } = req.body;
+
+    if (!projectName || !team_size || !task_count || !developer_experience) {
+        return res.status(400).json({ error: "Missing required fields." });
+    }
+
+    try {
+        await loadGemini();
+
+        const prompt = `
+You are a project management expert AI.
+
+Estimate the number of days required to complete the following software project.
+
+Project Name: ${projectName}
+Description: ${projectDescription}
+
+Features:
+- Team Size: ${team_size}
+- Task Count: ${task_count}
+- Developer Experience: ${developer_experience}
+- Priority Level: ${priority_level}
+- Task Complexity: ${task_complexity}
+- Project Size (LOC): ${project_size}
+- Testing Coverage: ${testing_coverage}
+- Effort Density: ${Effort_Density}
+- Team Productivity: ${Team_Productivity}
+- LOC per Member: ${LoC_per_Team_Member}
+- Requirement Change Impact Factor: ${change_impact_factor}
+
+Return JSON:
+{
+  "estimated_days_before_impact": 45.6,
+  "final_estimate_days_after_impact": 51.2,
+  "reason": "High complexity with moderate productivity, and impact factor added 10%."
+}`;
+
+        const result = await genAI.models.generateContent({
+            model: "gemini-1.5-flash",
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            config: { temperature: 0.2, maxOutputTokens: 400 }
+        });
+
+        let rawText = result.candidates[0].content.parts[0].text.trim();
+
+        // Remove markdown wrappers
+        if (rawText.startsWith("```")) {
+            rawText = rawText.replace(/```(?:json)?/, "").replace(/```/, "").trim();
+        }
+
+        // Extract only the first JSON object from the text using regex
+        const match = rawText.match(/\{[\s\S]*?\}/); // matches the first JSON object
+
+        if (!match) {
+            console.error(" No valid JSON found in Gemini response.");
+            console.error(" Full response:\n", rawText);
+            return res.status(500).json({ error: "Could not extract valid JSON", raw: rawText });
+        }
+
+        let json;
+        try {
+            json = JSON.parse(match[0]);
+        } catch (err) {
+            console.error(" JSON parse failed:");
+            console.error(" Extracted JSON:\n", match[0]);
+            return res.status(500).json({ error: "JSON parse failed", raw: match[0] });
+        }
+
+
+        return res.status(200).json(json);
+
+    } catch (err) {
+        console.error("Timeline Gemini Error:", err);
+        res.status(500).json({ error: "Gemini timeline prediction failed", details: err.message });
+    }
+});
+
+//  Predict Defect Count using Gemini API
+router.post('/predict-defects', async (req, res) => {
+    const {
+        projectName,
+        projectDescription,
+        defect_fix_time_minutes,
+        size_added,
+        size_deleted,
+        size_modified,
+        effort_hours,
+        task_complexity,
+        testing_coverage,
+        team_key
+    } = req.body;
+
+    if (!projectName || !defect_fix_time_minutes || !effort_hours || !team_key) {
+        return res.status(400).json({ error: "Missing required fields." });
+    }
+
+    try {
+        await loadGemini();
+
+        const prompt = `
+You are a software quality analyst AI.
+
+Estimate the number of defects likely to be found in this software project.
+
+Project Name: ${projectName}
+Description: ${projectDescription}
+
+Technical Details:
+- Defect Fix Time (min): ${defect_fix_time_minutes}
+- Size Added: ${size_added}
+- Size Deleted: ${size_deleted}
+- Size Modified: ${size_modified}
+- Total Effort (hrs): ${effort_hours}
+- Complexity Score: ${task_complexity}
+- Testing Coverage: ${testing_coverage}
+- Team Key: ${team_key}
+
+Respond in JSON:
+{
+  "predicted_defects": 19,
+  "reason": "High LOC changes with medium coverage and average complexity contributed to moderate defect count."
+}`;
+
+        const result = await genAI.models.generateContent({
+            model: "gemini-1.5-flash",
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            config: { temperature: 0.2, maxOutputTokens: 300 }
+        });
+
+        let rawText = result.candidates[0].content.parts[0].text.trim();
+
+        // Remove markdown wrappers
+        if (rawText.startsWith("```")) {
+            rawText = rawText.replace(/```(?:json)?/, "").replace(/```/, "").trim();
+        }
+
+        // Extract only the first JSON object from the text using regex
+        const match = rawText.match(/\{[\s\S]*?\}/); // matches the first JSON object
+
+        if (!match) {
+            console.error(" No valid JSON found in Gemini response.");
+            console.error(" Full response:\n", rawText);
+            return res.status(500).json({ error: "Could not extract valid JSON", raw: rawText });
+        }
+
+        let json;
+        try {
+            json = JSON.parse(match[0]);
+        } catch (err) {
+            console.error(" JSON parse failed:");
+            console.error(" Extracted JSON:\n", match[0]);
+            return res.status(500).json({ error: "JSON parse failed", raw: match[0] });
+        }
+
+
+        return res.status(200).json(json);
+
+    } catch (err) {
+        console.error("Defect Gemini Error:", err);
+        res.status(500).json({ error: "Gemini defect prediction failed", details: err.message });
+    }
+});
+
+
 module.exports = router;
