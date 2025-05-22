@@ -245,6 +245,34 @@ const updateTaskStatus = async (req, res) => {
     }
 };
 
+// ✅ Estimate Task Duration (COCOMO-Inspired)
+const estimateTaskDurationOnly = async (req, res) => {
+    const { assignedTo, complexity, effortEstimate } = req.body;
+
+    if (!assignedTo || !complexity || !effortEstimate) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    try {
+        const user = await User.findById(assignedTo);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        const complexityFactor = { Low: 1.0, Medium: 1.2, High: 1.5 };
+        const experienceFactor = { Junior: 1.2, Mid: 1.0, Senior: 0.8 };
+
+        const base = effortEstimate * complexityFactor[complexity];
+        const estimatedDuration = base * experienceFactor[user.experienceLevel];
+
+        return res.status(200).json({
+            estimatedDuration: `${estimatedDuration.toFixed(2)} hours`
+        });
+    } catch (error) {
+        console.error('Estimation Error:', error);
+        res.status(500).json({ error: 'Failed to estimate task duration' });
+    }
+};
+
+
 
 module.exports = {
     getAllTasks,
@@ -254,4 +282,5 @@ module.exports = {
     deleteTask,
     getTasksByProject,
     updateTaskStatus,
+    estimateTaskDurationOnly,
 };

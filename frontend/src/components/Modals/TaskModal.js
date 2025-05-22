@@ -49,6 +49,45 @@ const TaskModal = ({ closeModal }) => {
     fetchMembersForProject();
   }, [project]);
 
+  const fetchEstimatedDuration = async () => {
+    if (!assignedTo || !complexity || !effortEstimate) {
+      setError("Please select a member and fill effort estimate + complexity to get a prediction.");
+      return;
+    }
+  
+    try {
+      const res = await fetch("/api/tasks/estimate-duration", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          assignedTo,       
+          complexity,
+          effortEstimate
+        }),
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        const floatHours = parseFloat(data.estimatedDuration);
+        const hours = Math.floor(floatHours);
+        const minutes = Math.round((floatHours - hours) * 60);
+        setEstimatedDuration(`${hours} hour${hours !== 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`);
+        setError(null);
+      } else {
+        setError(data.message || "Failed to estimate duration");
+      }
+      
+    } catch (err) {
+      setError("Something went wrong while estimating duration");
+      console.error(err);
+    }
+  };
+  
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -221,13 +260,25 @@ const TaskModal = ({ closeModal }) => {
               </label>
             </div>
 
-            {estimatedDuration && (
-              <div className="text-center mt-4 text-md font-semibold text-green-700">
-                ⏱ Estimated Completion Time: {estimatedDuration}
-              </div>
-            )}
 
             <div className="my-5">
+
+              <div className="mb-3 font-bold">
+                <button
+                  type="button"
+                  onClick={fetchEstimatedDuration}
+                  className="rounded-md bg-[#7B61FF] text-white px-4 py-2 font-semibold shadow hover:bg-[#674AD2]"
+                >
+                  Estimate Task Duration
+                </button>
+
+                {estimatedDuration && (
+                  <div className="text-center mt-3 text-md font-semibold text-green-700">
+                    ⏱ Estimated Completion Time: {estimatedDuration} 
+                  </div>
+                )}
+              </div>
+
               <button
                 type="submit"
                 className="flex w-1/3 justify-center mx-auto rounded-md bg-[#4A90E2] px-4 py-3.5 text-xl font-semibold text-white shadow-md hover:bg-[#4A90E2] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3C71B1]"
