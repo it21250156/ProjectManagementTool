@@ -13,6 +13,13 @@ const Dashboard = () => {
     const [endDate, setEndDate] = useState("");
     const [progress, setProgress] = useState(0);
     const [deadlineSaved, setDeadlineSaved] = useState(false);
+    const [aiTimeline, setAiTimeline] = useState(null);
+    const [aiTimelineReason, setAiTimelineReason] = useState("");
+    const [aiDefects, setAiDefects] = useState(null);
+    const [aiDefectsReason, setAiDefectsReason] = useState("");
+    const [aiEndDate, setAiEndDate] = useState(null);
+    const [aiDeadlineSaved, setAiDeadlineSaved] = useState(false);
+
     const navigate = useNavigate();
 
     // Fetch available projects from MongoDB
@@ -26,6 +33,7 @@ const Dashboard = () => {
     const handleProjectSelect = async (projectId) => {
         setSelectedProject(projectId);
         setDeadlineSaved(false);
+        setAiDeadlineSaved(false); // if you're using this
 
         try {
             const projectResponse = await axios.get(`http://127.0.0.1:5000/get_project_details/${projectId}`);
@@ -41,19 +49,17 @@ const Dashboard = () => {
                 teamSize: projectData.team_size
             });
 
-            // Fetch predictions
+            // ✅ ML prediction
             const predictResponse = await axios.post("http://127.0.0.1:5000/predict", { project_id: projectId });
             setPredictions(predictResponse.data);
 
-            // Ensure startDate is set before calculating endDate
+            // Calculate end date + progress from ML
             setTimeout(() => {
                 if (formattedStartDate) {
-                    // Calculate End Date
                     const calculatedEndDate = new Date(formattedStartDate);
                     calculatedEndDate.setDate(calculatedEndDate.getDate() + predictResponse.data.predicted_timeline_days_after_impact);
                     setEndDate(calculatedEndDate.toISOString().split("T")[0]);
 
-                    // Calculate Progress
                     const today = new Date();
                     const start = new Date(formattedStartDate);
                     const end = new Date(calculatedEndDate);
@@ -61,10 +67,53 @@ const Dashboard = () => {
                     setProgress(progressValue);
                 }
             }, 500);
+
+            // ✅ Gemini Timeline Prediction
+            const timelineRes = await axios.post("http://localhost:4080/api/gemini/predict-timeline", {
+                projectName: projectData.projectName,
+                projectDescription: projectData.projectDescription,
+                team_size: projectData.team_size,
+                task_count: projectData.task_count,
+                developer_experience: projectData.developer_experience,
+                priority_level: projectData.priority_level,
+                task_complexity: projectData.task_complexity,
+                project_size: projectData.project_size,
+                testing_coverage: projectData.testing_coverage,
+                Effort_Density: projectData.Effort_Density,
+                Team_Productivity: projectData.Team_Productivity,
+                LoC_per_Team_Member: projectData.LoC_per_Team_Member,
+                change_impact_factor: projectData.change_impact_factor
+            });
+
+            setAiTimeline(timelineRes.data.final_estimate_days_after_impact);
+            setAiTimelineReason(timelineRes.data.reason);
+
+            const aiEnd = new Date(formattedStartDate);
+            aiEnd.setDate(aiEnd.getDate() + parseInt(timelineRes.data.final_estimate_days_after_impact));
+            setAiEndDate(aiEnd.toISOString().split("T")[0]);
+
+            // ✅ Gemini Defect Prediction
+            const defectRes = await axios.post("http://localhost:4080/api/gemini/predict-defects", {
+                projectName: projectData.projectName,
+                projectDescription: projectData.projectDescription,
+                defect_fix_time_minutes: projectData.defect_fix_time_minutes,
+                size_added: projectData.size_added,
+                size_deleted: projectData.size_deleted,
+                size_modified: projectData.size_modified,
+                effort_hours: projectData.effort_hours,
+                task_complexity: projectData.task_complexity,
+                testing_coverage: projectData.testing_coverage,
+                team_key: projectData.team_key
+            });
+
+            setAiDefects(defectRes.data.predicted_defects);
+            setAiDefectsReason(defectRes.data.reason);
+
         } catch (error) {
-            console.error("Error fetching project details or predictions:", error);
+            console.error("Error fetching project details or Gemini predictions:", error);
         }
     };
+
 
     // Save the estimated end date as the project deadline
     const handleSaveDeadline = async () => {
@@ -83,6 +132,23 @@ const Dashboard = () => {
             console.error("Error saving project deadline:", error);
         }
     };
+
+    const handleSaveAIDeadline = async () => {
+        if (!selectedProject || !aiEndDate) return;
+
+        try {
+            const res = await axios.put("http://127.0.0.1:5000/update_project_deadline", {
+                project_id: selectedProject,
+                project_deadline: aiEndDate
+            });
+            if (res.data.message) {
+                setAiDeadlineSaved(true);
+            }
+        } catch (error) {
+            console.error("Error saving AI deadline:", error);
+        }
+    };
+
 
     return (
         <div>
@@ -200,6 +266,43 @@ const Dashboard = () => {
                                     </div>
                                 )}
                                 {deadlineSaved && <p style={{ color: "green" }}> Deadline saved successfully!</p>}
+
+                                {aiTimeline && aiDefects && (
+                                    <div className="mt-10">
+                                        <h3 className="text-xl font-semibold text-[#7B61FF] mb-2">🔮 AI-Based Project Prediction</h3>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="border border-[#7B61FF] rounded-lg p-4 shadow-md">
+                                                <h4 className="font-bold mb-2">Predicted Timeline</h4>
+                                                <p className="text-2xl font-bold text-[#7B61FF]">{aiTimeline} Days</p>
+                                                <p className="text-sm text-gray-700 mt-2">🧠 {aiTimelineReason}</p>
+                                            </div>
+                                            <div className="border border-[#7B61FF] rounded-lg p-4 shadow-md">
+                                                <h4 className="font-bold mb-2">Predicted Defects</h4>
+                                                <p className="text-2xl font-bold text-[#7B61FF]">{aiDefects}</p>
+                                                <p className="text-sm text-gray-700 mt-2">🧠 {aiDefectsReason}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* AI Estimated End Date + Save */}
+                                        {aiEndDate && (
+                                            <div className="mt-5">
+                                                <p className="text-lg">Estimated AI End Date:</p>
+                                                <p className="text-2xl font-bold text-red-600">{aiEndDate}</p>
+                                                <Tooltip content="Save AI Deadline" className="text-black mt-2">
+                                                    <button
+                                                        onClick={handleSaveAIDeadline}
+                                                        className="p-4 mt-2 rounded-full bg-[#f5a623]"
+                                                    >
+                                                        <MdOutlineSaveAlt className="text-white" />
+                                                    </button>
+                                                </Tooltip>
+                                                {aiDeadlineSaved && <p style={{ color: "green" }}>AI deadline saved successfully!</p>}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+
                             </div>
                         </div>
                     </div>

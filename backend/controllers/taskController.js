@@ -30,8 +30,9 @@ res.status(500).json({ error: error.message });
 }
 };
 
-// ✅ Create a Task
+//  Create a Task with complexity and effortEstimate
 const createTask = async (req, res) => {
+<<<<<<< HEAD
 const { taskName, dueDate, assignedTo, project, priority, complexity } = req.body;
 
 try {
@@ -40,7 +41,50 @@ res.status(201).json(task);
 } catch (error) {
 res.status(400).json({ error: error.message });
 }
+=======
+    const { taskName, dueDate, assignedTo, project, priority, complexity, effortEstimate } = req.body;
+
+    try {
+        // Fetch the user to access their experienceLevel
+        const user = await User.findById(assignedTo);
+        if (!user) {
+            return res.status(404).json({ error: 'Assigned user not found' });
+        }
+
+        // Predict estimated task duration using COCOMO-inspired logic
+        const estimateTaskDuration = (complexity, effort, experience) => {
+            const complexityFactor = { Low: 1.0, Medium: 1.2, High: 1.5 };
+            const experienceFactor = { Junior: 1.2, Mid: 1.0, Senior: 0.8 };
+
+            const base = effort * complexityFactor[complexity];
+            return base * experienceFactor[experience];
+        };
+
+        const estimatedDuration = estimateTaskDuration(complexity, effortEstimate, user.experienceLevel);
+
+        // Create the task
+        const task = await Task.create({
+            taskName,
+            dueDate,
+            assignedTo,
+            project,
+            priority,
+            complexity,
+            effortEstimate,
+            estimatedDuration
+        });
+
+        res.status(201).json({ 
+            task,
+            estimatedDuration: `${estimatedDuration.toFixed(2)} hours` 
+        });
+
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+>>>>>>> 7f08e11da2ffb0c9f8a668ad637a77e91e5ae7c8
 };
+
 
 // ✅ Update a Task
 const updateTask = async (req, res) => {
@@ -134,12 +178,21 @@ if (status === "Completed") {
     case 'low': baseXP += 3; break;
   }
 
+<<<<<<< HEAD
   // ✅ Base XP from Complexity
   switch (task.complexity?.toLowerCase()) {
     case 'high': baseXP += 10; break;
     case 'medium': baseXP += 5; break;
     case 'low': baseXP += 3; break;
   }
+=======
+            // ✅ Determine Base XP from Priority
+            switch (task.priority.toLowerCase()) {
+                case 'high': baseXP = 10; break;
+                case 'medium': baseXP = 5; break;
+                case 'low': baseXP = 3; break;
+            }
+>>>>>>> 7f08e11da2ffb0c9f8a668ad637a77e91e5ae7c8
 
   const now = dayjs();
 
@@ -175,6 +228,7 @@ if (status === "Completed") {
     levelUp = true;
   }
 
+<<<<<<< HEAD
   const badgeMilestones = {
     30: "Task Beginner",
     100: "Task Master",
@@ -186,9 +240,58 @@ if (status === "Completed") {
     if (user.earnedXP >= xp && !user.badges.includes(badge)) {
       user.badges.push(badge);
       newBadges.push(badge);
+=======
+            // 🔁 Update experienceLevel based on updated level
+            if (user.level <= 3) {
+                user.experienceLevel = 'Junior';
+            } else if (user.level <= 6) {
+                user.experienceLevel = 'Mid';
+            } else {
+                user.experienceLevel = 'Senior';
+            }
+
+            // ✅ Check for new badges
+            const badgeMilestones = {
+                30: "Task Beginner",
+                100: "Task Master",
+                200: "XP Achiever",
+                500: "Legendary Worker"
+            };
+
+            Object.entries(badgeMilestones).forEach(([xp, badge]) => {
+                if (user.earnedXP >= xp && !user.badges.includes(badge)) {
+                    user.badges.push(badge);
+                    newBadges.push(badge);
+                }
+            });
+
+            await user.save();
+        }
+
+        // ✅ Update Task Status
+        task.status = status;
+        await task.save();
+
+        res.status(200).json({
+            message: `Task completed! Total XP: ${totalXP} (Base: ${baseXP}, Bonus: ${bonusXP})`,
+            baseXP,
+            bonusXP,
+            totalXP,
+            levelUp,
+            newBadges,
+            activatedSkills, // ✅ Send activated skills
+            level: updatedLevel,
+            task
+        });
+
+    } catch (error) {
+        console.error('Error updating task status:', error);
+        res.status(500).json({ error: 'Error updating task status' });
+>>>>>>> 7f08e11da2ffb0c9f8a668ad637a77e91e5ae7c8
     }
   });
 
+<<<<<<< HEAD
   await user.save();
 }
 
@@ -221,3 +324,44 @@ deleteTask,
 getTasksByProject,
 updateTaskStatus,
 };
+=======
+// ✅ Estimate Task Duration (COCOMO-Inspired)
+const estimateTaskDurationOnly = async (req, res) => {
+    const { assignedTo, complexity, effortEstimate } = req.body;
+
+    if (!assignedTo || !complexity || !effortEstimate) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    try {
+        const user = await User.findById(assignedTo);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        const complexityFactor = { Low: 1.0, Medium: 1.2, High: 1.5 };
+        const experienceFactor = { Junior: 1.2, Mid: 1.0, Senior: 0.8 };
+
+        const base = effortEstimate * complexityFactor[complexity];
+        const estimatedDuration = base * experienceFactor[user.experienceLevel];
+
+        return res.status(200).json({
+            estimatedDuration: `${estimatedDuration.toFixed(2)} hours`
+        });
+    } catch (error) {
+        console.error('Estimation Error:', error);
+        res.status(500).json({ error: 'Failed to estimate task duration' });
+    }
+};
+
+
+
+module.exports = {
+    getAllTasks,
+    getTask,
+    createTask,
+    updateTask,
+    deleteTask,
+    getTasksByProject,
+    updateTaskStatus,
+    estimateTaskDurationOnly,
+};
+>>>>>>> 7f08e11da2ffb0c9f8a668ad637a77e91e5ae7c8

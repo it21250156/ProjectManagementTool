@@ -7,8 +7,8 @@ const TeamSchema = new mongoose.Schema({
     total_members: { type: Number, required: true, min: 1 },
     past_projects_completed: { type: Number, required: true, min: 0 },
     specialization: { type: String, required: true },
-    team_skillset_match: { type: Number, required: true, min: 0, max: 100 },
-    team_availability: { type: Number, required: true, min: 0, max: 100 }
+    team_skillset_match: { type: Number, required: true, min: 0, max: 100 }, // Skillset match in percentage
+    team_availability: { type: Number, required: true, min: 0, max: 100 } // Availability in percentage
 }, { timestamps: true });
 
 module.exports = mongoose.model('Team', TeamSchema);
