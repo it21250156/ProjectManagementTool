@@ -7,7 +7,8 @@ const {
     deleteTask,
     updateTask,
     getTasksByProject,
-    updateTaskStatus
+    updateTaskStatus,
+    estimateTaskDurationOnly
 } = require("../controllers/taskController");
 
 const router = express.Router();
@@ -30,5 +31,9 @@ router.patch('/update/:id', updateTask);
 router.get('/project/:projectId', getTasksByProject);
 
 router.patch('/:id', updateTaskStatus);
+
+//Display estimated Task duration
+router.post('/estimate-duration', estimateTaskDurationOnly);
+
 
 module.exports = router;

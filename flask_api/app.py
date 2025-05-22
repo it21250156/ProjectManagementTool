@@ -10,31 +10,36 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Define the directory where all the pre-trained models are stored
+# Load environment variables
+MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://janithchathurangakck:jani123@cluster0.ncbw8.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0")  # Update with a placeholder
+
+# Connect to MongoDB
+try:
+    client = MongoClient(MONGO_URI)
+    db = client["test"]
+    projects_collection = db["projects"]
+    teams_collection = db["teams"]
+    print("Successfully connected to MongoDB")
+except Exception as e:
+    print(f"Error connecting to MongoDB: {e}")
+
+# Define model directory
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
 
-# Load all the machine learning models we need for predictions
-# These models are pre-trained and saved as joblib files
-project_timeline_model = joblib.load(os.path.join(MODEL_DIR, "best_optimized_hybrid_model.pkl"))
-defect_prediction_model = joblib.load(os.path.join(MODEL_DIR, "optimized_defect_prediction_model.pkl"))
-effort_prediction_model = joblib.load(os.path.join(MODEL_DIR, "effort_prediction_model.pkl"))
-defect_preprocessor = joblib.load(os.path.join(MODEL_DIR, "defect_preprocessor.pkl"))
-defect_encoder = joblib.load(os.path.join(MODEL_DIR, "defect_encoder.pkl"))
-
-# Load the task allocation model and its associated metrics
-task_allocation_model = joblib.load(os.path.join(MODEL_DIR, "task_allocation_model.pkl"))
-accuracy_metrics = joblib.load(os.path.join(MODEL_DIR, "accuracy_metrics.pkl"))
-feature_importance = joblib.load(os.path.join(MODEL_DIR, "feature_importance.pkl"))
-
-# Load scalers and feature selection tools for project timeline and defect prediction
-timeline_scaler = joblib.load(os.path.join(MODEL_DIR, "scaler.pkl"))
-
-# Connect to MongoDB using the provided connection string
-# This is where all our project and team data is stored
-client = MongoClient("mongodb+srv://janithchathurangakck:jani123@cluster0.ncbw8.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0")
-db = client["test"]
-projects_collection = db["projects"]
-teams_collection = db["teams"]
+# Load models safely
+try:
+    project_timeline_model = joblib.load(os.path.join(MODEL_DIR, "best_optimized_hybrid_model.pkl"))
+    defect_prediction_model = joblib.load(os.path.join(MODEL_DIR, "optimized_defect_prediction_model.pkl"))
+    effort_prediction_model = joblib.load(os.path.join(MODEL_DIR, "effort_prediction_model.pkl"))
+    defect_preprocessor = joblib.load(os.path.join(MODEL_DIR, "defect_preprocessor.pkl"))
+    defect_encoder = joblib.load(os.path.join(MODEL_DIR, "defect_encoder.pkl"))
+    task_allocation_model = joblib.load(os.path.join(MODEL_DIR, "task_allocation_model.pkl"))
+    accuracy_metrics = joblib.load(os.path.join(MODEL_DIR, "accuracy_metrics.pkl"))
+    feature_importance = joblib.load(os.path.join(MODEL_DIR, "feature_importance.pkl"))
+    timeline_scaler = joblib.load(os.path.join(MODEL_DIR, "scaler.pkl"))
+    print("Models loaded successfully")
+except Exception as e:
+    print(f"Error loading models: {e}")
 
 @app.route('/')
 def home():
@@ -142,7 +147,7 @@ def predict():
             "effort_hours": project_data.get("effort_hours", 0),
             "complexity_score": project_data.get("task_complexity", 0),
             "testing_coverage": project_data.get("testing_coverage", 0),
-            "team_key": str(project_data.get("team_key", "0")).strip()  # ✅ Remove extra spaces
+            "team_key": str(project_data.get("team_key", "0")).strip()  # Remove extra spaces
         }])
 
         # Encode the `team_key` column for defect prediction
@@ -297,4 +302,5 @@ def predict_effort():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Use PORT environment variable
+    app.run(debug=False, host="0.0.0.0", port=port)  # Ready for Render deployment
