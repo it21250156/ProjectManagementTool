@@ -32,16 +32,6 @@ res.status(500).json({ error: error.message });
 
 //  Create a Task with complexity and effortEstimate
 const createTask = async (req, res) => {
-<<<<<<< HEAD
-const { taskName, dueDate, assignedTo, project, priority, complexity } = req.body;
-
-try {
-const task = await Task.create({ taskName, dueDate, assignedTo, project, priority, complexity });
-res.status(201).json(task);
-} catch (error) {
-res.status(400).json({ error: error.message });
-}
-=======
     const { taskName, dueDate, assignedTo, project, priority, complexity, effortEstimate } = req.body;
 
     try {
@@ -82,7 +72,6 @@ res.status(400).json({ error: error.message });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
->>>>>>> 7f08e11da2ffb0c9f8a668ad637a77e91e5ae7c8
 };
 
 
@@ -178,21 +167,12 @@ if (status === "Completed") {
     case 'low': baseXP += 3; break;
   }
 
-<<<<<<< HEAD
   // ✅ Base XP from Complexity
   switch (task.complexity?.toLowerCase()) {
     case 'high': baseXP += 10; break;
     case 'medium': baseXP += 5; break;
     case 'low': baseXP += 3; break;
   }
-=======
-            // ✅ Determine Base XP from Priority
-            switch (task.priority.toLowerCase()) {
-                case 'high': baseXP = 10; break;
-                case 'medium': baseXP = 5; break;
-                case 'low': baseXP = 3; break;
-            }
->>>>>>> 7f08e11da2ffb0c9f8a668ad637a77e91e5ae7c8
 
   const now = dayjs();
 
@@ -228,19 +208,6 @@ if (status === "Completed") {
     levelUp = true;
   }
 
-<<<<<<< HEAD
-  const badgeMilestones = {
-    30: "Task Beginner",
-    100: "Task Master",
-    200: "XP Achiever",
-    500: "Legendary Worker"
-  };
-
-  Object.entries(badgeMilestones).forEach(([xp, badge]) => {
-    if (user.earnedXP >= xp && !user.badges.includes(badge)) {
-      user.badges.push(badge);
-      newBadges.push(badge);
-=======
             // 🔁 Update experienceLevel based on updated level
             if (user.level <= 3) {
                 user.experienceLevel = 'Junior';
@@ -287,44 +254,9 @@ if (status === "Completed") {
     } catch (error) {
         console.error('Error updating task status:', error);
         res.status(500).json({ error: 'Error updating task status' });
->>>>>>> 7f08e11da2ffb0c9f8a668ad637a77e91e5ae7c8
     }
-  });
+  };
 
-<<<<<<< HEAD
-  await user.save();
-}
-
-task.status = status;
-await task.save();
-
-res.status(200).json({
-  message: `Task completed! Total XP: ${totalXP} (Base: ${baseXP}, Bonus: ${bonusXP})`,
-  baseXP,
-  bonusXP,
-  totalXP,
-  levelUp,
-  newBadges,
-  activatedSkills,
-  level: updatedLevel,
-  task
-});
-} catch (error) {
-console.error('Error updating task status:', error);
-res.status(500).json({ error: 'Error updating task status' });
-}
-};
-
-module.exports = {
-getAllTasks,
-getTask,
-createTask,
-updateTask,
-deleteTask,
-getTasksByProject,
-updateTaskStatus,
-};
-=======
 // ✅ Estimate Task Duration (COCOMO-Inspired)
 const estimateTaskDurationOnly = async (req, res) => {
     const { assignedTo, complexity, effortEstimate } = req.body;
@@ -364,4 +296,3 @@ module.exports = {
     updateTaskStatus,
     estimateTaskDurationOnly,
 };
->>>>>>> 7f08e11da2ffb0c9f8a668ad637a77e91e5ae7c8
