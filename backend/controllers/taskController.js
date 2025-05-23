@@ -30,48 +30,62 @@ res.status(500).json({ error: error.message });
 }
 };
 
-//  Create a Task with complexity and effortEstimate
+// ✅ Create a Task (with complexity and effortEstimate + description)
 const createTask = async (req, res) => {
-    const { taskName, dueDate, assignedTo, project, priority, complexity, effortEstimate } = req.body;
+const {
+taskName,
+description, // ✅ expect this field from frontend
+dueDate,
+assignedTo,
+project,
+priority,
+complexity,
+effortEstimate
+} = req.body;
 
-    try {
-        // Fetch the user to access their experienceLevel
-        const user = await User.findById(assignedTo);
-        if (!user) {
-            return res.status(404).json({ error: 'Assigned user not found' });
-        }
+try {
+// Check required fields
+if (!taskName || !project) {
+return res.status(400).json({ error: 'Task name and project are required' });
+}
 
-        // Predict estimated task duration using COCOMO-inspired logic
-        const estimateTaskDuration = (complexity, effort, experience) => {
-            const complexityFactor = { Low: 1.0, Medium: 1.2, High: 1.5 };
-            const experienceFactor = { Junior: 1.2, Mid: 1.0, Senior: 0.8 };
 
-            const base = effort * complexityFactor[complexity];
-            return base * experienceFactor[experience];
-        };
+const user = await User.findById(assignedTo);
+if (!user) {
+  return res.status(404).json({ error: 'Assigned user not found' });
+}
 
-        const estimatedDuration = estimateTaskDuration(complexity, effortEstimate, user.experienceLevel);
+// Estimate duration
+const estimateTaskDuration = (complexity, effort, experience) => {
+  const complexityFactor = { Low: 1.0, Medium: 1.2, High: 1.5 };
+  const experienceFactor = { Junior: 1.2, Mid: 1.0, Senior: 0.8 };
+  const base = effort * complexityFactor[complexity];
+  return base * experienceFactor[experience];
+};
 
-        // Create the task
-        const task = await Task.create({
-            taskName,
-            dueDate,
-            assignedTo,
-            project,
-            priority,
-            complexity,
-            effortEstimate,
-            estimatedDuration
-        });
+const estimatedDuration = estimateTaskDuration(complexity, effortEstimate, user.experienceLevel);
 
-        res.status(201).json({ 
-            task,
-            estimatedDuration: `${estimatedDuration.toFixed(2)} hours` 
-        });
+// Create the task
+const task = await Task.create({
+  taskName,
+  description, // ✅ now included
+  dueDate,
+  assignedTo,
+  project,
+  priority,
+  complexity,
+  effortEstimate,
+  estimatedDuration
+});
 
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+res.status(201).json({
+  task,
+  estimatedDuration: `${estimatedDuration.toFixed(2)} hours`
+});
+} catch (error) {
+console.error('Error creating task:', error);
+res.status(400).json({ error: error.message });
+}
 };
 
 

@@ -4,9 +4,15 @@ import Header from '../components/Header';
 import '../assets/css/FullCalender.css';
 import { useTasksContext } from '../hooks/useTasksContext';
 
+// Import GIFs
+import AnimationWow from '../assets/Animation_wow.gif';
+import AnimationConcerned from '../assets/Animation_concerned.gif';
+import AnimationHappy from '../assets/Animation_happy.gif';
+import AnimationAngry from '../assets/Animation_angry.gif';
+
 const ProjectDetails = () => {
     const { projectId } = useParams();
-    const { tasks, dispatch } = useTasksContext(); // Use tasks directly from context
+    const { tasks, dispatch } = useTasksContext();
     const [notifications, setNotifications] = useState([]);
     const [completionPercentage, setCompletionPercentage] = useState(0);
     const [projectCompletion, setProjectCompletion] = useState(0);
@@ -16,6 +22,8 @@ const ProjectDetails = () => {
     const [aiLoading, setAiLoading] = useState(false);
     const [aiError, setAiError] = useState(null);
 
+    // State to track GIF for each task
+    const [taskGifs, setTaskGifs] = useState({});
 
     useEffect(() => {
         fetchTasks();
@@ -30,6 +38,7 @@ const ProjectDetails = () => {
             if (response.ok) {
                 dispatch({ type: 'SET_TASKS', payload: json });
                 calculateProjectCompletion(json);
+                updateTaskGifs(json); // Update GIFs when tasks are fetched
             }
         } catch (error) {
             console.error("Error fetching tasks:", error);
@@ -63,6 +72,35 @@ const ProjectDetails = () => {
         setProjectCompletion(Math.round((completedTasks / totalTasks) * 100));
     };
 
+    // Function to determine which GIF to display based on deadline
+    const getDeadlineGif = (dueDate, status) => {
+        if (status === 'Completed') {
+            return AnimationWow; // Show wow GIF for completed tasks
+        }
+
+        const currentDate = new Date();
+        const due = new Date(dueDate);
+        const timeDiff = due - currentDate;
+        const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
+
+        if (daysDiff < 0) {
+            return AnimationAngry; // Deadline exceeded
+        } else if (daysDiff <= 1) {
+            return AnimationConcerned; // On the deadline (within 1 day)
+        } else {
+            return AnimationHappy; // Well above deadline
+        }
+    };
+
+    // Update GIFs for all tasks
+    const updateTaskGifs = (taskList) => {
+        const newTaskGifs = {};
+        taskList.forEach(task => {
+            newTaskGifs[task._id] = getDeadlineGif(task.dueDate, task.status);
+        });
+        setTaskGifs(newTaskGifs);
+    };
+
     const handleStatusChange = async (taskId, newStatus) => {
         try {
             const response = await fetch(`/api/tasks/${taskId}`, {
@@ -75,10 +113,17 @@ const ProjectDetails = () => {
                 const updatedTask = await response.json();
                 dispatch({ type: 'UPDATE_TASK', payload: updatedTask });
 
-                // ✅ Update Project Completion Live
-                calculateProjectCompletion(tasks.map(task =>
+                // Update Project Completion Live
+                const updatedTasks = tasks.map(task =>
                     task._id === taskId ? { ...task, status: newStatus } : task
-                ));
+                );
+                calculateProjectCompletion(updatedTasks);
+
+                // Update GIF for the task
+                setTaskGifs(prev => ({
+                    ...prev,
+                    [taskId]: getDeadlineGif(updatedTask.dueDate, newStatus)
+                }));
 
                 let newNotifications = [
                     `✅ Task completed! Earned ${updatedTask.totalXP} XP (Base: ${updatedTask.baseXP}, Bonus: ${updatedTask.bonusXP})`
@@ -112,6 +157,7 @@ const ProjectDetails = () => {
 
     useEffect(() => {
         console.log("Tasks updated:", tasks);
+        updateTaskGifs(tasks); // Update GIFs when tasks change
     }, [tasks]);
 
     const handleAIHelp = async (task) => {
@@ -139,18 +185,16 @@ const ProjectDetails = () => {
             if (!response.ok) throw new Error(data.error || "Failed to get AI response");
 
             setAiResponse(data);
-        } catch (err) {
-            setAiError(err.message);
+        } catch (error) {
+            setAiError(error.message);
         } finally {
             setAiLoading(false);
         }
     };
 
-
     return (
         <div className='h-screen flex flex-col'>
-            {/* <Header /> */}
-            <div className='m-4 flex-1 flex flex-col '>
+            <div className='m-4 flex-1 flex flex-col'>
                 <div className='mx-0 my-2 p-8 rounded-2xl bg-gradient-to-t from-[#f5a623] to-[#fac56f]'>
                     <h1 className='text-white text-4xl font-extrabold italic'>Project Tasks</h1>
                 </div>
@@ -176,12 +220,13 @@ const ProjectDetails = () => {
                                                 <h2 className='text-lg font-semibold'>
                                                     {task.taskName}
                                                     <span
-                                                        className={`text-white mx-2 text-xs font-bold inline-block px-2 py-1 rounded-full ${task.priority === 'High'
-                                                            ? 'bg-red-500'
-                                                            : task.priority === 'Medium'
+                                                        className={`text-white mx-2 text-xs font-bold inline-block px-2 py-1 rounded-full ${
+                                                            task.priority === 'High'
+                                                                ? 'bg-red-500'
+                                                                : task.priority === 'Medium'
                                                                 ? 'bg-orange-500'
                                                                 : 'bg-lime-500'
-                                                            }`}
+                                                        }`}
                                                     >
                                                         {task.priority}
                                                     </span>
@@ -208,7 +253,12 @@ const ProjectDetails = () => {
                                                     );
                                                 })()}
 
-
+                                                {/* Display GIF */}
+                                                <img
+                                                    src={taskGifs[task._id]}
+                                                    alt="Task Status Animation"
+                                                    className="mt-2 w-16 h-16"
+                                                />
                                             </div>
 
                                             {/* Due Date */}
@@ -232,7 +282,6 @@ const ProjectDetails = () => {
                                                 </div>
                                             )}
 
-
                                             {/* AI Assistant Result Modal */}
                                             {selectedTaskId === task._id && aiResponse && (
                                                 <div className="bg-gray-100 p-3 rounded-lg mt-2 border text-sm">
@@ -247,7 +296,6 @@ const ProjectDetails = () => {
                                             {selectedTaskId === task._id && aiError && (
                                                 <p className="text-sm text-red-600 mt-2">❌ {aiError}</p>
                                             )}
-
 
                                             {/* Status Control */}
                                             <div className="mb-3 font-bold">
@@ -267,13 +315,12 @@ const ProjectDetails = () => {
                                     </li>
                                 ))}
                             </ul>
-
                         ) : (
                             <p>No tasks found for this project.</p>
                         )}
                     </div>
-                    <div className='m-4 p-3 rounded-lg border-2 '>
-                        {/* ✅ Live Project Progress */}
+                    <div className='m-4 p-3 rounded-lg border-2'>
+                        {/* Live Project Progress */}
                         <div className="p-4 bg-white shadow-lg rounded-lg">
                             <h2 className="text-lg font-bold">📊 Total Project Completion: {projectCompletion}%</h2>
                             <div className="w-full bg-gray-200 rounded-full h-3 mt-2">
@@ -294,12 +341,7 @@ const ProjectDetails = () => {
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
-
-
             </div>
         </div>
     );
