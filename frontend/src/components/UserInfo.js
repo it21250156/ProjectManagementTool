@@ -3,26 +3,23 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import GlobalLeaderboard from '../components/GlobalLeaderboard';
-const UserInfo = () => {
 
+const UserInfo = () => {
     const [earnedXP, setEarnedXP] = useState(0);
     const [completedTasks, setCompletedTasks] = useState(0);
     const [badges, setBadges] = useState([]);
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const [level, setLevel] = useState(1);
+    const [delayProbability, setDelayProbability] = useState(null);
 
     const navigate = useNavigate();
-
-    // Function to calculate XP needed for the next level
     const getNextLevelXP = (lvl) => Math.pow(2, lvl) * 50;
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                console.log('Token from localStorage:', token); // Debugging
-
                 if (!token) {
                     setMessage('You are not logged in. Please log in to continue.');
                     setLoading(false);
@@ -30,7 +27,6 @@ const UserInfo = () => {
                     return;
                 }
 
-                // Fetch XP, Tasks, Badges, Level
                 const xpResponse = await axios.get('/api/projects/user-total-xp', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
@@ -39,24 +35,14 @@ const UserInfo = () => {
                 setCompletedTasks(xpResponse.data.completedTasks);
                 setBadges(xpResponse.data.badges);
                 setLevel(xpResponse.data.level);
-
-
-
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                if (error.response) {
-                    setMessage(error.response.data.message || 'Failed to load data. Please try again later.');
-                    if (error.response.status === 401) {
-                        console.error("Token is invalid. Please try again later");
-                        navigate('/');
-                    }
-                } else if (error.request) {
-                    setMessage('No response from the server. Please check your connection.');
+                if (error.response?.status === 401) {
+                    navigate('/');
                 } else {
-                    setMessage('An unexpected error occurred. Please try again later.');
+                    setMessage('Failed to load data. Please try again later.');
                 }
             } finally {
-                // Add a small delay before hiding the spinner
                 setTimeout(() => setLoading(false), 500);
             }
         };
@@ -64,13 +50,28 @@ const UserInfo = () => {
         fetchUserData();
     }, [navigate]);
 
-    // Calculate XP Progress Bar
     const nextLevelXP = getNextLevelXP(level);
     const xpProgress = Math.min((earnedXP / nextLevelXP) * 100, 100);
 
+    const handleViewDelayProbability = async () => {
+        try {
+            const response = await axios.post('/api/gemini/profile-delay-prediction', {
+                level,
+                completedTasks,
+                avgEffortHours: 4, // Replace with actual average if available
+                onTimeDeliveryRate: 0.8, // Replace with actual rate if available
+                currentTaskLoad: 3 // Replace with actual task load if available
+            });
+
+            setDelayProbability(response.data.delayProbability);
+        } catch (error) {
+            console.error("Error getting delay probability:", error);
+            setMessage("Failed to fetch delay probability.");
+        }
+    };
+
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-
             {loading ? (
                 <div className="flex justify-center my-8">
                     <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -86,11 +87,10 @@ const UserInfo = () => {
                     {/* Evolution Section */}
                     <div className="bg-white shadow-lg rounded-lg p-6 mb-6 text-center">
                         <div className='flex justify-evenly'>
-                            <div className=''>
+                            <div>
                                 <h2 className="text-2xl font-bold">🎯 Level {level}</h2>
                                 <p className="text-gray-600">XP: {earnedXP} / {nextLevelXP}</p>
                             </div>
-                            {/* Evolution Image */}
                             <div className="w-44">
                                 <img
                                     src={`/level-images/${level}.webp`}
@@ -100,7 +100,6 @@ const UserInfo = () => {
                             </div>
                         </div>
 
-                        {/* XP Progress Bar */}
                         <div className="w-full bg-gray-200 rounded-full h-3 mt-4">
                             <div
                                 className="bg-gradient-to-r from-orange-400 to-red-500 h-3 rounded-full"
@@ -134,13 +133,22 @@ const UserInfo = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="border-t border-gray-200 my-6"></div>
 
-                    {/* 🌍 Global Leaderboard Section */}
-                    <div className="border-t border-gray-200 my-6"></div>
+                    {/* Delay Probability View */}
+                    <div className="text-center mt-6">
+                        <button
+                            onClick={handleViewDelayProbability}
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                        >
+                            View Delay Probability
+                        </button>
 
-
-
+                        {delayProbability !== null && (
+                            <p className="mt-4 text-lg text-gray-800 font-semibold">
+                                Predicted Delay Probability: <span className="text-red-600">{(delayProbability * 100).toFixed(2)}%</span>
+                            </p>
+                        )}
+                    </div>
                 </>
             )}
         </motion.div>
