@@ -5,7 +5,6 @@ const User = require('../models/userModel');
 let GoogleGenAI;
 let genAI = null;
 
-// Dynamically load the ESM Gemini SDK when needed
 const loadGemini = async () => {
     if (!GoogleGenAI) {
         const module = await import('@google/genai');
@@ -16,10 +15,9 @@ const loadGemini = async () => {
     }
 };
 
-// ✅ Duration + Risk Estimation
+// ✅ 1. Estimate Task Risk and Duration
 router.post('/estimate-risk', async (req, res) => {
     const { taskName, taskDescription, complexity, experienceLevel } = req.body;
-
     if (!taskName || !complexity || !experienceLevel) {
         return res.status(400).json({ error: "Missing required fields." });
     }
@@ -29,12 +27,10 @@ router.post('/estimate-risk', async (req, res) => {
 
         const result = await genAI.models.generateContent({
             model: "gemini-1.5-flash",
-            contents: [
-                {
-                    role: "user",
-                    parts: [
-                        {
-                            text: `You are a senior project manager AI assistant.
+            contents: [{
+                role: "user",
+                parts: [{
+                    text: `You are a senior project manager AI assistant.
 
 Given the task details below, return:
 1. Estimated time in hours (as a number).
@@ -53,21 +49,13 @@ Respond in valid JSON format like:
   "risk": "Medium",
   "reason": "The task is complex, but the developer has moderate experience, so risk is moderate."
 }`
-                        }
-                    ]
-                }
-            ],
-            config: {
-                systemInstruction: "You are a senior software project manager. Always return clean JSON with estimated duration and risk level.",
-                temperature: 0.2,
-                maxOutputTokens: 300
-            }
+                }]
+            }],
+            config: { temperature: 0.2, maxOutputTokens: 300 }
         });
 
         let text = result.candidates[0].content.parts[0].text.trim();
-        if (text.startsWith("```")) {
-            text = text.replace(/```(?:json)?/g, "").replace(/```/g, "").trim();
-        }
+        if (text.startsWith("```")) text = text.replace(/```(?:json)?/g, "").replace(/```/g, "").trim();
 
         const json = JSON.parse(text);
 
@@ -78,31 +66,23 @@ Respond in valid JSON format like:
         });
 
     } catch (err) {
-        console.error("Gemini SDK Error:");
-        console.dir(err, { depth: null });
+        console.error("Gemini SDK Error:", err);
         res.status(500).json({ error: "Gemini API failed", details: err.message });
     }
 });
 
-// ✅ Best Member Allocation via Gemini
+// ✅ 2. Allocate Best Member for Task
 router.post('/allocate-member', async (req, res) => {
     const { taskName, complexity, priority, estimatedEffort, members } = req.body;
-
     if (!taskName || !complexity || !priority || !estimatedEffort || !Array.isArray(members) || members.length === 0) {
         return res.status(400).json({ error: "Missing required fields or no members provided." });
     }
 
     try {
         await loadGemini();
-
-        // Fetch full user details
         const users = await User.find({ _id: { $in: members } });
+        if (users.length === 0) return res.status(404).json({ error: "No valid members found." });
 
-        if (users.length === 0) {
-            return res.status(404).json({ error: "No valid members found." });
-        }
-
-        // Format each user's profile
         const memberData = users.map(user =>
             `- ${user.name} (${user.experienceLevel}-level, XP: ${user.earnedXP}, Completed Tasks: ${user.completedTasks}, Level: ${user.level})`
         ).join("\n");
@@ -129,23 +109,16 @@ Return valid JSON:
         const result = await genAI.models.generateContent({
             model: "gemini-1.5-flash",
             contents: [{ role: "user", parts: [{ text: prompt }] }],
-            config: {
-                temperature: 0.2,
-                maxOutputTokens: 300
-            }
+            config: { temperature: 0.2, maxOutputTokens: 300 }
         });
 
         let text = result.candidates[0].content.parts[0].text.trim();
-        if (text.startsWith("```")) {
-            text = text.replace(/```(?:json)?/g, "").replace(/```/g, "").trim();
-        }
+        if (text.startsWith("```")) text = text.replace(/```(?:json)?/g, "").replace(/```/g, "").trim();
 
         const parsed = JSON.parse(text);
         const matchedUser = users.find(user => user.name === parsed.best_member);
 
-        if (!matchedUser) {
-            return res.status(404).json({ error: "Predicted member not found among available users." });
-        }
+        if (!matchedUser) return res.status(404).json({ error: "Predicted member not found among available users." });
 
         res.status(200).json({
             best_member: matchedUser.name,
@@ -156,28 +129,17 @@ Return valid JSON:
         });
 
     } catch (err) {
-        console.error("Gemini Allocation Error:");
-        console.dir(err, { depth: null });
+        console.error("Gemini Allocation Error:", err);
         res.status(500).json({ error: "Gemini API failed for member allocation.", details: err.message });
     }
 });
 
-//  Predict Project Timeline using Gemini API
+// ✅ 3. Predict Project Timeline
 router.post('/predict-timeline', async (req, res) => {
     const {
-        projectName,
-        projectDescription,
-        team_size,
-        task_count,
-        developer_experience,
-        priority_level,
-        task_complexity,
-        project_size,
-        testing_coverage,
-        Effort_Density,
-        Team_Productivity,
-        LoC_per_Team_Member,
-        change_impact_factor
+        projectName, projectDescription, team_size, task_count, developer_experience,
+        priority_level, task_complexity, project_size, testing_coverage,
+        Effort_Density, Team_Productivity, LoC_per_Team_Member, change_impact_factor
     } = req.body;
 
     if (!projectName || !team_size || !task_count || !developer_experience) {
@@ -222,32 +184,13 @@ Return JSON:
         });
 
         let rawText = result.candidates[0].content.parts[0].text.trim();
+        if (rawText.startsWith("```")) rawText = rawText.replace(/```(?:json)?/, "").replace(/```/, "").trim();
 
-        // Remove markdown wrappers
-        if (rawText.startsWith("```")) {
-            rawText = rawText.replace(/```(?:json)?/, "").replace(/```/, "").trim();
-        }
+        const match = rawText.match(/\{[\s\S]*?\}/);
+        if (!match) return res.status(500).json({ error: "Could not extract valid JSON", raw: rawText });
 
-        // Extract only the first JSON object from the text using regex
-        const match = rawText.match(/\{[\s\S]*?\}/); // matches the first JSON object
-
-        if (!match) {
-            console.error(" No valid JSON found in Gemini response.");
-            console.error(" Full response:\n", rawText);
-            return res.status(500).json({ error: "Could not extract valid JSON", raw: rawText });
-        }
-
-        let json;
-        try {
-            json = JSON.parse(match[0]);
-        } catch (err) {
-            console.error(" JSON parse failed:");
-            console.error(" Extracted JSON:\n", match[0]);
-            return res.status(500).json({ error: "JSON parse failed", raw: match[0] });
-        }
-
-
-        return res.status(200).json(json);
+        const json = JSON.parse(match[0]);
+        res.status(200).json(json);
 
     } catch (err) {
         console.error("Timeline Gemini Error:", err);
@@ -255,19 +198,12 @@ Return JSON:
     }
 });
 
-//  Predict Defect Count using Gemini API
+// ✅ 4. Predict Defect Count
 router.post('/predict-defects', async (req, res) => {
     const {
-        projectName,
-        projectDescription,
-        defect_fix_time_minutes,
-        size_added,
-        size_deleted,
-        size_modified,
-        effort_hours,
-        task_complexity,
-        testing_coverage,
-        team_key
+        projectName, projectDescription, defect_fix_time_minutes, size_added,
+        size_deleted, size_modified, effort_hours, task_complexity,
+        testing_coverage, team_key
     } = req.body;
 
     if (!projectName || !defect_fix_time_minutes || !effort_hours || !team_key) {
@@ -308,32 +244,13 @@ Respond in JSON:
         });
 
         let rawText = result.candidates[0].content.parts[0].text.trim();
+        if (rawText.startsWith("```")) rawText = rawText.replace(/```(?:json)?/, "").replace(/```/, "").trim();
 
-        // Remove markdown wrappers
-        if (rawText.startsWith("```")) {
-            rawText = rawText.replace(/```(?:json)?/, "").replace(/```/, "").trim();
-        }
+        const match = rawText.match(/\{[\s\S]*?\}/);
+        if (!match) return res.status(500).json({ error: "Could not extract valid JSON", raw: rawText });
 
-        // Extract only the first JSON object from the text using regex
-        const match = rawText.match(/\{[\s\S]*?\}/); // matches the first JSON object
-
-        if (!match) {
-            console.error(" No valid JSON found in Gemini response.");
-            console.error(" Full response:\n", rawText);
-            return res.status(500).json({ error: "Could not extract valid JSON", raw: rawText });
-        }
-
-        let json;
-        try {
-            json = JSON.parse(match[0]);
-        } catch (err) {
-            console.error(" JSON parse failed:");
-            console.error(" Extracted JSON:\n", match[0]);
-            return res.status(500).json({ error: "JSON parse failed", raw: match[0] });
-        }
-
-
-        return res.status(200).json(json);
+        const json = JSON.parse(match[0]);
+        res.status(200).json(json);
 
     } catch (err) {
         console.error("Defect Gemini Error:", err);
@@ -341,5 +258,24 @@ Respond in JSON:
     }
 });
 
+// ✅ 5. Predict Delay Probability for User Profile
+router.post('/profile-delay-prediction', async (req, res) => {
+  const { level, completedTasks, avgEffortHours, onTimeDeliveryRate, currentTaskLoad } = req.body;
+
+  if (
+    typeof level !== 'number' ||
+    typeof completedTasks !== 'number' ||
+    typeof avgEffortHours !== 'number' ||
+    typeof onTimeDeliveryRate !== 'number' ||
+    typeof currentTaskLoad !== 'number'
+  ) {
+    return res.status(400).json({ error: 'Invalid input types' });
+  }
+
+  // Your delay prediction logic here
+  const delayProbability = Math.min(1, (currentTaskLoad + avgEffortHours) / 10); // Dummy calculation
+
+  return res.json({ delayProbability });
+});
 
 module.exports = router;
