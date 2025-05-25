@@ -7,6 +7,7 @@ const MyProfile = () => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [predicting, setPredicting] = useState(false); // Loading for delay prediction
 
     const navigate = useNavigate();
 
@@ -46,35 +47,44 @@ const MyProfile = () => {
         fetchUserProfile();
     }, [navigate]);
 
-    // Predict delay probability after user data is fetched
-    useEffect(() => {
-        const fetchDelayProbability = async () => {
-            try {
-                const response = await fetch('/api/users/predict-delay', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name: userData.name,
-                        experienceLevel: userData.experienceLevel,
-                        completedTasks: userData.completedTasks,
-                        earnedXP: userData.earnedXP,
-                        level: userData.level
-                    })
-                });
+    // Handle delay prediction using Gemini API
+    const fetchDelayProbability = async () => {
+        if (!userData) return;
 
-                const result = await response.json();
-                setUserData(prev => ({ ...prev, delayPrediction: result }));
-            } catch (err) {
-                console.error('Failed to predict delay probability', err);
+        try {
+            setPredicting(true);
+            const response = await fetch('/api/gemini/profile-delay-prediction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    level: userData.level || 0,
+                    completedTasks: userData.completedTasks || 0,
+                    avgEffortHours: userData.avgEffortHours || 0,
+                    onTimeDeliveryRate: userData.onTimeDeliveryRate || 0,
+                    currentTaskLoad: userData.currentTaskLoad || 0
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to predict delay');
             }
-        };
 
-        if (userData && !userData.delayPrediction) {
-            fetchDelayProbability();
+            const result = await response.json();
+            setUserData(prev => ({
+                ...prev,
+                delayPrediction: {
+                    delayProbability: result.delayProbability,
+                    reason: result.reason
+                }
+            }));
+        } catch (err) {
+            console.error('Failed to predict delay probability', err);
+        } finally {
+            setPredicting(false);
         }
-    }, [userData]);
+    };
 
     return (
         <div>
@@ -101,14 +111,26 @@ const MyProfile = () => {
                                     <h3 className='font-semibold'>Email</h3>
                                     <p className='text-[#4a90e2] text-xl italic mx-5 font-semibold'>{userData.email}</p>
 
-                                    {/* Show delay probability if available */}
-                                    {userData.delayPrediction && (
+                                    {/* Delay Prediction */}
+                                    {userData.delayPrediction ? (
                                         <div className="mt-4">
                                             <h3 className='font-semibold'>Delay Probability</h3>
                                             <p className='text-red-500 font-bold text-lg mx-5'>
-                                                {userData.delayPrediction.probability}
+                                                {userData.delayPrediction.delayProbability}
+                                            </p>
+                                            <h3 className='font-semibold'>Reason</h3>
+                                            <p className='text-gray-700 mx-5'>
+                                                {userData.delayPrediction.reason}
                                             </p>
                                         </div>
+                                    ) : (
+                                        <button
+                                            className='w-1/2 mt-4 bg-[#ff6b6b] text-white hover:bg-[#ff8787] p-3 rounded-lg font-bold'
+                                            onClick={fetchDelayProbability}
+                                            disabled={predicting}
+                                        >
+                                            {predicting ? 'Predicting...' : '🔍 Delay Probability'}
+                                        </button>
                                     )}
                                 </div>
 
@@ -126,8 +148,6 @@ const MyProfile = () => {
                                 🚀 View Skill Tree
                             </button>
                         </Link>
-
-                        
                     </div>
 
                     {/* User Performance Section */}

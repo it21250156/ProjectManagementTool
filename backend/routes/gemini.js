@@ -259,24 +259,59 @@ Respond in JSON:
 });
 
 // ✅ 5. Predict Delay Probability for User Profile
-
 router.post('/profile-delay-prediction', async (req, res) => {
-  const { level, completedTasks, avgEffortHours, onTimeDeliveryRate, currentTaskLoad } = req.body;
+    const { level, completedTasks, avgEffortHours, onTimeDeliveryRate, currentTaskLoad } = req.body;
 
-  if (
-    typeof level !== 'number' ||
-    typeof completedTasks !== 'number' ||
-    typeof avgEffortHours !== 'number' ||
-    typeof onTimeDeliveryRate !== 'number' ||
-    typeof currentTaskLoad !== 'number'
-  ) {
-    return res.status(400).json({ error: 'Invalid input types' });
-  }
+    if (
+        typeof level !== 'number' ||
+        typeof completedTasks !== 'number' ||
+        typeof avgEffortHours !== 'number' ||
+        typeof onTimeDeliveryRate !== 'number' ||
+        typeof currentTaskLoad !== 'number'
+    ) {
+        return res.status(400).json({ error: 'Invalid input types' });
+    }
 
-  // Your delay prediction logic here
-  const delayProbability = Math.min(1, (currentTaskLoad + avgEffortHours) / 10); // Dummy calculation
+    try {
+        await loadGemini();
 
-  return res.json({ delayProbability });
+        const prompt = `
+You are a software project analyst AI assistant.
+
+Given the user profile data below, predict the delay probability for their next assigned task as a number between 0 and 1.
+
+Profile:
+- Level: ${level}
+- Completed Tasks: ${completedTasks}
+- Average Effort Hours per Task: ${avgEffortHours}
+- On-Time Delivery Rate (0 to 1): ${onTimeDeliveryRate}
+- Current Task Load: ${currentTaskLoad}
+
+Respond in JSON format:
+{
+  "delayProbability": 0.34,
+  "reason": "High current task load and moderate delivery rate indicate moderate risk."
+}`;
+
+        const result = await genAI.models.generateContent({
+            model: "gemini-1.5-flash",
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            config: { temperature: 0.2, maxOutputTokens: 300 }
+        });
+
+        let rawText = result.candidates[0].content.parts[0].text.trim();
+        if (rawText.startsWith("```")) rawText = rawText.replace(/```(?:json)?/, "").replace(/```/, "").trim();
+
+        const match = rawText.match(/\{[\s\S]*?\}/);
+        if (!match) return res.status(500).json({ error: "Could not extract valid JSON", raw: rawText });
+
+        const json = JSON.parse(match[0]);
+
+        return res.status(200).json(json);
+    } catch (err) {
+        console.error("Gemini Delay Prediction Error:", err);
+        res.status(500).json({ error: "Gemini delay prediction failed", details: err.message });
+    }
 });
 
 module.exports = router;
