@@ -12,6 +12,7 @@ const UserInfo = () => {
     const [loading, setLoading] = useState(true);
     const [level, setLevel] = useState(1);
     const [delayPrediction, setDelayPrediction] = useState(null);
+    const [profileName, setProfileName] = useState(''); // <-- Add this
 
     const navigate = useNavigate();
     const getNextLevelXP = (lvl) => Math.pow(2, lvl) * 50;
@@ -27,14 +28,21 @@ const UserInfo = () => {
                     return;
                 }
 
+                // Fetch XP, tasks, badges, level
                 const xpResponse = await axios.get('/api/projects/user-total-xp', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-
                 setEarnedXP(xpResponse.data.earnedXP);
                 setCompletedTasks(xpResponse.data.completedTasks);
                 setBadges(xpResponse.data.badges);
                 setLevel(xpResponse.data.level);
+
+                // Fetch user profile info (including name)
+                const profileResponse = await axios.get('/api/users/profile-info', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setProfileName(profileResponse.data.name);
+
             } catch (error) {
                 console.error('Error fetching user data:', error);
                 if (error.response?.status === 401) {
@@ -73,7 +81,6 @@ const UserInfo = () => {
         }
     };
 
-    // Helper to convert probability to label
     const getDelayLabel = (prob) => {
         if (prob < 0.33) return "Low";
         if (prob < 0.66) return "Medium";
@@ -144,7 +151,7 @@ const UserInfo = () => {
                         </div>
                     </div>
 
-                     {/* Profile Card */}
+                    {/* Profile Card */}
                     <div className="rounded-t-2xl rounded-b-lg overflow-hidden shadow-lg border border-gray-200">
                         {/* Header */}
                         <div className="bg-yellow-300 px-6 py-6 rounded-t-2xl">
@@ -155,7 +162,7 @@ const UserInfo = () => {
                             <h2 className="text-lg font-bold text-[#183153] mb-4">Personal Information</h2>
                             <div className="mb-2 flex justify-between">
                                 <span className="font-semibold text-gray-800">Name</span>
-                                <span className="font-bold text-[#183153]">{localStorage.getItem('name') || "—"}</span>
+                                <span className="font-bold text-[#183153]">{profileName || "—"}</span>
                             </div>
                             <div className="mb-2 flex justify-between">
                                 <span className="font-semibold text-gray-800">Experience</span>

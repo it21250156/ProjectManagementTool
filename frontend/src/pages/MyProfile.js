@@ -111,27 +111,7 @@ const MyProfile = () => {
                                     <h3 className='font-semibold'>Email</h3>
                                     <p className='text-[#4a90e2] text-xl italic mx-5 font-semibold'>{userData.email}</p>
 
-                                    {/* Delay Prediction */}
-                                    {userData.delayPrediction ? (
-                                        <div className="mt-4">
-                                            <h3 className='font-semibold'>Delay Probability</h3>
-                                            <p className='text-red-500 font-bold text-lg mx-5'>
-                                                {userData.delayPrediction.delayProbability}
-                                            </p>
-                                            <h3 className='font-semibold'>Reason</h3>
-                                            <p className='text-gray-700 mx-5'>
-                                                {userData.delayPrediction.reason}
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <button
-                                            className='w-1/2 mt-4 bg-[#ff6b6b] text-white hover:bg-[#ff8787] p-3 rounded-lg font-bold'
-                                            onClick={fetchDelayProbability}
-                                            disabled={predicting}
-                                        >
-                                            {predicting ? 'Predicting...' : '🔍 Delay Probability'}
-                                        </button>
-                                    )}
+                                    
                                 </div>
 
                                 <button className='w-1/4 mt-4 bg-[#50e3c2] text-white hover:bg-[#7ce2cc] p-4 rounded-lg font-bold'>
