@@ -14,7 +14,7 @@ const ShowMessageModal = ({ user, open, onClose, onSend }) => {
           rows={4}
           value={message}
           onChange={e => setMessage(e.target.value)}
-          placeholder="Type your message here..."
+          placeholder="Type your Quick Motivation here..."
         />
         <div className="flex justify-end gap-2">
           <button
