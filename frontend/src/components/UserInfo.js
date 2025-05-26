@@ -11,18 +11,16 @@ const UserInfo = () => {
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const [level, setLevel] = useState(1);
+    const [delayPrediction, setDelayPrediction] = useState(null);
+    const [profileName, setProfileName] = useState(''); // <-- Add this
 
     const navigate = useNavigate();
-
-    // Function to calculate XP needed for the next level
     const getNextLevelXP = (lvl) => Math.pow(2, lvl) * 50;
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                console.log('Token from localStorage:', token); // Debugging
-
                 if (!token) {
                     setMessage('You are not logged in. Please log in to continue.');
                     setLoading(false);
@@ -30,31 +28,29 @@ const UserInfo = () => {
                     return;
                 }
 
-                // Fetch XP, Tasks, Badges, Level
+                // Fetch XP, tasks, badges, level
                 const xpResponse = await axios.get('/api/projects/user-total-xp', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-
                 setEarnedXP(xpResponse.data.earnedXP);
                 setCompletedTasks(xpResponse.data.completedTasks);
                 setBadges(xpResponse.data.badges);
                 setLevel(xpResponse.data.level);
 
+                // Fetch user profile info (including name)
+                const profileResponse = await axios.get('/api/users/profile-info', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setProfileName(profileResponse.data.name);
+
             } catch (error) {
                 console.error('Error fetching user data:', error);
-                if (error.response) {
-                    setMessage(error.response.data.message || 'Failed to load data. Please try again later.');
-                    if (error.response.status === 401) {
-                        console.error("Token is invalid. Please try again later");
-                        navigate('/');
-                    }
-                } else if (error.request) {
-                    setMessage('No response from the server. Please check your connection.');
+                if (error.response?.status === 401) {
+                    navigate('/');
                 } else {
-                    setMessage('An unexpected error occurred. Please try again later.');
+                    setMessage('Failed to load data. Please try again later.');
                 }
             } finally {
-                // Add a small delay before hiding the spinner
                 setTimeout(() => setLoading(false), 500);
             }
         };
@@ -62,9 +58,34 @@ const UserInfo = () => {
         fetchUserData();
     }, [navigate]);
 
-    // Calculate XP Progress Bar
     const nextLevelXP = getNextLevelXP(level);
     const xpProgress = Math.min((earnedXP / nextLevelXP) * 100, 100);
+
+    const handleViewDelayProbability = async () => {
+        try {
+            const response = await axios.post('/api/gemini/profile-delay-prediction', {
+                level,
+                completedTasks,
+                avgEffortHours: 4, // Replace with actual average if available
+                onTimeDeliveryRate: 0.8, // Replace with actual rate if available
+                currentTaskLoad: 3 // Replace with actual task load if available
+            });
+
+            setDelayPrediction({
+                delayProbability: response.data.delayProbability,
+                reason: response.data.reason
+            });
+        } catch (error) {
+            console.error("Error getting delay probability:", error);
+            setMessage("Failed to fetch delay probability.");
+        }
+    };
+
+    const getDelayLabel = (prob) => {
+        if (prob < 0.33) return "Low";
+        if (prob < 0.66) return "Medium";
+        return "High";
+    };
 
     return (
         <motion.div
@@ -233,7 +254,63 @@ const UserInfo = () => {
                         </motion.div>
                     </div>
 
-
+                    {/* Profile Card */}
+                    <div className="rounded-t-2xl rounded-b-lg overflow-hidden shadow-lg border border-gray-200">
+                        {/* Header */}
+                        <div className="bg-yellow-300 px-6 py-6 rounded-t-2xl">
+                            <h1 className="text-4xl font-extrabold italic text-white text-center">My Performance</h1>
+                        </div>
+                        {/* Personal Info */}
+                        <div className="bg-white px-8 py-6">
+                            <h2 className="text-lg font-bold text-[#183153] mb-4">Personal Information</h2>
+                            <div className="mb-2 flex justify-between">
+                                <span className="font-semibold text-gray-800">Name</span>
+                                <span className="font-bold text-[#183153]">{profileName || "—"}</span>
+                            </div>
+                            <div className="mb-2 flex justify-between">
+                                <span className="font-semibold text-gray-800">Experience</span>
+                                <span className="font-bold text-[#183153]">
+                                    {level === 1 ? "Beginner" : level < 8 ? "Intermediate" : "Advanced"}
+                                </span>
+                            </div>
+                            <div className="mb-2 flex justify-between">
+                                <span className="font-semibold text-gray-800">Completed Tasks</span>
+                                <span className="font-bold">{completedTasks}</span>
+                            </div>
+                            <div className="mb-2 flex justify-between">
+                                <span className="font-semibold text-gray-800">Earned XP</span>
+                                <span className="font-bold">{earnedXP}</span>
+                            </div>
+                            <div className="mb-2 flex justify-between">
+                                <span className="font-semibold text-gray-800">Level</span>
+                                <span className="font-bold">{level}</span>
+                            </div>
+                        </div>
+                        {/* Delay Probability */}
+                        <div className="bg-yellow-100 px-8 py-6 border-t border-yellow-200">
+                            <div className="flex items-center mb-2">
+                                <span className="text-yellow-700 text-2xl mr-2">⚠️</span>
+                                <span className="font-bold text-yellow-700 text-lg">Delay Probability</span>
+                            </div>
+                            {delayPrediction ? (
+                                <>
+                                    <div className="font-bold text-yellow-800 text-xl mb-1">
+                                        Delay Probability: <span>{getDelayLabel(delayPrediction.delayProbability)}</span>
+                                    </div>
+                                    <div className="text-gray-800 text-base">
+                                        {delayPrediction.reason}
+                                    </div>
+                                </>
+                            ) : (
+                                <button
+                                    onClick={handleViewDelayProbability}
+                                    className="mt-2 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-4 rounded"
+                                >
+                                    View Delay Probability
+                                </button>
+                            )}
+                        </div>
+                    </div>
                 </>
             )}
         </motion.div>

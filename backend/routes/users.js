@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/userModel');
 const { verifyToken } = require('../middleware/auth'); // Ensure user authentication
 const router = express.Router();
+const mongoose = require('mongoose');
 
 /**
  * ✅ Get All Users (For Assigning Members to Projects)
@@ -59,6 +60,7 @@ router.get('/profile-info', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 // ✅ Get Top 5 Users by XP (Global Leaderboard)
 router.get('/leaderboard', async (req, res) => {
   try {
@@ -74,6 +76,20 @@ router.get('/leaderboard', async (req, res) => {
   }
 });
 
-
+/**
+ * ✅ Get All Users' Performance Data (for UserPerformance.js)
+ * Reads from the 'performance' collection in MongoDB.
+ */
+router.get('/performance-evaluation', async (req, res) => {
+  try {
+    // Use mongoose connection to access the 'performance' collection directly
+    const Performance = mongoose.connection.collection('performance');
+    const users = await Performance.find({}).toArray();
+    res.json(users);
+  } catch (err) {
+    console.error('Performance evaluation fetch error:', err);
+    res.status(500).json({ error: 'Failed to fetch user performance data.' });
+  }
+});
 
 module.exports = router;

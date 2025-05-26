@@ -8,6 +8,7 @@ const MyProfile = () => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [predicting, setPredicting] = useState(false); // Loading for delay prediction
 
     const navigate = useNavigate();
 
@@ -46,6 +47,45 @@ const MyProfile = () => {
 
         fetchUserProfile();
     }, [navigate]);
+
+    // Handle delay prediction using Gemini API
+    const fetchDelayProbability = async () => {
+        if (!userData) return;
+
+        try {
+            setPredicting(true);
+            const response = await fetch('/api/gemini/profile-delay-prediction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    level: userData.level || 0,
+                    completedTasks: userData.completedTasks || 0,
+                    avgEffortHours: userData.avgEffortHours || 0,
+                    onTimeDeliveryRate: userData.onTimeDeliveryRate || 0,
+                    currentTaskLoad: userData.currentTaskLoad || 0
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to predict delay');
+            }
+
+            const result = await response.json();
+            setUserData(prev => ({
+                ...prev,
+                delayPrediction: {
+                    delayProbability: result.delayProbability,
+                    reason: result.reason
+                }
+            }));
+        } catch (err) {
+            console.error('Failed to predict delay probability', err);
+        } finally {
+            setPredicting(false);
+        }
+    };
 
     return (
         <motion.div
