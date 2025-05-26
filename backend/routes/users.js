@@ -4,8 +4,7 @@ const { verifyToken } = require('../middleware/auth'); // Ensure user authentica
 const router = express.Router();
 
 /**
- * ✅ Get All Users (For Assigning Members to Projects)
- * This is needed in Create Project Page.
+ * Get All Users (For Assigning Members to Projects)
  */
 router.get('/', async (req, res) => {
   try {
@@ -18,15 +17,15 @@ router.get('/', async (req, res) => {
 });
 
 /**
- * ✅ Get User Profile (Including Unlocked Skills)
+ * Get User Profile (Including Unlocked Skills)
  */
 router.get('/profile', verifyToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('unlockedSkills'); // ✅ Ensure population
+    const user = await User.findById(req.user.id).populate('unlockedSkills'); // Ensure population
 
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    console.log("🌟 Sending User Profile:", user); // ✅ Debugging Backend Response
+    console.log("🌟 Sending User Profile:", user); // Debugging Backend Response
 
     res.status(200).json({
       name: user.name,
@@ -35,7 +34,7 @@ router.get('/profile', verifyToken, async (req, res) => {
       completedTasks: user.completedTasks,
       earnedXP: user.earnedXP,
       badges: user.badges,
-      unlockedSkills: user.unlockedSkills || [], // ✅ Ensure it returns an array
+      unlockedSkills: user.unlockedSkills || [], // Ensure it returns an array
     });
   } catch (error) {
     console.error('Error fetching user profile:', error);
@@ -59,7 +58,7 @@ router.get('/profile-info', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-// ✅ Get Top 5 Users by XP (Global Leaderboard)
+// Get Top 5 Users by XP (Global Leaderboard)
 router.get('/leaderboard', async (req, res) => {
   try {
     const topUsers = await User.find({})

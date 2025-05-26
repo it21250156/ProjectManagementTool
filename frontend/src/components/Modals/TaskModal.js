@@ -124,7 +124,7 @@ const TaskModal = ({ closeModal }) => {
       setPriority('Low');
       setComplexity('Low');
       setEffortEstimate('');
-      setEstimatedDuration(json.estimatedDuration); // ⏱ Display predicted duration
+      setEstimatedDuration(json.estimatedDuration); // Display predicted duration
       setError(null);
 
       dispatch({ type: 'CREATE_TASKS', payload: json.task });
