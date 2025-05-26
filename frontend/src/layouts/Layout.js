@@ -31,7 +31,7 @@ const Layout = () => {
         
         {/* Main Content Area - Scrollable */}
         <main className="flex-1 overflow-y-auto overflow-x-hidden">
-          <div className="p-4 lg:p-8 max-w-7xl mx-auto">
+          <div className="mx-auto">
             {/* This is where your route components will be rendered */}
             <Outlet />
           </div>

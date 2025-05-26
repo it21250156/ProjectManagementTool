@@ -40,7 +40,7 @@ router.post('/login', async (req, res) => {
     // First, check for the hardcoded admin login
     if (email === adminEmail && password === adminPassword) {
         // If it's the admin, generate a token and return it
-        const token = jwt.sign({ email: adminEmail, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ email: adminEmail, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '5h' });
         return res.json({ token });
     }
 
