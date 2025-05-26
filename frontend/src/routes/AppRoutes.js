@@ -23,6 +23,7 @@ import GlobalLeaderboard from "../components/GlobalLeaderboard";
 import Leaderboard from "../pages/Leaderboard";
 import DeadlinePrediction from "../pages/DeadlinePrediction";
 import TaskAllocate from "../pages/TaskAllocate";
+import Layout from "../layouts/Layout";
 
 
 
@@ -39,7 +40,7 @@ const AppRoutes = () => (
         {/* <Route path="/register" element={<Register />} /> */}
       </Route>
 
-      <Route element={<HomeLayout />}>
+      <Route element={<Layout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/my-projects" element={<MyProjects />} />
         <Route path="/project/:projectId" element={<ProjectDetails />} />

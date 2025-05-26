@@ -1,174 +1,220 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react';
 import TaskModal from './Modals/TaskModal';
 import ProjectModal from './Modals/ProjectModal';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
 import TeamModal from './Modals/TeamModal';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { 
+  Plus, 
+  Home, 
+  FolderOpen, 
+  Users, 
+  User, 
+  Trophy, 
+  LogOut,
+  X,
+  Briefcase,
+  CheckSquare,
+  UsersIcon
+} from 'lucide-react';
 
-const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-    const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
-    const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
+const Sidebar = ({ isOpen, onClose }) => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+  const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
 
-    const { dispatch } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const navigate = useNavigate();
+  const openCreateModal = () => {
+    setIsCreateModalOpen(true);
+    onClose?.(); // Close mobile sidebar when opening modal
+  };
+  const closeCreateModal = () => setIsCreateModalOpen(false);
 
-    const openModal = () => setIsOpen(true);
-    const closeModal = () => setIsOpen(false);
+  const openTaskModal = () => {
+    setIsTaskModalOpen(true);
+    closeCreateModal();
+  };
+  const closeTaskModal = () => setIsTaskModalOpen(false);
 
-    const openTaskModal = () => {
-        setIsTaskModalOpen(true);
-        closeModal();
-    };
-    const closeTaskModal = () => setIsTaskModalOpen(false);
+  const openProjectModal = () => {
+    setIsProjectModalOpen(true);
+    closeCreateModal();
+  };
+  const closeProjectModal = () => setIsProjectModalOpen(false);
 
-    const openProjectModal = () => {
-        setIsProjectModalOpen(true);
-        closeModal();
-    };
-    const closeProjectModal = () => setIsProjectModalOpen(false);
+  const openTeamModal = () => {
+    setIsTeamModalOpen(true);
+    closeCreateModal();
+  };
+  const closeTeamModal = () => setIsTeamModalOpen(false);
 
-    const openTeamModal = () => {
-        setIsTeamModalOpen(true);
-        closeModal();
-    };
-    const closeTeamModal = () => setIsTeamModalOpen(false);
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    dispatch({ type: 'LOGOUT' });
+    navigate('/');
+  };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
+  const navItems = [
+    { path: '/home', icon: Home, label: 'Dashboard' },
+    { path: '/my-projects', icon: FolderOpen, label: 'My Projects' },
+    { path: '/my-teams', icon: Users, label: 'My Teams' },
+    { path: '/my-profile', icon: User, label: 'My Profile' },
+    { path: '/global-leaderboard', icon: Trophy, label: 'Leaderboard' },
+  ];
 
-        dispatch({ type: 'LOGOUT' });
-        navigate('/');
-    };
+  const isActivePath = (path) => location.pathname === path;
 
-    return (
-        <>
-            <div className='col flex flex-col h-screen shadow-lg shadow-[#F5A623]'>
-                <div className='flex-1'>
-                    <div className="logo-div border-b-2 border-[#4a90e2] h-16 flex items-center justify-center">
-                        <h1 className="font-mono font-bold text-4xl bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-300">
-                            CodeFlow.ai
-                        </h1>
-                    </div>
-                    <div className='m-2'>
-                        <button
-                            onClick={openModal}
-                            type="button"
-                            class="text-[#333333] bg-[#50e3c2] hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-bold rounded-full text-lg w-full py-4 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        >
-                            Create
-                        </button>
-                    </div>
-                    <div className='py-2 px-1 my-1'>
+  return (
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+          onClick={onClose}
+        />
+      )}
 
+      {/* Sidebar */}
+      <div className={`
+        fixed lg:static inset-y-0 left-0 z-50 w-72 lg:w-80
+        bg-gradient-to-b from-white to-gray-50/80 backdrop-blur-lg
+        shadow-2xl lg:shadow-lg border-r border-gray-200/50
+        transform transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        flex flex-col
+      `}>
+        
+        {/* Header */}
+        <div className="border-b border-gradient-to-r from-[#4a90e2] to-[#50E3C2] p-4 lg:p-6">
+          <div className="flex items-center justify-between">
+            <h1 className="font-mono font-bold text-2xl lg:text-3xl bg-clip-text text-transparent bg-gradient-to-r from-[#4a90e2] to-[#50E3C2]">
+              CodeFlow.ai
+            </h1>
+            {/* Mobile Close Button */}
+            <button
+              onClick={onClose}
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <X className="h-5 w-5 text-gray-600" />
+            </button>
+          </div>
+        </div>
 
-                        <Link to="/home">
-                            <button type="button" class="text-white bg-[#4a90e2] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-lg py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                Dashboard
-                            </button>
-                        </Link>
+        {/* Create Button */}
+        <div className="p-4 lg:p-6">
+          <button
+            onClick={openCreateModal}
+            className="w-full bg-gradient-to-r from-[#50E3C2] to-[#4a90e2] hover:from-[#4a90e2] hover:to-[#50E3C2] text-white font-bold rounded-xl py-4 px-6 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center group"
+          >
+            <Plus className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
+            Create New
+          </button>
+        </div>
 
-                        {/* <Link to="/my-tasks">
-                            <button type="button" class="text-white bg-[#4a90e2] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-lg py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                My Tasks
-                            </button>
-                        </Link> */}
+        {/* Navigation */}
+        <nav className="flex-1 px-4 lg:px-6 space-y-2">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const active = isActivePath(item.path);
+            
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={onClose}
+                className={`
+                  flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 group
+                  ${active 
+                    ? 'bg-gradient-to-r from-[#4a90e2] to-[#50E3C2] text-white shadow-md' 
+                    : 'text-gray-700 hover:bg-gradient-to-r hover:from-[#50E3C2]/20 hover:to-[#4a90e2]/20 hover:text-[#4a90e2]'
+                  }
+                `}
+              >
+                <Icon className={`mr-3 h-5 w-5 transition-colors ${active ? 'text-white' : 'text-gray-600 group-hover:text-[#4a90e2]'}`} />
+                <span className="text-lg">{item.label}</span>
+                {active && (
+                  <div className="ml-auto w-2 h-2 bg-white rounded-full animate-pulse" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
 
-                        <Link to="/my-projects">
-                            <button
-                                type="button"
-                                class="text-white bg-[#4a90e2] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-lg py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                My Projects
-                            </button>
-                        </Link>
+        {/* Logout Button */}
+        <div className="p-4 lg:p-6 border-t border-gray-200/50">
+          <button
+            onClick={handleLogout}
+            className="w-full bg-gradient-to-r from-[#f5a623] to-orange-500 hover:from-orange-500 hover:to-[#f5a623] text-white font-bold rounded-xl py-4 px-6 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center group"
+          >
+            <LogOut className="mr-2 h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
+            Logout
+          </button>
+        </div>
+      </div>
 
-                        <button type="button" class="text-white bg-[#4a90e2] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-lg py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                            My Teams
-                        </button>
-
-                        <Link to="/my-profile">
-                            <button type="button" class="text-white bg-[#4a90e2] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-lg py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                My Profile
-                            </button>
-                        </Link>
-
-                        <Link to="/global-leaderboard">
-                            <button type="button" class="text-white bg-[#4a90e2] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-lg py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                Global Leaderboard
-                            </button>
-                        </Link>
-
-                    </div>
-                </div>
-
-                <div className='mt-auto'>
-                    <button
-                        type="button"
-                        onClick={handleLogout}
-                        class="text-white bg-[#f5a623] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold py-4 text-lg w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                        Logout
-                    </button>
-                </div>
+      {/* Create Modal */}
+      {isCreateModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-md p-4">
+          <div
+            className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200/50 overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-[#4a90e2] to-[#50E3C2] p-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold text-white flex items-center">
+                  <Plus className="mr-2 h-6 w-6" />
+                  Create New
+                </h3>
+                <button 
+                  onClick={closeCreateModal} 
+                  className="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/20 transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
             </div>
 
-            {/* Modal with Blur Effect */}
-            {isOpen && (
-                <div
-                    className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-md"
-                    onClick={closeModal}
-                >
-                    {/* Click detection wrapper */}
-                    <div
-                        className="relative p-4 w-full max-w-md bg-[#4A90E2] rounded-3xl shadow-md"
-                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
-                    >
-                        <div className="flex items-center justify-between p-4 border-b">
-                            <h3 className="text-4xl font-bold w-full text-center text-white">Create a...</h3>
-                            <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">
-                                ✕
-                            </button>
-                        </div>
-                        <div className="p-4">
-                            <ul className="space-y-4 mb-4">
-                                <li>
-                                    <button
-                                        type="button"
-                                        onClick={openProjectModal}
-                                        class="text-white bg-[#F5A623] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-xl text-3xl py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                                    >
-                                        Project
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        type="button"
-                                        onClick={openTaskModal}
-                                        class="text-white bg-[#F5A623] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-xl text-3xl py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                                    >
-                                        Task
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        type="button"
-                                        onClick={openTeamModal}
-                                        className="text-white bg-[#F5A623] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-xl text-3xl py-4 w-full mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                                    >
-                                        Team
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            )}
-            {isTaskModalOpen && <TaskModal closeModal={closeTaskModal} />}
-            {isProjectModalOpen && <ProjectModal closeModal={closeProjectModal} />}
-            {isTeamModalOpen && <TeamModal closeModal={closeTeamModal} />}
-        </>
-    )
-}
+            {/* Modal Content */}
+            <div className="p-6 space-y-4">
+              <button
+                onClick={openProjectModal}
+                className="w-full bg-gradient-to-r from-[#f5a623] to-orange-500 hover:from-orange-500 hover:to-[#f5a623] text-white font-bold rounded-xl py-4 px-6 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center group"
+              >
+                <Briefcase className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+                <span className="text-lg">Project</span>
+              </button>
 
-export default Sidebar
+              <button
+                onClick={openTaskModal}
+                className="w-full bg-gradient-to-r from-[#f5a623] to-orange-500 hover:from-orange-500 hover:to-[#f5a623] text-white font-bold rounded-xl py-4 px-6 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center group"
+              >
+                <CheckSquare className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+                <span className="text-lg">Task</span>
+              </button>
+
+              <button
+                onClick={openTeamModal}
+                className="w-full bg-gradient-to-r from-[#f5a623] to-orange-500 hover:from-orange-500 hover:to-[#f5a623] text-white font-bold rounded-xl py-4 px-6 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center group"
+              >
+                <UsersIcon className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform" />
+                <span className="text-lg">Team</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modals */}
+      {isTaskModalOpen && <TaskModal closeModal={closeTaskModal} />}
+      {isProjectModalOpen && <ProjectModal closeModal={closeProjectModal} />}
+      {isTeamModalOpen && <TeamModal closeModal={closeTeamModal} />}
+    </>
+  );
+};
+
+export default Sidebar;
