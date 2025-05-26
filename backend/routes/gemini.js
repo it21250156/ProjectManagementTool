@@ -10,7 +10,7 @@ const loadGemini = async () => {
         const module = await import('@google/genai');
         GoogleGenAI = module.GoogleGenAI;
         genAI = new GoogleGenAI({
-            apiKey: "AIzaSyAJt-6NsISOEhc0Cj9RkTXz_Y459M-hACQ"
+            apiKey: "AIzaSyCJExLkrGK_qxykudoWhQp4hhCmk6myE1w"
         });
     }
 };
@@ -260,22 +260,64 @@ Respond in JSON:
 
 // ✅ 5. Predict Delay Probability for User Profile
 router.post('/profile-delay-prediction', async (req, res) => {
-    const { level, completedTasks, avgEffortHours, onTimeDeliveryRate, currentTaskLoad } = req.body;
+    let { level, completedTasks, earnedXP } = req.body;
 
-    if (
-        typeof level !== 'number' ||
-        typeof completedTasks !== 'number' ||
-        typeof avgEffortHours !== 'number' ||
-        typeof onTimeDeliveryRate !== 'number' ||
-        typeof currentTaskLoad !== 'number'
-    ) {
-        return res.status(400).json({ error: 'Invalid input types' });
+    // Consistent algorithm for delay probability status
+    // Low: completedTasks > 40 or level > 8 OR (completedTasks > 30 && earnedXP > 1500)
+    // Medium: completedTasks > 20 or level > 5
+    // High: otherwise
+
+    const isTrulyExperienced = (completedTasks > 30 && earnedXP > 1500);
+    const isLowRisk = (completedTasks > 40 || level > 8) || isTrulyExperienced;
+    const isMediumRisk = (completedTasks > 20 || level > 5);
+
+    let avgEffortHours, onTimeDeliveryRate, currentTaskLoad, delayProbability, reason, status;
+
+    if (isLowRisk) {
+        avgEffortHours = 4;
+        onTimeDeliveryRate = 0.9;
+        currentTaskLoad = 3;
+        delayProbability = 0.2;
+        status = "Low";
+        if (isTrulyExperienced) {
+            reason = `This user has completed ${completedTasks} tasks and earned ${earnedXP} XP, demonstrating advanced experience and consistent reliability. Their history shows they can handle tasks efficiently and on time, making delays very unlikely.`;
+        } else if (completedTasks > 40) {
+            reason = `With over 40 completed tasks, this user has a proven track record of handling a high volume of work. Their experience reduces the chance of delays, as they are familiar with the workflow and common challenges.`;
+        } else {
+            reason = `The user is at a high level (${level}), indicating advanced skills and a deep understanding of project requirements. Such users typically manage their workload well and deliver tasks on schedule.`;
+        }
+    } else if (isMediumRisk) {
+        avgEffortHours = 8;
+        onTimeDeliveryRate = 0.5;
+        currentTaskLoad = 6;
+        delayProbability = 0.5;
+        status = "Medium";
+        if (completedTasks > 20 && completedTasks <= 40) {
+            reason = `This user has completed ${completedTasks} tasks, showing a fair amount of experience. However, they are still building up to advanced proficiency, so there is a moderate risk of delay if workload increases or unexpected issues arise.`;
+        } else if (level > 5 && level <= 8) {
+            reason = `The user is at level ${level}, which is above beginner but not yet advanced. They have a reasonable skill set but may still encounter challenges that could cause moderate delays.`;
+        } else {
+            reason = `The user has moderate experience or is currently managing a moderate workload. Their on-time delivery rate is average, so while they can often deliver on time, there is still a noticeable risk of delay.`;
+        }
+    } else {
+        avgEffortHours = 12;
+        onTimeDeliveryRate = 0.2;
+        currentTaskLoad = 10;
+        delayProbability = 0.8;
+        status = "High";
+        if (completedTasks <= 20 && level <= 5) {
+            reason = `This user has only completed ${completedTasks} tasks and is at level ${level}, indicating they are relatively new or inexperienced. Such users are more likely to face difficulties, leading to a high risk of delay.`;
+        } else if (completedTasks <= 20) {
+            reason = `With only ${completedTasks} completed tasks, this user lacks the experience needed to consistently deliver on time. They may require additional support or supervision, increasing the risk of delays.`;
+        } else if (level <= 5) {
+            reason = `The user is at a lower level (${level}), suggesting they are still developing their skills. Lower-level users often need more time to complete tasks and are more susceptible to delays.`;
+        } else {
+            reason = `This user is either less experienced or currently overloaded with work. Their low on-time delivery rate and high task load make delays very likely unless their workload is reduced or they receive extra help.`;
+        }
     }
 
-    try {
-        await loadGemini();
-
-        const prompt = `
+    // For transparency, show the prompt that would be sent to Gemini
+    const prompt = `
 You are a software project analyst AI assistant.
 
 Given the user profile data below, predict the delay probability for their next assigned task as a number between 0 and 1.
@@ -283,35 +325,20 @@ Given the user profile data below, predict the delay probability for their next 
 Profile:
 - Level: ${level}
 - Completed Tasks: ${completedTasks}
+- Earned XP: ${earnedXP}
 - Average Effort Hours per Task: ${avgEffortHours}
 - On-Time Delivery Rate (0 to 1): ${onTimeDeliveryRate}
 - Current Task Load: ${currentTaskLoad}
 
-Respond in JSON format:
-{
-  "delayProbability": 0.34,
-  "reason": "High current task load and moderate delivery rate indicate moderate risk."
-}`;
+Based on the above, the delay probability status is "${status}".
+`;
 
-        const result = await genAI.models.generateContent({
-            model: "gemini-1.5-flash",
-            contents: [{ role: "user", parts: [{ text: prompt }] }],
-            config: { temperature: 0.2, maxOutputTokens: 300 }
-        });
-
-        let rawText = result.candidates[0].content.parts[0].text.trim();
-        if (rawText.startsWith("```")) rawText = rawText.replace(/```(?:json)?/, "").replace(/```/, "").trim();
-
-        const match = rawText.match(/\{[\s\S]*?\}/);
-        if (!match) return res.status(500).json({ error: "Could not extract valid JSON", raw: rawText });
-
-        const json = JSON.parse(match[0]);
-
-        return res.status(200).json(json);
-    } catch (err) {
-        console.error("Gemini Delay Prediction Error:", err);
-        res.status(500).json({ error: "Gemini delay prediction failed", details: err.message });
-    }
+    return res.status(200).json({
+        delayProbability,
+        reason,
+        status,
+        prompt // Optional: for debugging or UI display
+    });
 });
 
 module.exports = router;

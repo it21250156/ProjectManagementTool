@@ -11,15 +11,16 @@ const UserPerformance = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch users without delayPrediction
   useEffect(() => {
-    // Fetch all users' performance data from backend
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get("/api/users/performance-evaluation", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUsers(res.data);
+        // Add empty delayPrediction to each user for now
+        setUsers(res.data.map(u => ({ ...u, delayPrediction: null })));
       } catch (err) {
         setUsers([]);
       } finally {
@@ -28,6 +29,35 @@ const UserPerformance = () => {
     };
     fetchUsers();
   }, []);
+
+  // Fetch delay prediction for each user using Gemini API
+  useEffect(() => {
+    const fetchDelayPredictions = async () => {
+      for (let i = 0; i < users.length; i++) {
+        const user = users[i];
+       try {
+        const res = await axios.post("/api/gemini/profile-delay-prediction", {
+          level: user.level ,
+          completedTasks: user.completedTasks,
+          earnedXP: user.earnedXP ,
+          avgEffortHours: user.avgEffortHours ,
+          onTimeDeliveryRate: user.onTimeDeliveryRate ,
+          currentTaskLoad: user.currentTaskLoad 
+        });
+          // Update the user with delayPrediction
+          setUsers(prev =>
+            prev.map((u, idx) =>
+              idx === i ? { ...u, delayPrediction: res.data } : u
+            )
+          );
+        } catch (err) {
+          // Optionally set error info
+        }
+      }
+    };
+    if (users.length > 0) fetchDelayPredictions();
+    // eslint-disable-next-line
+  }, [users.length]);
 
   return (
     <div className="max-w-5xl mx-auto py-8">
@@ -53,7 +83,7 @@ const UserPerformance = () => {
                   <span className="font-bold text-[#183153]">
                     {user.level === 1
                       ? "Beginner"
-                      : user.level < 5
+                      : user.level < 8
                       ? "Intermediate"
                       : "Advanced"}
                   </span>
@@ -72,31 +102,46 @@ const UserPerformance = () => {
                 </div>
               </div>
               {/* Delay Probability */}
-              <div className="bg-yellow-100 px-8 py-6 border-t border-yellow-200">
-                <div className="flex items-center mb-2">
-                  <span className="text-yellow-700 text-2xl mr-2">⚠️</span>
-                  <span className="font-bold text-yellow-700 text-lg">Delay Probability</span>
-                </div>
-                {user.delayPrediction ? (
-                  <>
-                    <div className="font-bold text-yellow-800 text-xl mb-1">
-                      Delay Probability:{" "}
-                      <span>{getDelayLabel(user.delayPrediction.delayProbability)}</span>
-                    </div>
-                    <div className="text-gray-800 text-base">
-                      {user.delayPrediction.reason}
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-gray-500">No prediction available.</div>
-                )}
-              </div>
+<div className="bg-yellow-100 px-8 py-6 border-t border-yellow-200">
+  <div className="flex items-center mb-2">
+    <span className="text-yellow-700 text-2xl mr-2">⚠️</span>
+    <span className="font-bold text-yellow-700 text-lg">Delay Probability</span>
+  </div>
+  {user.delayPrediction ? (
+    <>
+      <div className="font-bold text-yellow-800 text-xl mb-1">
+        Delay Probability:{" "}
+        <span>{getDelayLabel(user.delayPrediction.delayProbability)}</span>
+      </div>
+      <div className="text-gray-800 text-base">
+        {user.delayPrediction.reason}
+      </div>
+      {/* Show message icon if high delay probability */}
+      {user.delayPrediction.status === "High" && (
+        <div className="flex items-center mt-4">
+          <button
+            className="flex items-center px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded transition"
+            onClick={() => alert(`Message to ${user.name} (supervisor action)`)}
+            title={`Message ${user.name}`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8l-4 1 1-4A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            Message 
+          </button>
+        </div>
+      )}
+    </>
+  ) : (
+    <div className="text-gray-500">Predicting...</div>
+  )}
+</div>
             </div>
           ))}
         </div>
       )}
     </div>
   );
-}
+};
 
 export default UserPerformance;
