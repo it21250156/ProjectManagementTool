@@ -167,7 +167,7 @@ const UserInfo = () => {
                             <div className="mb-2 flex justify-between">
                                 <span className="font-semibold text-gray-800">Experience</span>
                                 <span className="font-bold text-[#183153]">
-                                    {level === 1 ? "Beginner" : level < 5 ? "Intermediate" : "Advanced"}
+                                    {level === 1 ? "Beginner" : level < 8 ? "Intermediate" : "Advanced"}
                                 </span>
                             </div>
                             <div className="mb-2 flex justify-between">
