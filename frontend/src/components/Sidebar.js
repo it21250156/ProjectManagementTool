@@ -15,7 +15,8 @@ import {
   X,
   Briefcase,
   CheckSquare,
-  UsersIcon
+  UsersIcon,
+  BarChart3
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -61,8 +62,9 @@ const Sidebar = ({ isOpen, onClose }) => {
   const navItems = [
     { path: '/home', icon: Home, label: 'Dashboard' },
     { path: '/my-projects', icon: FolderOpen, label: 'My Projects' },
-    { path: '/my-teams', icon: Users, label: 'My Teams' },
+    // { path: '/my-teams', icon: Users, label: 'My Teams' },
     { path: '/my-profile', icon: User, label: 'My Profile' },
+    { path: '/performance-evaluation', icon: BarChart3, label: 'User Performance' },
     { path: '/global-leaderboard', icon: Trophy, label: 'Leaderboard' },
   ];
 
