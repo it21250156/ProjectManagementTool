@@ -58,12 +58,12 @@ router.get('/profile-info', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-// Get Top 5 Users by XP (Global Leaderboard)
+// Get Top 25 Users by XP (Global Leaderboard)
 router.get('/leaderboard', async (req, res) => {
   try {
     const topUsers = await User.find({})
       .sort({ earnedXP: -1 }) // Sort by highest XP
-      .limit(25) // Only get the top 5 users
+      .limit(25) // Only get the top 25 users
       .select('name earnedXP'); // Only return name & XP
 
     res.status(200).json(topUsers);
