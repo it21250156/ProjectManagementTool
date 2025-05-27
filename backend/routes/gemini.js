@@ -16,7 +16,7 @@ const loadGemini = async () => {
     }
 };
 
-// ✅ Duration + Risk Estimation
+//  Duration + Risk Estimation
 router.post('/estimate-risk', async (req, res) => {
     const { taskName, taskDescription, complexity, experienceLevel } = req.body;
 
@@ -84,7 +84,7 @@ Respond in valid JSON format like:
     }
 });
 
-// ✅ Best Member Allocation via Gemini
+//  Best Member Allocation via Gemini
 router.post('/allocate-member', async (req, res) => {
     const { taskName, complexity, priority, estimatedEffort, members } = req.body;
 
@@ -188,14 +188,19 @@ router.post('/predict-timeline', async (req, res) => {
         await loadGemini();
 
         const prompt = `
-You are a project management expert AI.
+You are a highly experienced software project manager AI.
 
-Estimate the number of days required to complete the following software project.
+Your task is to estimate the number of days required to complete a given software project. 
+You MUST analyze and explain your reasoning based on both:
+- **Numerical components** (e.g., team size, task count, productivity, complexity, LOC, etc.)
+- **Categorical components**, especially the **Project Name** and **Project Description**, which provide important domain-specific context.
+
+Use all provided information holistically, and give a reason that reflects BOTH technical metrics and the project's overall nature.
 
 Project Name: ${projectName}
 Description: ${projectDescription}
 
-Features:
+Quantitative Features:
 - Team Size: ${team_size}
 - Task Count: ${task_count}
 - Developer Experience: ${developer_experience}
@@ -208,12 +213,14 @@ Features:
 - LOC per Member: ${LoC_per_Team_Member}
 - Requirement Change Impact Factor: ${change_impact_factor}
 
-Return JSON:
+Return valid JSON like:
 {
   "estimated_days_before_impact": 45.6,
   "final_estimate_days_after_impact": 51.2,
-  "reason": "High complexity with moderate productivity, and impact factor added 10%."
-}`;
+  "reason": "Despite moderate productivity, the project involves building a real-time trading platform (from project description), which is highly sensitive and complex. The requirement changes added a 10% buffer."
+}
+`;
+
 
         const result = await genAI.models.generateContent({
             model: "gemini-1.5-flash",
