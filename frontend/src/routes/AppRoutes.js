@@ -24,6 +24,9 @@ import Leaderboard from "../pages/Leaderboard";
 import DeadlinePrediction from "../pages/DeadlinePrediction";
 import TaskAllocate from "../pages/TaskAllocate";
 import Layout from "../layouts/Layout";
+import UserPerformance from "../pages/UserPerformance";
+// import Login from '../pages/Login';
+// import ForgotPassword from '../pages/ForgotPassword';
 
 
 
@@ -56,6 +59,7 @@ const AppRoutes = () => (
         <Route path="/effort-prediction" element={<EffortPrediction />} />
         <Route path="/global-leaderboard" element={<Leaderboard />} />
         <Route path="/deadline-prediction" element={<DeadlinePrediction />} />
+        <Route path="/performance-evaluation" element={<UserPerformance />} />
       </Route>
 
       {/* Fallback route for 404 */}

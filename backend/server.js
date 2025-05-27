@@ -1,59 +1,57 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-const userRoutes = require('./routes/users')
-const taskRoutes = require('./routes/tasks')
-const projectRoutes = require('./routes/projects')
-const skillRoutes = require('./routes/skills');
-const authRoutes = require('./routes/auth');
-const teamRoutes = require('./routes/teams')
-const geminiRoute = require('./routes/gemini');
 const cors = require('cors');
 
-// express app
+// Import route modules
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
+const taskRoutes = require('./routes/tasks');
+const projectRoutes = require('./routes/projects');
+const skillRoutes = require('./routes/skills');
+const teamRoutes = require('./routes/teams');
+const geminiRoute = require('./routes/gemini');
+
+// Initialize Express app
 const app = express();
 
+// CORS & JSON middleware
 app.use(cors());
 app.use(express.json());
 
-// Force IPv4
-const mongooseOptions = {
-    family: 4, // Force IPv4
-};
-
-// middleware
-app.use(express.json())
+// Logger middleware
 app.use((req, res, next) => {
-    console.log(req.path, req.method)
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
     next();
-})
+});
 
-// routes
+// Route mounting
 app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes)
-app.use('/api/tasks', taskRoutes)
-app.use('/api/projects', projectRoutes)
+app.use('/api/users', userRoutes);
+app.use('/api/user', userRoutes); // ✅ Alias for backwards compatibility
+app.use('/api/tasks', taskRoutes);
+app.use('/api/projects', projectRoutes);
 app.use('/api/skills', skillRoutes);
 app.use('/api/teams', teamRoutes);
-console.log('geminiRoute export:', geminiRoute);
+app.use('/api/gemini', geminiRoute); // Gemini AI integration route
 
-app.use('/api/gemini', geminiRoute);
+// Log confirmation of imported route
+console.log('✅ geminiRoute imported and mounted.');
 
-console.log('Mongo URI:', process.env.MONGO_URI);
-console.log('Port:', process.env.PORT);
+// Connection options (force IPv4)
+const mongooseOptions = {
+    family: 4
+};
 
-// ✅ Alias for `/api/user` (Fix 404 Issue)
-app.use('/api/user', userRoutes); // Allow both `/api/users` and `/api/user`
-
-
-// Connect to MongoDB with IPv4 option
+// MongoDB connection and server start
 mongoose.connect(process.env.MONGO_URI, mongooseOptions)
     .then(() => {
         app.listen(process.env.PORT, () => {
-            console.log(`Connected to DB & Server is running on port ${process.env.PORT}`);
+            console.log(`✅ Connected to DB`);
+            console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
         });
     })
     .catch((error) => {
-        console.error("MongoDB Connection Error:", error.message);
+        console.error("❌ MongoDB Connection Error:", error.message);
     });
