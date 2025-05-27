@@ -36,12 +36,12 @@ const taskSchema = new Schema({
     type: Number,
     required: true
   },
-
+  
   estimatedDuration: {
     type: Number, 
     required: false
   },  
-  
+
   project: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project',
