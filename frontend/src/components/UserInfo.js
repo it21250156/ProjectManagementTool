@@ -12,7 +12,7 @@ const UserInfo = () => {
     const [loading, setLoading] = useState(true);
     const [level, setLevel] = useState(1);
     const [delayPrediction, setDelayPrediction] = useState(null);
-    const [profileName, setProfileName] = useState(''); // <-- Add this
+    const [profileName, setProfileName] = useState(''); 
 
     const navigate = useNavigate();
     const getNextLevelXP = (lvl) => Math.pow(2, lvl) * 50;
@@ -66,9 +66,9 @@ const UserInfo = () => {
             const response = await axios.post('/api/gemini/profile-delay-prediction', {
                 level,
                 completedTasks,
-                avgEffortHours: 4, // Replace with actual average if available
-                onTimeDeliveryRate: 0.8, // Replace with actual rate if available
-                currentTaskLoad: 3 // Replace with actual task load if available
+                avgEffortHours: 4, 
+                onTimeDeliveryRate: 0.8, 
+                currentTaskLoad: 3 
             });
 
             setDelayPrediction({
