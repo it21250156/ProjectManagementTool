@@ -3,7 +3,7 @@ const Task = require('../models/taskModel');
 const User = require('../models/userModel');
 const dayjs = require('dayjs');
 
-// ✅ Get all Tasks
+//  Get all Tasks
 const getAllTasks = async (req, res) => {
 try {
 const tasks = await Task.find({});
@@ -13,7 +13,7 @@ res.status(500).json({ error: error.message });
 }
 };
 
-// ✅ Get a single Task
+//  Get a single Task
 const getTask = async (req, res) => {
 const { id } = req.params;
 
@@ -30,11 +30,11 @@ res.status(500).json({ error: error.message });
 }
 };
 
-// ✅ Create a Task (with complexity and effortEstimate + description)
+//  Create a Task (with complexity and effortEstimate + description)
 const createTask = async (req, res) => {
 const {
 taskName,
-description, // ✅ expect this field from frontend
+description, 
 dueDate,
 assignedTo,
 project,
@@ -68,7 +68,7 @@ const estimatedDuration = estimateTaskDuration(complexity, effortEstimate, user.
 // Create the task
 const task = await Task.create({
   taskName,
-  description, // ✅ now included
+  description, 
   dueDate,
   assignedTo,
   project,
@@ -89,7 +89,7 @@ res.status(400).json({ error: error.message });
 };
 
 
-// ✅ Update a Task
+// Update a Task
 const updateTask = async (req, res) => {
 const { id } = req.params;
 
@@ -111,7 +111,7 @@ res.status(500).json({ error: error.message });
 }
 };
 
-// ✅ Delete a Task
+// Delete a Task
 const deleteTask = async (req, res) => {
 const { id } = req.params;
 
@@ -133,7 +133,7 @@ res.status(500).json({ error: error.message });
 }
 };
 
-// ✅ Get Tasks by Project
+// Get Tasks by Project
 const getTasksByProject = async (req, res) => {
 const { projectId } = req.params;
 
@@ -149,7 +149,7 @@ res.status(500).json({ error: error.message });
 }
 };
 
-// ✅ Update Task Status
+// Update Task Status
 const updateTaskStatus = async (req, res) => {
 const { id } = req.params;
 const { status } = req.body;
@@ -174,14 +174,14 @@ if (status === "Completed") {
     return res.status(404).json({ error: 'User not found' });
   }
 
-  // ✅ Base XP from Priority
+  // Base XP from Priority
   switch (task.priority?.toLowerCase()) {
     case 'high': baseXP += 10; break;
     case 'medium': baseXP += 5; break;
     case 'low': baseXP += 3; break;
   }
 
-  // ✅ Base XP from Complexity
+  // Base XP from Complexity
   switch (task.complexity?.toLowerCase()) {
     case 'high': baseXP += 10; break;
     case 'medium': baseXP += 5; break;
@@ -190,7 +190,7 @@ if (status === "Completed") {
 
   const now = dayjs();
 
-  // ✅ Apply Skill Effects
+  // Apply Skill Effects
   if (user.unlockedSkills.some(skill => skill.name === "Early Bird") && now.hour() < 12) {
     bonusXP += 3;
     activatedSkills.push("Early Bird");
@@ -222,7 +222,7 @@ if (status === "Completed") {
     levelUp = true;
   }
 
-            // 🔁 Update experienceLevel based on updated level
+            // Update experienceLevel based on updated level
             if (user.level <= 3) {
                 user.experienceLevel = 'Junior';
             } else if (user.level <= 6) {
@@ -231,7 +231,7 @@ if (status === "Completed") {
                 user.experienceLevel = 'Senior';
             }
 
-            // ✅ Check for new badges
+            // Check for new badges
             const badgeMilestones = {
                 30: "Task Beginner",
                 100: "Task Master",
@@ -249,7 +249,7 @@ if (status === "Completed") {
             await user.save();
         }
 
-        // ✅ Update Task Status
+        // Update Task Status
         task.status = status;
         await task.save();
 
@@ -260,7 +260,7 @@ if (status === "Completed") {
             totalXP,
             levelUp,
             newBadges,
-            activatedSkills, // ✅ Send activated skills
+            activatedSkills, // Send activated skills
             level: updatedLevel,
             task
         });
@@ -271,7 +271,7 @@ if (status === "Completed") {
     }
   };
 
-// ✅ Estimate Task Duration (COCOMO-Inspired)
+// Estimate Task Duration (COCOMO-Inspired)
 const estimateTaskDurationOnly = async (req, res) => {
     const { assignedTo, complexity, effortEstimate } = req.body;
 
