@@ -41,7 +41,7 @@ The platform aims to solve key challenges in modern software project management,
 
 | Layer        | Technology                             |
 |--------------|----------------------------------------|
-| Frontend     | React.js, TailwindCSS, Chart.js        |
+| Frontend     | React.js, TailwindCSS, Lucide React        |
 | Backend APIs | Flask, FastAPI, Node.js (Express)      |
 | Database     | MongoDB Atlas, MySQL                   |
 | ML Models    | Scikit-learn, XGBoost, SHAP, Joblib    |
