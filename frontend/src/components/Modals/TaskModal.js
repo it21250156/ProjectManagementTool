@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTasksContext } from "../../hooks/useTasksContext";
+import { X, Clock, CheckSquare } from 'lucide-react';
 
 const TaskModal = ({ closeModal }) => {
   const { dispatch } = useTasksContext();
@@ -13,6 +14,7 @@ const TaskModal = ({ closeModal }) => {
   const [complexity, setComplexity] = useState('Low');
   const [effortEstimate, setEffortEstimate] = useState('');
   const [estimatedDuration, setEstimatedDuration] = useState(null);
+  const [isPrivate, setIsPrivate] = useState(false);
 
   const [members, setMembers] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -21,16 +23,30 @@ const TaskModal = ({ closeModal }) => {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const response = await fetch('/api/projects');
-      const data = await response.json();
-      if (response.ok) setProjects(data);
+      try {
+        const response = await fetch('/api/projects', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const data = await response.json();
+        if (response.ok) setProjects(data);
+      } catch (err) {
+        console.error('Failed to fetch projects:', err);
+      }
     };
     fetchProjects();
   }, []);
 
   useEffect(() => {
-    if (!project) return;
+    if (!project) {
+      setMembers([]);
+      setLoading(false);
+      return;
+    }
+    
     const fetchMembersForProject = async () => {
+      setLoading(true);
       try {
         const response = await fetch(`/api/projects/${project}/members`, {
           headers: {
@@ -40,8 +56,10 @@ const TaskModal = ({ closeModal }) => {
         if (!response.ok) throw new Error("Failed to fetch members");
         const data = await response.json();
         setMembers(data.filter((member) => member && member._id));
+        setError(null);
       } catch (err) {
         setError("Failed to load members. Please try again later.");
+        setMembers([]);
       } finally {
         setLoading(false);
       }
@@ -60,6 +78,7 @@ const TaskModal = ({ closeModal }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
           assignedTo,       
@@ -85,162 +104,168 @@ const TaskModal = ({ closeModal }) => {
       console.error(err);
     }
   };
-  
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!taskName.trim()) {
+      setError("Task name is required.");
+      return;
+    }
+
     const task = {
-      taskName,
-      description: taskDescription,
+      taskName: taskName.trim(),
+      description: taskDescription.trim(),
       dueDate,
       assignedTo,
       project,
       priority,
       complexity,
-      effortEstimate
+      effortEstimate,
+      isPrivate
     };
 
-    const response = await fetch('/api/tasks/add', {
-      method: 'POST',
-      body: JSON.stringify(task),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
+    try {
+      const response = await fetch('/api/tasks/add', {
+        method: 'POST',
+        body: JSON.stringify(task),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
 
-    const json = await response.json();
+      const json = await response.json();
 
-    if (!response.ok) {
-      setError(json.errors || "Something went wrong.");
-    } else {
-      setTaskName('');
-      setTaskDescription('');
-      setDueDate('');
-      setAssignedTo('');
-      setProject('');
-      setPriority('Low');
-      setComplexity('Low');
-      setEffortEstimate('');
-      setEstimatedDuration(json.estimatedDuration); // Display predicted duration
-      setError(null);
+      if (!response.ok) {
+        setError(json.errors || json.message || "Something went wrong.");
+      } else {
+        // Reset form
+        setTaskName('');
+        setTaskDescription('');
+        setDueDate('');
+        setAssignedTo('');
+        setProject('');
+        setPriority('Low');
+        setComplexity('Low');
+        setEffortEstimate('');
+        setEstimatedDuration(null);
+        setIsPrivate(false);
+        setError(null);
 
-      dispatch({ type: 'CREATE_TASKS', payload: json.task });
+        dispatch({ type: 'CREATE_TASKS', payload: json.task });
+        closeModal();
+      }
+    } catch (err) {
+      setError("Failed to create task. Please try again.");
+      console.error(err);
+    }
+  };
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      closeModal();
     }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-md" onClick={closeModal}>
-      <div className="relative p-4 w-full max-w-2xl bg-[#F5A623] rounded-3xl shadow-md" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between p-4">
-          <h3 className="text-4xl font-bold w-full text-white">Create a Task</h3>
-          <button onClick={closeModal} className="text-white hover:text-gray-600">✕</button>
+    <div 
+      className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-md p-4" 
+      onClick={handleOverlayClick}
+    >
+      <div 
+        className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-200/50 overflow-hidden max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Modal Header */}
+        <div className="bg-gradient-to-r from-[#4a90e2] to-[#50E3C2] p-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-2xl font-bold text-white flex items-center">
+              <CheckSquare className="mr-2 h-6 w-6" />
+              Create New Task
+            </h3>
+            <button 
+              onClick={closeModal} 
+              className="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/20 transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
         </div>
-        <div className="p-4 bg-white rounded-xl text-black">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3 font-bold">
-              <label htmlFor="taskName">Task Name*</label><br />
+
+        {/* Modal Content */}
+        <div className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Task Name */}
+            <div>
+              <label htmlFor="taskName" className="block text-sm font-semibold text-gray-700 mb-2">
+                Task Name *
+              </label>
               <input
                 type="text"
                 id="taskName"
+                required
                 onChange={(e) => setTaskName(e.target.value)}
                 value={taskName}
-                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal"
+                placeholder="Enter task name"
+                className="w-full px-4 py-3 bg-gradient-to-r from-[#50E3C2]/20 to-[#4a90e2]/20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4a90e2] focus:border-transparent transition-all font-medium"
               />
             </div>
 
-            <div className="mb-3 font-bold">
-              <label htmlFor="taskDescription">Description</label><br />
+            {/* Description */}
+            <div>
+              <label htmlFor="taskDescription" className="block text-sm font-semibold text-gray-700 mb-2">
+                Description
+              </label>
               <textarea
                 id="taskDescription"
+                rows="3"
                 onChange={(e) => setTaskDescription(e.target.value)}
                 value={taskDescription}
-                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal"
-              ></textarea>
+                placeholder="Describe the task..."
+                className="w-full px-4 py-3 bg-gradient-to-r from-[#50E3C2]/20 to-[#4a90e2]/20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4a90e2] focus:border-transparent transition-all font-medium resize-none"
+              />
             </div>
 
-            <div className="mb-3 font-bold">
-              <label>Project</label><br />
+            {/* Project */}
+            <div>
+              <label htmlFor="project" className="block text-sm font-semibold text-gray-700 mb-2">
+                Project
+              </label>
               <select
                 id="project"
                 onChange={(e) => setProject(e.target.value)}
                 value={project}
-                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal">
+                className="w-full px-4 py-3 bg-gradient-to-r from-[#50E3C2]/20 to-[#4a90e2]/20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4a90e2] focus:border-transparent transition-all font-medium"
+              >
                 <option value="">Select a project</option>
-                {projects.map((project) => (
-                  <option key={project._id} value={project._id}>
-                    {project.projectName}
+                {projects.map((proj) => (
+                  <option key={proj._id} value={proj._id}>
+                    {proj.projectName}
                   </option>
                 ))}
               </select>
             </div>
 
-            <div className="mb-3 font-bold">
-              <label>Due Date</label><br />
-              <input
-                type="date"
-                id="dueDate"
-                onChange={(e) => setDueDate(e.target.value)}
-                value={dueDate}
-                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal" />
-            </div>
 
-            <div className="mb-3 font-bold">
-              <label>Priority</label><br />
-              <select
-                id="priority"
-                onChange={(e) => setPriority(e.target.value)}
-                value={priority}
-                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal"
-              >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-            </div>
 
-            <div className="mb-3 font-bold">
-              <label>Complexity</label><br />
-              <select
-                id="complexity"
-                onChange={(e) => setComplexity(e.target.value)}
-                value={complexity}
-                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal"
-              >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-            </div>
-
-            <div className="mb-3 font-bold">
-              <label>Effort Estimate (hours)</label><br />
-              <input
-                type="number"
-                id="effortEstimate"
-                onChange={(e) => setEffortEstimate(e.target.value)}
-                value={effortEstimate}
-                placeholder="e.g., 8"
-                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal"
-              />
-            </div>
-
-            <div className="mb-3 font-bold">
-              <label>Members</label><br />
+            {/* Assigned To */}
+            <div>
+              <label htmlFor="assignedTo" className="block text-sm font-semibold text-gray-700 mb-2">
+                Assigned To
+              </label>
               <select
                 id="assignedTo"
                 onChange={(e) => setAssignedTo(e.target.value)}
                 value={assignedTo}
-                className="border-none bg-[#50E3C2] w-full rounded-lg font-normal"
                 disabled={!project}
+                className="w-full px-4 py-3 bg-gradient-to-r from-[#50E3C2]/20 to-[#4a90e2]/20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4a90e2] focus:border-transparent transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <option value="">Select a member</option>
+                <option value="">
+                  {!project ? "Select a project first" : "Select a member"}
+                </option>
                 {loading ? (
                   <option value="" disabled>Loading members...</option>
-                ) : error ? (
-                  <option value="" disabled>{error}</option>
                 ) : (
                   members.map((member) => (
                     <option key={member._id} value={member._id}>
@@ -251,41 +276,129 @@ const TaskModal = ({ closeModal }) => {
               </select>
             </div>
 
-            <div className="mt-10 font-bold">
-              <label className="inline-flex items-center me-5 cursor-pointer">
-                <input type="checkbox" value="" className="sr-only peer" />
-                <div className="relative w-11 h-6 bg-[#50E3C2] rounded-full peer peer-focus:ring-2 peer-focus:ring-red-300 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#F5A623]"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900">Make Private </span>
-                <span className="text-xs font-light text-gray-900 italic">(Only you and invited members have access)</span>
+            {/* Priority */}
+            <div>
+              <label htmlFor="priority" className="block text-sm font-semibold text-gray-700 mb-2">
+                Priority
+              </label>
+              <select
+                id="priority"
+                onChange={(e) => setPriority(e.target.value)}
+                value={priority}
+                className="w-full px-4 py-3 bg-gradient-to-r from-[#50E3C2]/20 to-[#4a90e2]/20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4a90e2] focus:border-transparent transition-all font-medium"
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+
+            {/* Complexity */}
+            <div>
+              <label htmlFor="complexity" className="block text-sm font-semibold text-gray-700 mb-2">
+                Complexity
+              </label>
+              <select
+                id="complexity"
+                onChange={(e) => setComplexity(e.target.value)}
+                value={complexity}
+                className="w-full px-4 py-3 bg-gradient-to-r from-[#50E3C2]/20 to-[#4a90e2]/20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4a90e2] focus:border-transparent transition-all font-medium"
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+
+            {/* Effort Estimate */}
+            <div>
+              <label htmlFor="effortEstimate" className="block text-sm font-semibold text-gray-700 mb-2">
+                Effort Estimate (hours)
+              </label>
+              <input
+                type="number"
+                id="effortEstimate"
+                min="0.5"
+                step="0.5"
+                onChange={(e) => setEffortEstimate(e.target.value)}
+                value={effortEstimate}
+                placeholder="e.g., 8"
+                className="w-full px-4 py-3 bg-gradient-to-r from-[#50E3C2]/20 to-[#4a90e2]/20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4a90e2] focus:border-transparent transition-all font-medium"
+              />
+            </div>
+
+            {/* Private Toggle */}
+            <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
+              <label className="inline-flex items-center cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  checked={isPrivate}
+                  onChange={(e) => setIsPrivate(e.target.checked)}
+                  className="sr-only peer" 
+                />
+                <div className="relative w-11 h-6 bg-gray-300 rounded-full peer peer-focus:ring-2 peer-focus:ring-[#4a90e2]/50 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#4a90e2] peer-checked:to-[#50E3C2]"></div>
+                <div className="ml-3">
+                  <span className="text-sm font-semibold text-gray-900">Make Private</span>
+                  <p className="text-xs text-gray-600">Only you and invited members have access</p>
+                </div>
               </label>
             </div>
 
+            {/* Duration Estimation */}
+            <div className="space-y-4 p-6 bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4">Task Duration Estimation</h4>
+              
+              <button
+                type="button"
+                onClick={fetchEstimatedDuration}
+                disabled={!assignedTo || !complexity || !effortEstimate}
+                className="w-full bg-gradient-to-r from-[#7B61FF] to-[#674AD2] hover:from-[#674AD2] hover:to-[#7B61FF] disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:hover:scale-100 shadow-lg hover:shadow-xl flex items-center justify-center group disabled:cursor-not-allowed"
+              >
+                <Clock className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                Estimate Task Duration
+              </button>
 
-            <div className="my-5">
-
-              <div className="mb-3 font-bold">
-                <button
-                  type="button"
-                  onClick={fetchEstimatedDuration}
-                  className="rounded-md bg-[#7B61FF] text-white px-4 py-2 font-semibold shadow hover:bg-[#674AD2]"
-                >
-                  Estimate Task Duration
-                </button>
-
-                {estimatedDuration && (
-                  <div className="text-center mt-3 text-md font-semibold text-green-700">
-                    ⏱ Estimated Completion Time: {estimatedDuration} 
+              {estimatedDuration && (
+                <div className="text-center p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="text-lg font-semibold text-green-800 flex items-center justify-center">
+                    <Clock className="mr-2 h-5 w-5" />
+                    Estimated Completion Time: {estimatedDuration}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
+              {/* Due Date - moved here */}
+              <div>
+                <label htmlFor="dueDate" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Due Date
+                </label>
+                <input
+                  type="date"
+                  id="dueDate"
+                  onChange={(e) => setDueDate(e.target.value)}
+                  value={dueDate}
+                  min={new Date().toISOString().split('T')[0]}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-[#50E3C2]/20 to-[#4a90e2]/20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4a90e2] focus:border-transparent transition-all font-medium"
+                />
+              </div>
+            </div>
+
+            {/* Error Display */}
+            {error && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-800 text-sm font-medium">{error}</p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <div className="pt-4">
               <button
                 type="submit"
-                className="flex w-1/3 justify-center mx-auto rounded-md bg-[#4A90E2] px-4 py-3.5 text-xl font-semibold text-white shadow-md hover:bg-[#4A90E2] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3C71B1]"
+                className="w-full bg-gradient-to-r from-[#4a90e2] to-[#50E3C2] hover:from-[#50E3C2] hover:to-[#4a90e2] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center group"
               >
+                <CheckSquare className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                 Create Task
               </button>
-              {error && <div className='error'> {error} </div>}
             </div>
           </form>
         </div>

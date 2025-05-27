@@ -77,12 +77,12 @@ const Header = ({ onMobileMenuToggle, isMobileMenuOpen }) => {
                       Task Allocation
                     </Link>
                     <Link 
-                      to="/settings" 
+                      to="/model-performance" 
                       className="flex items-center px-4 py-3 text-gray-700 hover:bg-[#50E3C2]/20 hover:text-[#4a90e2] transition-colors duration-200 group"
                       onClick={closeDropdown}
                     >
                       <Settings className="mr-3 h-4 w-4 group-hover:text-[#4a90e2]" />
-                      Settings
+                      Modal Performance
                     </Link>
                   </div>
                 </div>
@@ -123,12 +123,12 @@ const Header = ({ onMobileMenuToggle, isMobileMenuOpen }) => {
               Task Allocation
             </Link>
             <Link 
-              to="/settings" 
+              to="/model-performance" 
               className="flex items-center px-4 py-3 text-gray-700 hover:bg-[#50E3C2]/20 hover:text-[#4a90e2] transition-colors duration-200"
               onClick={closeDropdown}
             >
               <Settings className="mr-3 h-4 w-4" />
-              Settings
+              Modal Performance
             </Link>
           </div>
         </div>
