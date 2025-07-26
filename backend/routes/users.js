@@ -74,20 +74,27 @@ router.get('/leaderboard', async (req, res) => {
   }
 });
 
-/**
- * ✅ Get All Users' Performance Data (for UserPerformance.js)
- * Reads from the 'performance' collection in MongoDB.
- */
-router.get('/performance-evaluation', async (req, res) => {
+// Import verifyToken middleware
+router.get('/performance-evaluation', verifyToken, async (req, res) => {
   try {
-    // Use mongoose connection to access the 'performance' collection directly
-    const Performance = mongoose.connection.collection('performance');
-    const users = await Performance.find({}).toArray();
-    res.json(users);
+    const users = await User.find({}, {
+      name: 1,
+      level: 1,
+      completedTasks: 1,
+      earnedXP: 1,
+      avgEffortHours: 1,
+      onTimeDeliveryRate: 1,
+      currentTaskLoad: 1,
+      email: 1
+    });
+
+    res.status(200).json(users);
   } catch (err) {
     console.error('Performance evaluation fetch error:', err);
     res.status(500).json({ error: 'Failed to fetch user performance data.' });
   }
 });
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 module.exports = router;

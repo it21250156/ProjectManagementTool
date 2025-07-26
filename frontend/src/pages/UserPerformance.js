@@ -25,21 +25,25 @@ import {
 } from "lucide-react";
 import ShowMessageModal from "../components/Modals/showMessageModal";
 
+// Realistic delay probability categories
 const getDelayLabel = (prob) => {
-  if (prob < 0.33) return "Low";
-  if (prob < 0.66) return "Medium";
+  if (prob < 0.2) return "Low";
+  if (prob < 0.5) return "Medium-Low";
+  if (prob < 0.75) return "Medium-High";
   return "High";
 };
 
 const getDelayColor = (prob) => {
-  if (prob < 0.33) return "from-green-500 to-emerald-500";
-  if (prob < 0.66) return "from-yellow-500 to-orange-500";
+  if (prob < 0.2) return "from-green-500 to-emerald-500";
+  if (prob < 0.5) return "from-yellow-400 to-yellow-600";
+  if (prob < 0.75) return "from-orange-400 to-orange-600";
   return "from-red-500 to-pink-500";
 };
 
 const getDelayBgColor = (prob) => {
-  if (prob < 0.33) return "from-green-50 to-emerald-50 border-green-200";
-  if (prob < 0.66) return "from-yellow-50 to-orange-50 border-yellow-200";
+  if (prob < 0.2) return "from-green-50 to-emerald-50 border-green-200";
+  if (prob < 0.5) return "from-yellow-50 to-yellow-100 border-yellow-200";
+  if (prob < 0.75) return "from-orange-50 to-orange-100 border-orange-200";
   return "from-red-50 to-pink-50 border-red-200";
 };
 
@@ -77,9 +81,9 @@ const UserPerformance = () => {
             level: user.level,
             completedTasks: user.completedTasks,
             earnedXP: user.earnedXP,
-            avgEffortHours: user.avgEffortHours,
-            onTimeDeliveryRate: user.onTimeDeliveryRate,
-            currentTaskLoad: user.currentTaskLoad
+            avgEffortHours: user.avgEffortHours ?? 4, // Use default if missing
+            onTimeDeliveryRate: user.onTimeDeliveryRate ?? 0.8,
+            currentTaskLoad: user.currentTaskLoad ?? 3
           });
           // Update the user with delayPrediction
           setUsers(prev =>
@@ -98,7 +102,6 @@ const UserPerformance = () => {
 
   // Handler for sending a message (replace with your logic)
   const handleSendMessage = (message) => {
-    // You can send the message to the backend here
     alert(`Message sent to ${modalUser?.name}: ${message}`);
     setModalUser(null);
   };
@@ -219,13 +222,15 @@ const UserPerformance = () => {
                       <p className="text-xs text-gray-600">Current Level</p>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl p-4 text-center">
-                      <div className="bg-gradient-to-r from-orange-500 to-red-500 p-2 rounded-lg w-fit mx-auto mb-2">
-                        <Clock className="h-5 w-5 text-white" />
-                      </div>
-                      <p className="text-2xl font-bold text-orange-600">{user.avgEffortHours || 0}</p>
-                      <p className="text-xs text-gray-600">Avg Effort Hours</p>
-                    </div>
+                   <div className="bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl p-4 text-center">
+  <div className="bg-gradient-to-r from-orange-500 to-red-500 p-2 rounded-lg w-fit mx-auto mb-2">
+    <Clock className="h-5 w-5 text-white" />
+  </div>
+  <p className="text-2xl font-bold text-orange-600">
+    {user.avgEffortHours && user.avgEffortHours > 0 ? user.avgEffortHours : 4}
+  </p>
+  <p className="text-xs text-gray-600">Avg Effort Hours</p>
+</div>
                   </div>
 
                   {/* Delay Prediction Section */}
@@ -297,4 +302,4 @@ const UserPerformance = () => {
   );
 };
 
-export default UserPerformance;
+export default UserPerformance; 
